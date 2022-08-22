@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Scheduler App</string>
+    <string name="firebase_link">https://scheduleapp-3ebb7-default-rtdb.asia-southeast1.firebasedatabase.app</string>
 </resources>

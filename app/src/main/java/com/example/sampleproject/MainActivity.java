@@ -2,8 +2,12 @@ package com.example.sampleproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -12,6 +16,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
+
+    //// FIREBASE ////
     private final String TAG = "test tag message here";
 
     @Override
@@ -20,9 +26,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://scheduleapp-3ebb7-default-rtdb.asia-southeast1.firebasedatabase.app");
+        FirebaseDatabase database = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link));
         DatabaseReference myRef = database.getReference("message");
-
         myRef.setValue("Hello, World!");
 
 
@@ -43,5 +48,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        //// Components ////
+        // test button & textview
+        Button testButton = findViewById(R.id.test_button);
+        TextView testView = findViewById(R.id.test_textView);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.w(TAG, "Good Morning!");
+                testView.setText("Good Morning!");
+            }
+        });
     }
 }
