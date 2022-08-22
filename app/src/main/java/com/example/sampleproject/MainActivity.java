@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Write a message to the database
+        // TODO: find out how to traverse different collection and keyvalue pairs.
         FirebaseDatabase database = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link));
         DatabaseReference myRef = database.getReference("message");
         myRef.setValue("Hello, World!");
