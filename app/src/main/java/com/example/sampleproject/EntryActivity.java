@@ -34,7 +34,7 @@ public class EntryActivity extends AppCompatActivity {
         myRef.setValue("THISsdfsdfsdfsdfsdfsdfsdf LA too, World!");
 
         DatabaseReference database1 = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference();
-        DatabaseReference myRef1 = database1.child("events");
+        DatabaseReference myRef1 = database1.child("people");
         myRef1.child("person1").child("firstname").setValue("james");
 
 
@@ -83,30 +83,5 @@ public class EntryActivity extends AppCompatActivity {
             }
         });
 
-
-/*        //// Fragment ////
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        HomeFragment homeFragment = new HomeFragment();
-        NotificationFragment notificationFragment = new NotificationFragment();
-        SettingsFragment settingsFragment = new SettingsFragment();
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.home:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
-                        return true;
-                    case R.id.notification:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, notificationFragment).commit();
-                        return true;
-                    case R.id.settings:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, settingsFragment).commit();
-                        return true;
-                }
-                return false;
-            }
-        });*/
     }
 }

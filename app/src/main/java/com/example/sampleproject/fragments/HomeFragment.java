@@ -35,9 +35,10 @@ public class HomeFragment extends Fragment {
         ///// Recycler View ////
 
         // Create a instance of the database and get its reference
-        mbase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
+        mbase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("people");
 
         recyclerView = root.findViewById(R.id.recycler1);
+        recyclerView.setNestedScrollingEnabled(false);
 
         // To display the Recycler view linearly
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -59,7 +60,7 @@ public class HomeFragment extends Fragment {
         addMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatabaseReference database1 = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
+                DatabaseReference database1 = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("people");
                 person newguy = new person("firstjhin", "lastjhin", "24");
                 database1.child("person4").child("firstname").setValue(newguy.getFirstname());
                 database1.child("person4").child("lastname").setValue(newguy.getFirstname());

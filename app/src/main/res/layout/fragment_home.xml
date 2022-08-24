@@ -39,22 +39,23 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler1"
                     android:layout_width="388dp"
-                    android:layout_height="446dp"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="?attr/actionBarSize"
+                    android:clipToPadding="false"
 
                     android:layout_marginTop="28sp"
-                    android:layout_marginBottom="20sp"
+                    android:layout_marginBottom="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.478"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/upcomingEvents"
-                    app:layout_constraintVertical_bias="1.0"
-                    tools:ignore="MissingConstraints" />
+                    app:layout_constraintVertical_bias="1.0" />
 
                 <Button
                     android:id="@+id/add_member"
@@ -84,7 +85,7 @@
                 <!--                    tools:ignore="MissingConstraints" />-->
 
                 <FrameLayout
-                    android:id="@+id/container"
+                    android:id="@+id/no"
                     android:layout_width="371dp"
                     android:layout_height="1dp"
                     android:layout_marginTop="12dp"
@@ -128,7 +129,7 @@
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/container" />
+                    app:layout_constraintTop_toBottomOf="@+id/no" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
     </RelativeLayout>
