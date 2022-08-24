@@ -28,10 +28,10 @@ public class SubActivity extends AppCompatActivity {
 
 
         Bundle resultIntent = getIntent().getExtras();
-        String intentValue = resultIntent.getString("message");
+        //String intentValue = resultIntent.getString("message");
 
 
-        textView.setText(intentValue);
+        //textView.setText(intentValue);
 
         ///// Recycler View ////
 

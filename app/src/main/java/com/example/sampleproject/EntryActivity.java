@@ -1,28 +1,22 @@
 package com.example.sampleproject;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
-import android.widget.TextView;
 
-import com.example.sampleproject.fragments.HomeFragment;
-import com.example.sampleproject.fragments.NotificationFragment;
-import com.example.sampleproject.fragments.SettingsFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class MainActivity extends AppCompatActivity {
+public class EntryActivity extends AppCompatActivity {
 
     //// FIREBASE ////
     private final String TAG = "test tag message here";
@@ -62,30 +56,23 @@ public class MainActivity extends AppCompatActivity {
 
 
         //// Components ////
-        // test button & textview
-        Button testButton = findViewById(R.id.test_button);
-        TextView testView = findViewById(R.id.test_textView);
-        testButton.setOnClickListener(new View.OnClickListener() {
+        //  button & textview
+        // TODO: change to recyclerview?
+        Button entryMemberOne = findViewById(R.id.member1_entry);
+        entryMemberOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.w(TAG, "Good Morning!");
-                testView.setText("Good Morning!");
-            }
-
-
-        });
-
-        Button toSubAct = findViewById(R.id.to_sub_act);
-        toSubAct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intentSub = new Intent(MainActivity.this, SubActivity.class);
-                intentSub.putExtra("message", testView.getText());
+                Animation animation = new TranslateAnimation(0, 0, 0, 10);
+                animation.setDuration(200);
+                entryMemberOne.startAnimation(animation);
+                Intent intentSub = new Intent(EntryActivity.this, SubActivity.class);
                 startActivity(intentSub);
             }
         });
 
-        //// Fragment ////
+
+
+/*        //// Fragment ////
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         HomeFragment homeFragment = new HomeFragment();
         NotificationFragment notificationFragment = new NotificationFragment();
@@ -108,6 +95,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return false;
             }
-        });
+        });*/
     }
 }
