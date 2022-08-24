@@ -6,16 +6,17 @@ import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.sampleproject.fragments.HomeFragment;
-import com.example.sampleproject.fragments.NotificationFragment;
-import com.example.sampleproject.fragments.SettingsFragment;
+import com.example.sampleproject.Models.EventAdapter;
+import com.example.sampleproject.Fragments.HomeFragment;
+import com.example.sampleproject.Fragments.NotificationFragment;
+import com.example.sampleproject.Fragments.SettingsFragment;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class ApplicationActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    personAdaptar adapter; // Create Object of the Adapter class
+    EventAdapter adapter; // Create Object of the Adapter class
     DatabaseReference mbase; // Create object of the Firebase Realtime Database
 
 
