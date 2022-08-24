@@ -6,117 +6,19 @@
     android:layout_height="wrap_content"
     tools:context=".EntryActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <ScrollView
-            android:id="@+id/scrollView2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler1"
-                    android:layout_width="388dp"
-                    android:layout_height="446dp"
-
-                    android:layout_marginTop="28sp"
-                    android:layout_marginBottom="20sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.478"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/upcomingEvents"
-                    app:layout_constraintVertical_bias="1.0"
-                    tools:ignore="MissingConstraints" />
-
-                <Button
-                    android:id="@+id/add_member"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="104dp"
-                    android:layout_marginEnd="32dp"
-                    android:text="add"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="124dp"
-                    android:layout_height="124dp"
-                    android:layout_marginTop="42sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-                    app:srcCompat="@drawable/dembirdimage" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:background="@android:color/darker_gray"
-                    tools:ignore="MissingConstraints" />
-
-                <FrameLayout
-                    android:id="@+id/container"
-                    android:layout_width="371dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="12dp"
-                    android:background="#6C6C6C"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/username_text" />
-
-                <TextView
-                    android:id="@+id/welcomeMessage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="@font/spartan_black"
-                    android:text="Welcome,"
-                    android:textColor="#000000"
-                    android:textSize="24sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-                <TextView
-                    android:id="@+id/username_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/spartan_light"
-                    android:text="demeritbird"
-                    android:textColor="#000000"
-                    android:textSize="26sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/welcomeMessage" />
-
-                <TextView
-                    android:id="@+id/upcomingEvents"
-                    android:layout_width="379dp"
-                    android:layout_height="26dp"
-                    android:layout_marginTop="20dp"
-                    android:fontFamily="@font/spartan_regular"
-                    android:text="Upcoming Events"
-                    android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/container" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
-    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/container"
+            android:layout_above="@id/bottom_navigation"/>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -131,5 +33,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:menu="@menu/bottom_nav_menu"
             tools:layout_editor_absoluteX="16dp" />
+
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
