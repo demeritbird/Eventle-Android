@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,13 +25,13 @@ public class EntryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_entrypage);
 
         // Write a message to the database
         // TODO: find out how to traverse different collection and keyvalue pairs.
         FirebaseDatabase database = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link));
         DatabaseReference myRef = database.getReference("message");
-        myRef.setValue("THIS asdasdasdasd WORK LA too, World!");
+        myRef.setValue("THISsdfsdfsdfsdfsdfsdfsdf LA too, World!");
 
         DatabaseReference database1 = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference();
         DatabaseReference myRef1 = database1.child("events");
@@ -62,14 +63,25 @@ public class EntryActivity extends AppCompatActivity {
         entryMemberOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Animation animation = new TranslateAnimation(0, 0, 0, 10);
                 animation.setDuration(200);
                 entryMemberOne.startAnimation(animation);
-                Intent intentSub = new Intent(EntryActivity.this, SubActivity.class);
+                Intent intentSub = new Intent(EntryActivity.this, ApplicationActivity.class);
                 startActivity(intentSub);
             }
         });
-
+        Button entryMemberTwo = findViewById(R.id.member2_entry);
+        entryMemberTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(EntryActivity.this, "did something", Toast.LENGTH_LONG).show();
+                System.out.println("not just me");
+                FirebaseDatabase database = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link));
+                DatabaseReference myRef = database.getReference("message");
+                myRef.setValue("THIS helplheplhpe WORK LA too, World!");
+            }
+        });
 
 
 /*        //// Fragment ////

@@ -60,6 +60,6 @@ public class CustomButtonView extends AppCompatButton {
 
     private void doSomething() {
         Toast.makeText(getContext(), "did something", Toast.LENGTH_SHORT).show();
-        System.out.println("helpelehlpehphe");
+//        System.out.println("helpelehlpehphe");
     }
 }

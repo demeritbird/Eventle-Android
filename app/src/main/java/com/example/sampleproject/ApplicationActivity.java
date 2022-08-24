@@ -1,6 +1,5 @@
 package com.example.sampleproject;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-public class SubActivity extends AppCompatActivity {
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+public class ApplicationActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     personAdaptar adapter; // Create Object of the Adapter class
@@ -23,36 +22,27 @@ public class SubActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sub);
-        TextView textView = findViewById(R.id.sub_testview);
-
+        setContentView(R.layout.activity_application);
 
         Bundle resultIntent = getIntent().getExtras();
-        //String intentValue = resultIntent.getString("message");
 
-
-        //textView.setText(intentValue);
 
         ///// Recycler View ////
 
-        // Create a instance of the database and get
-        // its reference
+        // Create a instance of the database and get its reference
         mbase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
 
         recyclerView = findViewById(R.id.recycler1);
 
         // To display the Recycler view linearly
-        recyclerView.setLayoutManager(
-                new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // It is a class provide by the FirebaseUI to make a
-        // query in the database to fetch appropriate data
+        // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate data
         FirebaseRecyclerOptions<person> options
                 = new FirebaseRecyclerOptions.Builder<person>()
                 .setQuery(mbase, person.class)
                 .build();
-        // Connecting object of required Adapter class to
-        // the Adapter class itself
+        // Connecting object of required Adapter class to the Adapter class itself
         adapter = new personAdaptar(options);
         // Connecting Adapter class with the Recycler view*/
         recyclerView.setAdapter(adapter);
@@ -74,8 +64,7 @@ public class SubActivity extends AppCompatActivity {
 
 
     }
-    // Function to tell the app to start getting
-    // data from database on starting of the activity
+    // Function to tell the app to start getting from database on starting of the activity
     @Override protected void onStart()
     {
         super.onStart();
@@ -83,8 +72,7 @@ public class SubActivity extends AppCompatActivity {
         adapter.startListening();
     }
 
-    // Function to tell the app to stop getting
-    // data from database on stopping of the activity
+    // Function to tell the app to stop getting data from database on stopping of the activity
     @Override protected void onStop()
     {
         super.onStop();
