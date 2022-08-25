@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.CalendarFragment">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -18,13 +17,17 @@
         tools:context=".MainActivity">
 
         <com.example.sampleproject.Components.CustomCalendarView
-            xmlns:calendarNS="http://schemas.android.com/apk/res/android"
             android:id="@+id/calendar_view"
 
-            calendarNS:layout_width="wrap_content"
-            calendarNS:layout_height="match_parent"
-            />
+            android:layout_width="wrap_content"
+            android:layout_height="341dp" />
 
+
+        <Button
+            android:id="@+id/buttontodialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="help"/>
     </LinearLayout>
 
 </RelativeLayout>
