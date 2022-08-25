@@ -45,28 +45,6 @@ public class CalendarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_calendar, container, false);
 
-//        HomeFragment homeFragment = new HomeFragment();
-//        homeFragment.actRecycler(root);
-
-//        // Create a instance of the database and get its reference
-//        mbase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
-//
-//        recyclerView = root.findViewById(R.id.recycler1);
-//        recyclerView.setNestedScrollingEnabled(false);
-//
-//        // To display the Recycler view linearly
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//
-//        // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate data
-//        FirebaseRecyclerOptions<Event> options
-//                = new FirebaseRecyclerOptions.Builder<Event>()
-//                .setQuery(mbase, Event.class)
-//                .build();
-//        // Connecting object of required Adapter class to the Adapter class itself
-//        adapter = new EventAdapter(options);
-//        // Connecting Adapter class with the Recycler view*/
-//        recyclerView.setAdapter(adapter);
-
         actRecycler(root);
 
 
@@ -109,11 +87,12 @@ public class CalendarFragment extends Fragment {
                     public void onClick(View view) {
                         DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
                         String uuid = UUID.randomUUID().toString();
-                        Event event = new Event(title,description,deadline,daysleft);
+                        Event event = new Event(title,description,deadline,daysleft, uuid);
                         firebase.child(uuid).child("title").setValue(event.getTitle());
                         firebase.child(uuid).child("description").setValue(event.getDescription());
                         firebase.child(uuid).child("deadline").setValue(event.getDeadline());
                         firebase.child(uuid).child("daysleft").setValue(event.getDaysLeft());
+                        firebase.child(uuid).child("uid").setValue(event.getUid());
 
                         Toast.makeText(getContext(), "added!", Toast.LENGTH_SHORT).show();
                     }

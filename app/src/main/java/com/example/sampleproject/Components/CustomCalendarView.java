@@ -122,17 +122,17 @@ public class CustomCalendarView extends LinearLayout {
             }
         });
 
-//        grid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> view, View cell, int position, long id) {
-//                // handle long-press
-//                if (eventHandler == null)
-//                    return false;
-//
-//                eventHandler.onDayLongPress((Date) view.getItemAtPosition(position));
-//                return true;
-//            }
-//        });
+        grid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> view, View cell, int position, long id) {
+                // handle long-press
+                if (eventHandler == null)
+                    return false;
+
+                eventHandler.onDayLongPress((Date) view.getItemAtPosition(position));
+                return true;
+            }
+        });
     }
 
     public void invokeFirebaseEvent(CustomCalendarView calendarView) {
@@ -147,7 +147,7 @@ public class CustomCalendarView extends LinearLayout {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Event user = snapshot.getValue(Event.class);
                     Date addDate = new Date(user.getDeadline());
-
+                    //FIXME: Fails if the deadline is not in a good date format.
                     events.add(addDate);
                 }
                 calendarView.updateCalendar(events);
