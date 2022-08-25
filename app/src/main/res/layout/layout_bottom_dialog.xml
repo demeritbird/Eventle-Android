@@ -31,17 +31,19 @@
 
 
         <TextView
-            android:id="@+id/new_text"
+            android:id="@+id/title_dialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="asdasdsadasa" />
 
         <TextView
+            android:id="@+id/description_dialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="df" />
 
         <TextView
+            android:id="@+id/deadline_dialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="asdasdsdfdfadasa" />

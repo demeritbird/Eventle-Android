@@ -1,16 +1,13 @@
 package com.example.sampleproject.Models;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sampleproject.R;
@@ -57,18 +54,9 @@ public class EventAdapter extends FirebaseRecyclerAdapter<
             daysleft = itemView.findViewById(R.id.days_left);
 
             Button check = itemView.findViewById(R.id.check_button);
-//            check.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    System.out.println(title.getText());
-//                    System.out.println(description.getText());
-//                    System.out.println(deadline.getText());
-//                    System.out.println(daysleft.getText());
-//                }
-//            });
 
 
-
+            // NOTE: setText of each recyclerView and their buttons
             check.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -78,8 +66,13 @@ public class EventAdapter extends FirebaseRecyclerAdapter<
 
 
                     // textview //
-                    TextView textt = bottomSheetView.findViewById(R.id.new_text);
-                    textt.setText("new test here");
+                    TextView titleDialog = bottomSheetView.findViewById(R.id.title_dialog);
+                    titleDialog.setText(title.getText());
+                    TextView descriptionDialog = bottomSheetView.findViewById(R.id.description_dialog);
+                    descriptionDialog.setText(description.getText());
+                    TextView deadlineDialog = bottomSheetView.findViewById(R.id.deadline_dialog);
+                    deadlineDialog.setText(deadline.getText());
+
 
                     // Button //
                     bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {

@@ -96,12 +96,13 @@ public class CustomCalendarView extends LinearLayout {
                 HashSet<Date> events = new HashSet<>();
                 events.add(new Date());
                 updateCalendar(events);
-
+    //FIXME
             }
         });
         btnPrev.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                //FIXME
                 currentDate.add(Calendar.MONTH, -1);
                 HashSet<Date> events = new HashSet<>();
                 events.add(new Date());
@@ -178,7 +179,7 @@ public class CustomCalendarView extends LinearLayout {
             int month = date.getMonth();
             int year = date.getYear();
 
-//// TODO: set to calendar or sth
+            //// TODO: set to calendar or sth
 
 //            Calendar dateCalendar = Calendar.getInstance();
 //            dateCalendar.setTime(date);
@@ -198,10 +199,7 @@ public class CustomCalendarView extends LinearLayout {
             if (eventDays != null) {
                 for (Date eventDate : eventDays)
                 {
-                    if (eventDate.getDate() == day &&
-                            eventDate.getMonth() == month &&
-                            eventDate.getYear() == year)
-                    {
+                    if (eventDate.getDate() == day && eventDate.getMonth() == month && eventDate.getYear() == year) {
                         // mark this day for event
                         view.setBackgroundResource(R.drawable.ic_arrow_left);
                         break;
