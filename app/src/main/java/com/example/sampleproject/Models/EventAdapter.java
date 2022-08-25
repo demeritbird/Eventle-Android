@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,8 +16,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-public class EventAdapter extends FirebaseRecyclerAdapter<
-        Event, EventAdapter.eventsViewHolder> {
+public class EventAdapter extends FirebaseRecyclerAdapter< Event, EventAdapter.eventsViewHolder> {
 
     public EventAdapter(@NonNull FirebaseRecyclerOptions<Event> options) {
         super(options);
@@ -37,7 +37,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<
     public eventsViewHolder
     onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.event_card, parent, false);
+                .inflate(R.layout.fragment_event_card, parent, false);
         return new eventsViewHolder(view);
     }
 
@@ -60,17 +60,29 @@ public class EventAdapter extends FirebaseRecyclerAdapter<
             check.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+//                    Bundle args = new Bundle();
+//                    args.putString("key", "value");
+//                    DialogFragment newFragment = new YourDialogFragment();
+//                    newFragment.setArguments(args);
+//                    newFragment.show(getSupportFragmentManager(), "TAG");
+
+
                     BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(view.getContext(), R.style.BottomSheetDialogTheme);
 
-                    View bottomSheetView =LayoutInflater.from(bottomSheetDialog.getContext()).inflate(R.layout.layout_bottom_dialog, null);
+                    View bottomSheetView =LayoutInflater.from(bottomSheetDialog.getContext()).inflate(R.layout.fragment_bottom_dialog, null);
 
 
                     // textview //
-                    TextView titleDialog = bottomSheetView.findViewById(R.id.title_dialog);
+                    //TODO: just directly change here lmaooo dont need bundle args
+
+                    TextView eventTitle = bottomSheetView.findViewById(R.id.event_title);
+                    eventTitle.setText("Edit Event");
+
+                    EditText titleDialog = bottomSheetView.findViewById(R.id.title_dialog);
                     titleDialog.setText(title.getText());
-                    TextView descriptionDialog = bottomSheetView.findViewById(R.id.description_dialog);
+                    EditText descriptionDialog = bottomSheetView.findViewById(R.id.description_dialog);
                     descriptionDialog.setText(description.getText());
-                    TextView deadlineDialog = bottomSheetView.findViewById(R.id.deadline_dialog);
+                    EditText deadlineDialog = bottomSheetView.findViewById(R.id.deadline_dialog);
                     deadlineDialog.setText(deadline.getText());
 
 

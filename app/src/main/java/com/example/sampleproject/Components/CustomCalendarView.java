@@ -235,7 +235,7 @@ public class CustomCalendarView extends LinearLayout {
                 for (Date eventDate : eventDays) {
                     if (eventDate.getDate() == day && eventDate.getMonth() == month && eventDate.getYear() == year) {
                         // mark this day for event
-                        view.setBackgroundResource(R.drawable.ic_arrow_left);
+                        view.setBackgroundResource(R.drawable.event_date);
                         break;
                     }
                 }

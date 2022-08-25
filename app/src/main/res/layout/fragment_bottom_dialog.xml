@@ -8,11 +8,12 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/event_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="15dp"
-        android:text="Sheet Dialog lmao"
+        android:text="Add Event"
         android:textColor="@color/dialogPrimaryText"
         android:textSize="18dp"
         android:textStyle="bold" />
@@ -29,29 +30,90 @@
         android:orientation="vertical"
         android:padding="5dp">
 
-
-        <TextView
-            android:id="@+id/title_dialog"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="asdasdsadasa" />
+            android:orientation="horizontal"
+            android:padding="5dp">
 
-        <TextView
-            android:id="@+id/description_dialog"
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="106dp"
+                android:layout_height="wrap_content"
+                android:text="title" />
+
+            <EditText
+                android:id="@+id/title_dialog"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:text="blank"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="df" />
+            android:orientation="horizontal"
+            android:padding="5dp">
 
-        <TextView
-            android:id="@+id/deadline_dialog"
+            <TextView
+                android:id="@+id/description_text"
+                android:layout_width="106dp"
+                android:layout_height="wrap_content"
+                android:text="description" />
+
+            <EditText
+                android:id="@+id/description_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="blank"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="asdasdsdfdfadasa" />
+            android:orientation="horizontal"
+            android:padding="5dp">
 
-        <TextView
-            android:layout_width="159dp"
+            <TextView
+                android:id="@+id/deadline_text"
+                android:layout_width="105dp"
+                android:layout_height="wrap_content"
+                android:text="deadline" />
+
+            <EditText
+                android:id="@+id/deadline_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="blank"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="sd" />
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/daysleft_text"
+                android:layout_width="105dp"
+                android:layout_height="wrap_content"
+                android:text="daysleft" />
+
+            <EditText
+                android:id="@+id/daysleft_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="blank"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+
+
+
     </LinearLayout>
 
     <View

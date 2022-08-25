@@ -30,16 +30,10 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-
-
         ///// Recycler View ////
-        CalendarFragment cf = new CalendarFragment();
-//        cf.actRecycler(root, root.getContext());
         actRecycler(root);
 
         /////
-
-
         Button addMember = root.findViewById(R.id.add_member);
         addMember.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,8 +79,7 @@ public class HomeFragment extends Fragment {
 
     // Function to tell the app to start getting from database on starting of the activity
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
         System.out.println("this is starting");
         ///// Recycler View ////
@@ -95,8 +88,7 @@ public class HomeFragment extends Fragment {
 
     // Function to tell the app to stop getting data from database on stopping of the activity
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
         ///// Recycler View ////
         adapter.stopListening();

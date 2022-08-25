@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.sampleproject.Components.CustomCalendarView;
@@ -24,17 +22,16 @@ import com.example.sampleproject.Models.EventAdapter;
 import com.example.sampleproject.R;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.UUID;
 
 public class CalendarFragment extends Fragment {
     RecyclerView recyclerView;
@@ -91,16 +88,34 @@ public class CalendarFragment extends Fragment {
         calendarView.invokeFirebaseEvent(calendarView);
 
         //// Init Components ////
-        Button dialogButton = root.findViewById(R.id.buttontodialog);
+        FloatingActionButton dialogButton = root.findViewById(R.id.fab);
         dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);
-                View bottomSheetView = inflater.inflate(R.layout.layout_bottom_dialog, root.findViewById(R.id.bottomDialogContainer));
-                bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
+                View bottomSheetView = inflater.inflate(R.layout.fragment_bottom_dialog, root.findViewById(R.id.bottomDialogContainer));
+                EditText titleDialog = bottomSheetView.findViewById(R.id.title_dialog);
+                EditText descriptionDialog = bottomSheetView.findViewById(R.id.description_dialog);
+                EditText deadlineDialog = bottomSheetView.findViewById(R.id.deadline_dialog);
+//                EditText daysleftDialog  = bottomSheetView.findViewById(R.id.daysleft_dialog);
+
+                String title = titleDialog.getText().toString();
+                String description = descriptionDialog.getText().toString();
+                String deadline = deadlineDialog.getText().toString();
+                String daysleft = "5";
+
+                        bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getContext(), "nicela", Toast.LENGTH_SHORT).show();
+                        DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
+                        String uuid = UUID.randomUUID().toString();
+                        Event event = new Event(title,description,deadline,daysleft);
+                        firebase.child(uuid).child("title").setValue(event.getTitle());
+                        firebase.child(uuid).child("description").setValue(event.getDescription());
+                        firebase.child(uuid).child("deadline").setValue(event.getDeadline());
+                        firebase.child(uuid).child("daysleft").setValue(event.getDaysLeft());
+
+                        Toast.makeText(getContext(), "added!", Toast.LENGTH_SHORT).show();
                     }
                 });
                 bottomSheetDialog.setContentView(bottomSheetView);
