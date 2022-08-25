@@ -24,34 +24,21 @@ public class HomeFragment extends Fragment {
     RecyclerView recyclerView;
     EventAdapter adapter; // Create Object of the Adapter class
     DatabaseReference mbase; // Create object of the Firebase Realtime Database
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        return inflater.inflate(R.layout.fragment_home, container, false);
+
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         ///// Recycler View ////
         actRecycler(root);
 
-        /////
-        Button addMember = root.findViewById(R.id.add_member);
-        addMember.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                DatabaseReference database1 = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("people");
-//                person newguy = new person("firstjhin", "lastjhin", "24");
-//                database1.child("person4").child("firstname").setValue(newguy.getFirstname());
-//                database1.child("person4").child("lastname").setValue(newguy.getFirstname());
-//                database1.child("person4").child("age").setValue(newguy.getAge());
-            }
-        });
-
-    return root;
+        return root;
 
     }
-    
-    
-    
+
+
     public void actRecycler(View root) {
 
         root.getContext();

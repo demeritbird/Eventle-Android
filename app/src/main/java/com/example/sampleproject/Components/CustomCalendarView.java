@@ -31,8 +31,8 @@ import java.util.Date;
 import java.util.HashSet;
 
 public class CustomCalendarView extends LinearLayout {
-    private static final String LOGTAG = "Calendar View";
-    private final String TAG = "test tag message here";
+
+    private final String TAG = getResources().getString(R.string.TAG_MESSAGE);
 
     private static final int DAYS_COUNT = 42;
     private static final String DATE_FORMAT = "MMM yyyy";
@@ -102,8 +102,6 @@ public class CustomCalendarView extends LinearLayout {
             public void onClick(View v) {
                 currentDate.add(Calendar.MONTH, 1);
                 cv.invokeFirebaseEvent(cv);
-
-                //FIXME
             }
         });
         btnPrev.setOnClickListener(new OnClickListener() {
@@ -215,12 +213,11 @@ public class CustomCalendarView extends LinearLayout {
             int year = date.getYear();
 
             //// TODO: set to calendar or sth
-
-//            Calendar dateCalendar = Calendar.getInstance();
-//            dateCalendar.setTime(date);
-//            day = dateCalendar.get(Calendar.DAY_OF_MONTH);
-//            month = dateCalendar.get(Calendar.MONTH);
-//            year = dateCalendar.get(Calendar.YEAR);
+            // Calendar dateCalendar = Calendar.getInstance();
+            // dateCalendar.setTime(date);
+            // day = dateCalendar.get(Calendar.DAY_OF_MONTH);
+            // month = dateCalendar.get(Calendar.MONTH);
+            // year = dateCalendar.get(Calendar.YEAR);
 
 
             Date today = new Date();

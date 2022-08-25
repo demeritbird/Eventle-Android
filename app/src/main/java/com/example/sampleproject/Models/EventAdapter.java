@@ -23,8 +23,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-public class EventAdapter extends FirebaseRecyclerAdapter< Event, EventAdapter.eventsViewHolder> {
+public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.eventsViewHolder> {
     private final String TAG = "test tag message here";
+
     public EventAdapter(@NonNull FirebaseRecyclerOptions<Event> options) {
         super(options);
     }
@@ -61,29 +62,14 @@ public class EventAdapter extends FirebaseRecyclerAdapter< Event, EventAdapter.e
             deadline = itemView.findViewById(R.id.deadline);
             daysleft = itemView.findViewById(R.id.days_left);
 
-            Button check = itemView.findViewById(R.id.check_button);
+            Button editButton = itemView.findViewById(R.id.check_button);
 
 
-            // NOTE: setText of each recyclerView and their buttons
-            check.setOnClickListener(new View.OnClickListener() {
+            editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    Bundle args = new Bundle();
-//                    args.putString("key", "value");
-//                    DialogFragment newFragment = new YourDialogFragment();
-//                    newFragment.setArguments(args);
-//                    newFragment.show(getSupportFragmentManager(), "TAG");
-
-
                     BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(view.getContext(), R.style.BottomSheetDialogTheme);
-
-                    View bottomSheetView =LayoutInflater.from(bottomSheetDialog.getContext()).inflate(R.layout.fragment_bottom_dialog, null);
-                    System.out.println(uid);
-
-
-
-                    // textview //
-                    //TODO: just directly change here lmaooo dont need bundle args
+                    View bottomSheetView = LayoutInflater.from(bottomSheetDialog.getContext()).inflate(R.layout.fragment_bottom_dialog, null);
 
                     TextView eventTitle = bottomSheetView.findViewById(R.id.event_title);
                     eventTitle.setText("Edit Event");
@@ -103,7 +89,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter< Event, EventAdapter.e
                         @Override
                         public void onClick(View view) {
                             Toast.makeText(view.getContext(), "nice la", Toast.LENGTH_SHORT).show();
-                            Event event = new Event(titleDialog.getText().toString(),descriptionDialog.getText().toString(),deadlineDialog.getText().toString(),left, uid);
+                            Event event = new Event(titleDialog.getText().toString(), descriptionDialog.getText().toString(), deadlineDialog.getText().toString(), left, uid);
                             firebase.child("title").setValue(event.getTitle());
                             firebase.child("description").setValue(event.getDescription());
                             firebase.child("deadline").setValue(event.getDeadline());

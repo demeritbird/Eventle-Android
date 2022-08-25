@@ -76,8 +76,6 @@
                         app:layout_constraintVertical_bias="1.0" />
 
 
-
-
                 </RelativeLayout>
 
 
@@ -102,8 +100,8 @@
         android:layout_marginBottom="30dp"
         android:clipToPadding="false"
         android:paddingBottom="?attr/actionBarSize"
+        app:backgroundTint="#00BCD4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:backgroundTint="#00BCD4"
         app:srcCompat="@drawable/ic_baseline_add_24" />
 </RelativeLayout>

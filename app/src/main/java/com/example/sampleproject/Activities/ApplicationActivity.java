@@ -14,12 +14,8 @@ import com.example.sampleproject.R;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 public class ApplicationActivity extends AppCompatActivity {
-
-    private RecyclerView recyclerView;
-    EventAdapter adapter; // Create Object of the Adapter class
-    DatabaseReference mbase; // Create object of the Firebase Realtime Database
-
 
     HomeFragment homeFragment = new HomeFragment();
     CalendarFragment calendarFragment = new CalendarFragment();
@@ -29,20 +25,20 @@ public class ApplicationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_application);
 
-        //// Bottom Navigation Fragment ////
+        //// Bottom Navigation Fragments ////
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.no, homeFragment).commit();
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected( MenuItem item) {
+            public boolean onNavigationItemSelected(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
                         getSupportFragmentManager().beginTransaction().replace(R.id.no, homeFragment).commit();
                         return true;
-                    case R.id.notification:
+                    case R.id.calendar:
                         getSupportFragmentManager().beginTransaction().replace(R.id.no, calendarFragment).commit();
                         return true;
-                    case R.id.settings:
+                    case R.id.profile:
                         getSupportFragmentManager().beginTransaction().replace(R.id.no, profileFragment).commit();
                         return true;
                 }

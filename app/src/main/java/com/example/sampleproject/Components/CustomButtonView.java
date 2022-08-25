@@ -27,7 +27,6 @@ public class CustomButtonView extends AppCompatButton {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-
                 return true;
 
             case MotionEvent.ACTION_UP:

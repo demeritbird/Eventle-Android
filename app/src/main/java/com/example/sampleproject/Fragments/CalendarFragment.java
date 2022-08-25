@@ -47,7 +47,6 @@ public class CalendarFragment extends Fragment {
 
         actRecycler(root);
 
-
         //// Init Calendar View ////
         CustomCalendarView calendarView = ((CustomCalendarView) root.findViewById(R.id.calendar_view));
         calendarView.setEventHandler(new CustomCalendarView.EventHandler() {
@@ -57,8 +56,6 @@ public class CalendarFragment extends Fragment {
                 DateFormat df = SimpleDateFormat.getDateInstance();
                 Toast.makeText(getContext(), df.format(date), Toast.LENGTH_SHORT).show();
                 selectedDate = date;
-                System.out.println(date);
-                System.out.println("dafasasdlsndksandksads");
             }
         });
 
@@ -82,12 +79,12 @@ public class CalendarFragment extends Fragment {
                 String deadline = deadlineDialog.getText().toString();
                 String daysleft = "5";
 
-                        bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
+                bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
                         String uuid = UUID.randomUUID().toString();
-                        Event event = new Event(title,description,deadline,daysleft, uuid);
+                        Event event = new Event(title, description, deadline, daysleft, uuid);
                         firebase.child(uuid).child("title").setValue(event.getTitle());
                         firebase.child(uuid).child("description").setValue(event.getDescription());
                         firebase.child(uuid).child("deadline").setValue(event.getDeadline());
@@ -124,8 +121,6 @@ public class CalendarFragment extends Fragment {
 
         // Create a instance of the database and get its reference
         mbase = (DatabaseReference) FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
-        System.out.println(selectedDate.toString());
-        System.out.println("here i come");
         Query queryBy = mbase.child("deadline").equalTo(selectedDate.toString());
         // FIXME: must just be month, day year la, use the date formatter than we will roll from there
 
@@ -147,21 +142,17 @@ public class CalendarFragment extends Fragment {
     }
 
 
-
     // Function to tell the app to start getting from database on starting of the activity
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
-        System.out.println("this is starting");
         ///// Recycler View ////
         adapter.startListening();
     }
 
     // Function to tell the app to stop getting data from database on stopping of the activity
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
         ///// Recycler View ////
         adapter.stopListening();
