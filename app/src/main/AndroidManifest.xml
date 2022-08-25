@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SampleProject">
         <activity
-            android:name=".EntryActivity"
+            android:name=".Activities.EntryActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,8 +22,8 @@
         </activity>
 
         <activity
-            android:name=".ApplicationActivity"
-            android:parentActivityName=".EntryActivity" />
+            android:name=".Activities.ApplicationActivity"
+            android:parentActivityName=".Activities.EntryActivity" />
     </application>
 
 </manifest>

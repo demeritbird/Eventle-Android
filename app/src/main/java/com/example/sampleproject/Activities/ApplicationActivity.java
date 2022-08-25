@@ -1,4 +1,4 @@
-package com.example.sampleproject;
+package com.example.sampleproject.Activities;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sampleproject.Models.EventAdapter;
 import com.example.sampleproject.Fragments.HomeFragment;
-import com.example.sampleproject.Fragments.NotificationFragment;
-import com.example.sampleproject.Fragments.SettingsFragment;
+import com.example.sampleproject.Fragments.CalendarFragment;
+import com.example.sampleproject.Fragments.ProfileFragment;
+import com.example.sampleproject.R;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -21,8 +22,8 @@ public class ApplicationActivity extends AppCompatActivity {
 
 
     HomeFragment homeFragment = new HomeFragment();
-    NotificationFragment notificationFragment = new NotificationFragment();
-    SettingsFragment settingsFragment = new SettingsFragment();
+    CalendarFragment calendarFragment = new CalendarFragment();
+    ProfileFragment profileFragment = new ProfileFragment();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,10 +40,10 @@ public class ApplicationActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.no, homeFragment).commit();
                         return true;
                     case R.id.notification:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.no, notificationFragment).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.no, calendarFragment).commit();
                         return true;
                     case R.id.settings:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.no, settingsFragment).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.no, profileFragment).commit();
                         return true;
                 }
                 return false;

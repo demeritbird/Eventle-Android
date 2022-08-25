@@ -37,19 +37,6 @@ public class CustomButtonView extends AppCompatButton {
         return false;
     }
 
-/*    public boolean onTouch(View v, MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                v.getBackground().setColorFilter(0xe0f47521, PorterDuff.Mode.SRC_ATOP);
-                v.invalidate();
-                return true; // if you want to handle the touch event
-            case MotionEvent.ACTION_UP:
-                v.getBackground().clearColorFilter();
-                v.invalidate();
-                return true; // if you want to handle the touch event
-        }
-        return false;
-    }*/
 
     @Override
     public boolean performClick() {
@@ -60,6 +47,5 @@ public class CustomButtonView extends AppCompatButton {
 
     private void doSomething() {
         Toast.makeText(getContext(), "did something", Toast.LENGTH_SHORT).show();
-//        System.out.println("helpelehlpehphe");
     }
 }

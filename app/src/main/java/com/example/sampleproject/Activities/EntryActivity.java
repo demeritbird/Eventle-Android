@@ -1,4 +1,4 @@
-package com.example.sampleproject;
+package com.example.sampleproject.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +11,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.sampleproject.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
