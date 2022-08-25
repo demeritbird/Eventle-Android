@@ -5,18 +5,26 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.sampleproject.Fragments.CalendarFragment;
+import com.example.sampleproject.Models.Event;
 import com.example.sampleproject.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,6 +34,7 @@ import java.util.HashSet;
 
 public class CustomCalendarView extends LinearLayout {
     private static final String LOGTAG = "Calendar View";
+    private final String TAG = "test tag message here";
 
     private static final int DAYS_COUNT = 42;
     private static final String DATE_FORMAT = "MMM yyyy";
@@ -41,6 +50,7 @@ public class CustomCalendarView extends LinearLayout {
     private TextView txtDate;
     private GridView grid;
 
+    CustomCalendarView cv = findViewById(R.id.calendar_view);
 
     public CustomCalendarView(Context context)
     {
@@ -88,25 +98,22 @@ public class CustomCalendarView extends LinearLayout {
         grid = (GridView)findViewById(R.id.calendar_grid);
     }
 
+
     private void assignClickHandlers() {
         btnNext.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 currentDate.add(Calendar.MONTH, 1);
-                HashSet<Date> events = new HashSet<>();
-                events.add(new Date());
-                updateCalendar(events);
+                cv.invokeFirebaseEvent(cv);
+
     //FIXME
             }
         });
         btnPrev.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //FIXME
                 currentDate.add(Calendar.MONTH, -1);
-                HashSet<Date> events = new HashSet<>();
-                events.add(new Date());
-                updateCalendar(events);
+                cv.invokeFirebaseEvent(cv);
             }
         });
 
@@ -123,6 +130,32 @@ public class CustomCalendarView extends LinearLayout {
         });
     }
 
+    public void invokeFirebaseEvent(CustomCalendarView calendarView) {
+        HashSet<Date> events = new HashSet<>();
+        FirebaseDatabase database = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link));
+        DatabaseReference myRef = database.getReference().child("events");
+
+        // Read from the database
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Event user = snapshot.getValue(Event.class);
+                    System.out.println(user.getDeadline());
+                    Date addDate = new Date(user.getDeadline());
+
+                    events.add(addDate);
+                    System.out.println(events.size());
+                }
+                calendarView.updateCalendar(events);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }
 
     public void updateCalendar()
     {
@@ -237,4 +270,7 @@ public class CustomCalendarView extends LinearLayout {
     public interface EventHandler{
         void onDayLongPress(Date date);
     }
+
+
+
 }

@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.HashSet;
 
 public class CalendarFragment extends Fragment {
-    private final String TAG = "test tag message here";
+
     public HashSet<Date> events = new HashSet<>();
 
     @Override
@@ -51,32 +51,7 @@ public class CalendarFragment extends Fragment {
         });
 
         //// Init GET firebase ////
-        FirebaseDatabase database = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link));
-        DatabaseReference myRef = database.getReference().child("events");
-
-
-        // Read from the database
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Event user = snapshot.getValue(Event.class);
-                    System.out.println(user.getDeadline());
-                    Date addDate = new Date(user.getDeadline());
-
-                    events.add(addDate);
-                    System.out.println(events.size());
-                }
-
-                calendarView.updateCalendar(events);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
-
+        calendarView.invokeFirebaseEvent(calendarView);
 
         //// Init Components ////
         Button dialogButton = root.findViewById(R.id.buttontodialog);
