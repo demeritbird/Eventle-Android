@@ -17,6 +17,7 @@ import com.example.sampleproject.Models.EventAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 public class HomeFragment extends Fragment {
 
@@ -32,25 +33,9 @@ public class HomeFragment extends Fragment {
 
 
         ///// Recycler View ////
-
-        // Create a instance of the database and get its reference
-        mbase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
-
-        recyclerView = root.findViewById(R.id.recycler1);
-        recyclerView.setNestedScrollingEnabled(false);
-
-        // To display the Recycler view linearly
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate data
-        FirebaseRecyclerOptions<Event> options
-                = new FirebaseRecyclerOptions.Builder<Event>()
-                .setQuery(mbase, Event.class)
-                .build();
-        // Connecting object of required Adapter class to the Adapter class itself
-        adapter = new EventAdapter(options);
-        // Connecting Adapter class with the Recycler view*/
-        recyclerView.setAdapter(adapter);
+        CalendarFragment cf = new CalendarFragment();
+//        cf.actRecycler(root, root.getContext());
+        actRecycler(root);
 
         /////
 
@@ -69,6 +54,33 @@ public class HomeFragment extends Fragment {
 
     return root;
 
+    }
+    
+    
+    
+    public void actRecycler(View root) {
+
+        root.getContext();
+        // Create a instance of the database and get its reference
+        mbase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
+        //FIXME: change daysleft to int
+        Query queryBy = mbase.orderByChild("daysleft").limitToFirst(2);
+
+        recyclerView = root.findViewById(R.id.recycler1);
+        recyclerView.setNestedScrollingEnabled(false);
+
+        // To display the Recycler view linearly
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate data
+        FirebaseRecyclerOptions<Event> options
+                = new FirebaseRecyclerOptions.Builder<Event>()
+                .setQuery(queryBy, Event.class)
+                .build();
+        // Connecting object of required Adapter class to the Adapter class itself
+        adapter = new EventAdapter(options);
+        // Connecting Adapter class with the Recycler view*/
+        recyclerView.setAdapter(adapter);
     }
 
     // Function to tell the app to start getting from database on starting of the activity

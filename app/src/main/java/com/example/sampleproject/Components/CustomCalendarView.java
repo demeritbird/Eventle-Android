@@ -12,12 +12,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.sampleproject.Fragments.CalendarFragment;
 import com.example.sampleproject.Models.Event;
 import com.example.sampleproject.R;
 import com.google.firebase.database.DataSnapshot;
@@ -43,7 +41,6 @@ public class CustomCalendarView extends LinearLayout {
     private final Calendar currentDate = Calendar.getInstance();
     private EventHandler eventHandler = null;
 
-    // internal components
     private LinearLayout header;
     private Button btnPrev;
     private Button btnNext;
@@ -52,24 +49,23 @@ public class CustomCalendarView extends LinearLayout {
 
     CustomCalendarView cv = findViewById(R.id.calendar_view);
 
-    public CustomCalendarView(Context context)
-    {
+    public CustomCalendarView(Context context) {
         super(context);
     }
+
     public CustomCalendarView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initControl(context, attrs);
     }
+
     public CustomCalendarView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initControl(context, attrs);
     }
 
-    private void initControl(Context context, AttributeSet attrs)
-    {
+    private void initControl(Context context, AttributeSet attrs) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.control_calendar, this);
-        CalendarFragment yes = new CalendarFragment();
+        inflater.inflate(R.layout.calendar_view, this);
 
         loadDateFormat(attrs);
         assignUiElements();
@@ -82,20 +78,21 @@ public class CustomCalendarView extends LinearLayout {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CalendarView);
 
         try {
-            // try to load provided date format, and fallback to default otherwise
             dateFormat = typedArray.getString(R.styleable.CalendarView_dateFormat);
-            if (dateFormat == null)
+            if (dateFormat == null) {
                 dateFormat = DATE_FORMAT;
+            }
         } finally {
             typedArray.recycle();
         }
     }
+
     private void assignUiElements() {
-        header = (LinearLayout)findViewById(R.id.calendar_header);
+        header = (LinearLayout) findViewById(R.id.calendar_header);
         btnPrev = findViewById(R.id.calendar_prev_button);
         btnNext = findViewById(R.id.calendar_next_button);
-        txtDate = (TextView)findViewById(R.id.calendar_date_display);
-        grid = (GridView)findViewById(R.id.calendar_grid);
+        txtDate = (TextView) findViewById(R.id.calendar_date_display);
+        grid = (GridView) findViewById(R.id.calendar_grid);
     }
 
 
@@ -106,7 +103,7 @@ public class CustomCalendarView extends LinearLayout {
                 currentDate.add(Calendar.MONTH, 1);
                 cv.invokeFirebaseEvent(cv);
 
-    //FIXME
+                //FIXME
             }
         });
         btnPrev.setOnClickListener(new OnClickListener() {
@@ -117,17 +114,25 @@ public class CustomCalendarView extends LinearLayout {
             }
         });
 
-        grid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> view, View cell, int position, long id) {
-                // handle long-press
-                if (eventHandler == null)
-                    return false;
+            public void onItemClick(AdapterView<?> view, View cell, int position, long id) {
+                eventHandler.onDayLongPress((Date) view.getItemAtPosition(position));
 
-                eventHandler.onDayLongPress((Date)view.getItemAtPosition(position));
-                return true;
             }
         });
+
+//        grid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> view, View cell, int position, long id) {
+//                // handle long-press
+//                if (eventHandler == null)
+//                    return false;
+//
+//                eventHandler.onDayLongPress((Date) view.getItemAtPosition(position));
+//                return true;
+//            }
+//        });
     }
 
     public void invokeFirebaseEvent(CustomCalendarView calendarView) {
@@ -141,11 +146,9 @@ public class CustomCalendarView extends LinearLayout {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Event user = snapshot.getValue(Event.class);
-                    System.out.println(user.getDeadline());
                     Date addDate = new Date(user.getDeadline());
 
                     events.add(addDate);
-                    System.out.println(events.size());
                 }
                 calendarView.updateCalendar(events);
             }
@@ -157,14 +160,13 @@ public class CustomCalendarView extends LinearLayout {
         });
     }
 
-    public void updateCalendar()
-    {
+    public void updateCalendar() {
         updateCalendar(null);
     }
 
     public void updateCalendar(HashSet<Date> events) {
         ArrayList<Date> cells = new ArrayList<>();
-        Calendar calendar = (Calendar)currentDate.clone();
+        Calendar calendar = (Calendar) currentDate.clone();
 
         // determine the cell for current month's beginning
         calendar.set(Calendar.DAY_OF_MONTH, 1);
@@ -230,8 +232,7 @@ public class CustomCalendarView extends LinearLayout {
             // if this day has an event, specify event image
             view.setBackgroundResource(0);
             if (eventDays != null) {
-                for (Date eventDate : eventDays)
-                {
+                for (Date eventDate : eventDays) {
                     if (eventDate.getDate() == day && eventDate.getMonth() == month && eventDate.getYear() == year) {
                         // mark this day for event
                         view.setBackgroundResource(R.drawable.ic_arrow_left);
@@ -241,36 +242,33 @@ public class CustomCalendarView extends LinearLayout {
             }
 
             // clear styling
-            ((TextView)view).setTypeface(null, Typeface.NORMAL);
-            ((TextView)view).setTextColor(Color.BLACK);
+            ((TextView) view).setTypeface(null, Typeface.NORMAL);
+            ((TextView) view).setTextColor(Color.BLACK);
 
             if (month != today.getMonth() || year != today.getYear()) {
                 // if this day is outside current month, grey it out
-                ((TextView)view).setTextColor(getResources().getColor(R.color.main_blue));
-            }
-            else if (day == today.getDate()) {
+                ((TextView) view).setTextColor(getResources().getColor(R.color.main_blue));
+            } else if (day == today.getDate()) {
                 // if it is today, set it to blue/bold
-                ((TextView)view).setTypeface(null, Typeface.BOLD);
-                ((TextView)view).setTextColor(getResources().getColor(R.color.today));
+                ((TextView) view).setTypeface(null, Typeface.BOLD);
+                ((TextView) view).setTextColor(getResources().getColor(R.color.today));
             }
 
             // set text
-            ((TextView)view).setText(String.valueOf(date.getDate()));
+            ((TextView) view).setText(String.valueOf(date.getDate()));
 
             return view;
         }
     }
 
 
-    public void setEventHandler(EventHandler eventHandler)
-    {
+    public void setEventHandler(EventHandler eventHandler) {
         this.eventHandler = eventHandler;
     }
 
-    public interface EventHandler{
+    public interface EventHandler {
         void onDayLongPress(Date date);
     }
-
 
 
 }
