@@ -1,111 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
+    android:id="@+id/scrollView2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_alignParentEnd="true"
     tools:context=".Fragments.HomeFragment">
 
-<!-- can just try with scrollview only wo relative -->
-<!-- to remove android:layout_weight="1" -->
-        <ScrollView
-            android:id="@+id/scrollView2"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- fix height and width also -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="0dp"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28sp"
+            android:layout_marginBottom="20dp"
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            android:clipToPadding="false"
+            android:paddingBottom="?attr/actionBarSize"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/upcomingEvents" />
 
 
-                <!-- fix height and width also -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler1"
-                    android:layout_width="388dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="28sp"
-                    android:layout_marginBottom="20dp"
+        <!-- fix height width here FIXME: use styles-->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageView2"
+            style="@style/profileImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+            app:srcCompat="@drawable/dembirdimage" />
+        <!--            android:layout_width="124sp"-->
+        <!--            android:layout_height="124sp"-->
+        <!--            android:layout_marginTop="42sp"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"-->
+        <!--            app:srcCompat="@drawable/dembirdimage" />-->
 
-                    android:clipToPadding="false"
-                    android:paddingBottom="?attr/actionBarSize"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.478"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/upcomingEvents"
-                    app:layout_constraintVertical_bias="1.0" />
+        <FrameLayout
+            android:id="@+id/framelayout_line"
+            android:layout_width="371dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="#6C6C6C"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/username_text" />
 
-                <Button
-                    android:id="@+id/add_member"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="104dp"
-                    android:layout_marginEnd="32dp"
-                    android:text="add"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
-                <!-- fix height width here -->
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="124dp"
-                    android:layout_height="124dp"
-                    android:layout_marginTop="42sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-                    app:srcCompat="@drawable/dembirdimage" />
+        <!--FIXME: themes here -->
 
-                <FrameLayout
-                    android:id="@+id/no"
-                    android:layout_width="371dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="12dp"
-                    android:background="#6C6C6C"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/username_text" />
+        <TextView
+            android:id="@+id/welcomeMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/spartan_black"
+            android:text="@string/Welcome_Message"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-                <TextView
-                    android:id="@+id/welcomeMessage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="@font/spartan_black"
-                    android:text="Welcome,"
-                    android:textColor="#000000"
-                    android:textSize="24sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        <TextView
+            android:id="@+id/username_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/spartan_light"
+            android:text="@string/Default_Username"
+            android:textColor="#000000"
+            android:textSize="26sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcomeMessage" />
 
-                <TextView
-                    android:id="@+id/username_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/spartan_light"
-                    android:text="demeritbird"
-                    android:textColor="#000000"
-                    android:textSize="26sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/welcomeMessage" />
+        <TextView
+            android:id="@+id/upcomingEvents"
+            android:layout_width="379sp"
+            android:layout_height="26sp"
+            android:layout_marginTop="20sp"
+            android:fontFamily="@font/spartan_regular"
+            android:text="@string/Upcoming_Events"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/framelayout_line" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/upcomingEvents"
-                    android:layout_width="379dp"
-                    android:layout_height="26dp"
-                    android:layout_marginTop="20dp"
-                    android:fontFamily="@font/spartan_regular"
-                    android:text="Upcoming Events"
-                    android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/no" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
-    </RelativeLayout>
+</ScrollView>

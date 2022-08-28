@@ -120,23 +120,11 @@
             android:id="@+id/check_button"
             android:layout_width="29dp"
             android:layout_height="29dp"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/see_button"
             android:text="ed"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/check_button3" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/check_button3"
-            android:layout_width="29dp"
-            android:layout_height="29dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/see_button"
-            android:text="chc"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            tools:layout_editor_absoluteY="69dp" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/check_button2"
@@ -148,6 +136,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/check_button" />
+
+        <CheckBox
+            android:id="@+id/cb_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Complete?"
+            app:layout_constraintBottom_toTopOf="@+id/check_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,14 +16,13 @@ import java.util.Date;
 public class CalendarPickerDialog {
     public static DatePickerDialog datePickerDialog;
 
-    public static void initDatePicker(Context activity, Button dateButton) {
+    public static void initDatePicker(Context activity, Button openDialogButton) {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int day, int month, int year) {
                 month = month + 1;
                 String date = makeDateString(year, month, day);
-                dateButton.setText(date);
-
+                openDialogButton.setText(date);
             }
         };
 
@@ -32,11 +31,9 @@ public class CalendarPickerDialog {
         int month = calendarIns.get(Calendar.MONTH);
         int day = calendarIns.get(Calendar.DAY_OF_MONTH);
         int style = AlertDialog.THEME_DEVICE_DEFAULT_DARK;
-        System.out.println("sasdsadasdasdasdsadasd");
-        datePickerDialog = new DatePickerDialog(activity, style, dateSetListener, 2022, 1, 1);
-//        datePickerDialog.show();
+        datePickerDialog = new DatePickerDialog(activity, style, dateSetListener, year, month, day);
 
-        dateButton.setOnClickListener(new View.OnClickListener() {
+        openDialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                datePickerDialog.show();
@@ -50,8 +47,6 @@ public class CalendarPickerDialog {
     }
 
     private static String getMonthFormat(int month)   {
-
-        // TODO: put inside a string-array.xml
         switch(month) {
             case 1: return "JAN";
             case 2: return "FEB";
@@ -77,6 +72,5 @@ public class CalendarPickerDialog {
         int year = cal.get(Calendar.YEAR);
         return makeDateString(day, month, year);
     }
-
 
 }

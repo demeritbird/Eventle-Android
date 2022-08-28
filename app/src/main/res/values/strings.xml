@@ -1,11 +1,23 @@
 <resources>
-    <string name="app_name">Scheduler App</string>
-    <string name="firebase_link">https://scheduleapp-3ebb7-default-rtdb.asia-southeast1.firebasedatabase.app</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="TAG_MESSAGE">Tag Message Reply</string>
+    <string name="project_name">Scheduler App</string>
+    <string name="app_name">eventle</string>
 
+    <string name="firebase_link">https://scheduleapp-3ebb7-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+
+
+    <string name="Welcome_Message">Welcome,</string>
+    <string name="Default_Username">User</string>
+
+
+    <string name="Upcoming_Events">Upcoming Events</string>
+    <string name="Events_On">Events on</string>
+    <string name="Default_Date">1 Jan 1970</string>
+
+<!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
+    <string name="TAG_MESSAGE">Tag Message Reply</string>
+    <string name="DATE_FORMAT">MMM yyyy</string>
     <string name="noDaysInCalendar">42</string>
+
     <string name="action_settings">Settings</string>
 
 

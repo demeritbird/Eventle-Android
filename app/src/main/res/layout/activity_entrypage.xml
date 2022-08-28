@@ -6,76 +6,44 @@
     android:layout_height="match_parent"
     android:background="@color/subtle_blue"
     android:paddingLeft="16dp"
-
     android:paddingRight="16dp"
-
     tools:context=".Activities.EntryActivity">
 
+    <TextView
+        android:id="@+id/tv_eventle_title"
+        style="@style/main_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:layout_width="432dp"
-        android:layout_height="575dp"
+    <ImageView
+        android:id="@+id/iv_eventle_image"
+        android:layout_width="match_parent"
+        android:layout_height="264sp"
         android:layout_gravity="center"
-        android:orientation="vertical"
+        android:layout_marginTop="40sp"
+        android:src="@drawable/entry_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_eventle_title" />
+
+
+    <com.example.sampleproject.Components.CustomButtonView
+        android:id="@+id/btn_member1_entry"
+        style="@style/entrypage_mainbutton"
+        android:text="Member1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_eventle_image" />
+
+    <com.example.sampleproject.Components.CustomButtonView
+        android:id="@+id/btn_member2_entry"
+        style="@style/entrypage_mainbutton"
+        android:text="Member2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/eventle_title"
-            android:layout_width="wrap_content"
-            android:layout_height="87dp"
-            android:layout_gravity="center"
-            android:fontFamily="@font/spartan_black"
-            android:text="eventle"
-            android:textColor="#246998"
-            android:textSize="72sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-
-        <!-- image should have leftright margins instead of layout height/ centre gravity -->
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="264dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="40sp"
-            android:src="@drawable/entry_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/eventle_title" />
-
-
-        <com.example.sampleproject.Components.CustomButtonView
-            android:id="@+id/member1_entry"
-            android:layout_width="216sp"
-            android:layout_height="58sp"
-            android:layout_gravity="center"
-            android:layout_marginTop="12sp"
-            android:background="@drawable/main_button"
-            android:text="Member1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/member1_entry" />
-
-        <com.example.sampleproject.Components.CustomButtonView
-            android:id="@+id/member2_entry"
-            android:layout_width="216sp"
-            android:layout_height="58sp"
-            android:layout_gravity="center"
-            android:layout_marginTop="12sp"
-            android:background="@drawable/main_button"
-            android:text="Member2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/member1_entry" />
-
-
-    </LinearLayout>
-
+        app:layout_constraintTop_toBottomOf="@+id/btn_member1_entry"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

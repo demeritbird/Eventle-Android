@@ -33,9 +33,8 @@ import java.util.HashSet;
 public class CustomCalendarView extends LinearLayout {
 
     private final String TAG = getResources().getString(R.string.TAG_MESSAGE);
-
-    private static final int DAYS_COUNT = 42;
-    private static final String DATE_FORMAT = "MMM yyyy";
+    private final int DAYS_COUNT =  Integer.parseInt(getResources().getString(R.string.noDaysInCalendar));
+    private final String DATE_FORMAT =  getResources().getString(R.string.DATE_FORMAT);
     private String dateFormat;
 
     private final Calendar currentDate = Calendar.getInstance();
@@ -197,7 +196,6 @@ public class CustomCalendarView extends LinearLayout {
         private HashSet<Date> eventDays;
         private LayoutInflater inflater;
 
-
         public CalendarAdapter(Context context, ArrayList<Date> days, HashSet<Date> eventDays) {
             super(context, R.layout.control_calendar_view, days);
             this.eventDays = eventDays;
@@ -211,13 +209,6 @@ public class CustomCalendarView extends LinearLayout {
             int day = date.getDate();
             int month = date.getMonth();
             int year = date.getYear();
-
-            //// TODO: set to calendar or sth
-/*             Calendar dateCalendar = Calendar.getInstance();
-             dateCalendar.setTime(date);
-             day = dateCalendar.get(Calendar.DAY_OF_MONTH);
-             month = dateCalendar.get(Calendar.MONTH);
-             year = dateCalendar.get(Calendar.YEAR);*/
 
 
             Date today = new Date();
@@ -248,7 +239,7 @@ public class CustomCalendarView extends LinearLayout {
             } else if (day == today.getDate()) {
                 // if it is today, set it to blue/bold
                 ((TextView) view).setTypeface(null, Typeface.BOLD);
-                ((TextView) view).setTextColor(getResources().getColor(R.color.today));
+                ((TextView) view).setTextColor(getResources().getColor(R.color.main_blue));
             }
 
             // set text

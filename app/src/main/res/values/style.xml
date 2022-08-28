@@ -12,4 +12,32 @@
     <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
     </style>
+
+    <style name="main_title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">32dp</item>
+        <item name="android:fontFamily">@font/spartan_black</item>
+        <item name="android:gravity">center</item>
+        <item name="android:text">@string/app_name</item>
+        <item name="android:textColor">@color/dark_blue</item>
+        <item name="android:textSize">72sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <style name="entrypage_mainbutton">
+        <item name="android:layout_width">216sp</item>
+        <item name="android:layout_height">58sp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:background">@drawable/main_button</item>
+    </style>
+
+    x<style name="profileImage">
+        <item name="android:layout_width">124sp</item>
+        <item name="android:layout_height">124sp</item>
+        <item name="android:layout_marginTop">42sp</item>
+    </style>
 </resources>

@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -12,11 +11,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.sampleproject.R;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class EntryActivity extends AppCompatActivity implements View.OnClickListener {
     private Button entryMemberOne;
@@ -28,19 +24,18 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_entrypage);
 
         //// Components ////
-        // TODO: change to recyclerview?
-        entryMemberOne = findViewById(R.id.member1_entry);
+        entryMemberOne = findViewById(R.id.btn_member1_entry);
         entryMemberOne.setOnClickListener(this);
-        Button entryMemberTwo = findViewById(R.id.member2_entry);
+        Button entryMemberTwo = findViewById(R.id.btn_member2_entry);
         entryMemberTwo.setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.member2_entry ) {
+        if (view.getId() == R.id.btn_member2_entry) {
             checkFirebase();
-        } else if (view.getId() == R.id.member1_entry ) {
+        } else if (view.getId() == R.id.btn_member1_entry) {
             openApplication();
         }
     }
