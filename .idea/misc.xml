@@ -17,6 +17,7 @@
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/ic_baseline_calendar_24.xml" value="0.102" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.1025" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/ic_baseline_notifications_24.xml" value="0.1025" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.231" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/ic_baseline_profile_24.xml" value="0.256" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.1025" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/ic_launcher_background.xml" value="0.256" />
@@ -26,7 +27,8 @@
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/profile_picture.xml" value="0.114" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/rounded_corner.xml" value="0.103" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/see_button.xml" value="0.114" />
-        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/activity_application.xml" value="0.176" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/activity_application.xml" value="0.2" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/activity_entrypage.xml" value="0.13333333333333333" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/activity_sub.xml" value="0.264" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/calendar_view.xml" value="0.264" />

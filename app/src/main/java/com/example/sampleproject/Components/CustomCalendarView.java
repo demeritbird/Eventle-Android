@@ -183,8 +183,8 @@ public class CustomCalendarView extends LinearLayout {
         grid.setAdapter(new CalendarAdapter(getContext(), cells, events));
 
         // update title
-        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-        txtDate.setText(sdf.format(currentDate.getTime()));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
+        txtDate.setText(simpleDateFormat.format(currentDate.getTime()));
 
         int color = R.color.main_blue;
 
@@ -199,7 +199,7 @@ public class CustomCalendarView extends LinearLayout {
 
 
         public CalendarAdapter(Context context, ArrayList<Date> days, HashSet<Date> eventDays) {
-            super(context, R.layout.control_calendar_day, days);
+            super(context, R.layout.control_calendar_view, days);
             this.eventDays = eventDays;
             inflater = LayoutInflater.from(context);
         }
@@ -213,18 +213,18 @@ public class CustomCalendarView extends LinearLayout {
             int year = date.getYear();
 
             //// TODO: set to calendar or sth
-            // Calendar dateCalendar = Calendar.getInstance();
-            // dateCalendar.setTime(date);
-            // day = dateCalendar.get(Calendar.DAY_OF_MONTH);
-            // month = dateCalendar.get(Calendar.MONTH);
-            // year = dateCalendar.get(Calendar.YEAR);
+/*             Calendar dateCalendar = Calendar.getInstance();
+             dateCalendar.setTime(date);
+             day = dateCalendar.get(Calendar.DAY_OF_MONTH);
+             month = dateCalendar.get(Calendar.MONTH);
+             year = dateCalendar.get(Calendar.YEAR);*/
 
 
             Date today = new Date();
 
             // inflate item if it does not exist yet
             if (view == null)
-                view = inflater.inflate(R.layout.control_calendar_day, parent, false);
+                view = inflater.inflate(R.layout.control_calendar_view, parent, false);
 
             // if this day has an event, specify event image
             view.setBackgroundResource(0);

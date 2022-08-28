@@ -6,11 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.HomeFragment">
 
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+<!-- can just try with scrollview only wo relative -->
+<!-- to remove android:layout_weight="1" -->
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
@@ -23,6 +20,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+
+                <!-- fix height and width also -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler1"
                     android:layout_width="388dp"
@@ -49,6 +48,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <!-- fix height width here -->
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/imageView2"
                     android:layout_width="124dp"
@@ -109,4 +109,3 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
     </RelativeLayout>
-</RelativeLayout>

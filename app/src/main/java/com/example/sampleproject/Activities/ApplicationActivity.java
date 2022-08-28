@@ -17,9 +17,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ApplicationActivity extends AppCompatActivity {
 
-    HomeFragment homeFragment = new HomeFragment();
-    CalendarFragment calendarFragment = new CalendarFragment();
-    ProfileFragment profileFragment = new ProfileFragment();
+    private HomeFragment homeFragment = new HomeFragment();
+    private CalendarFragment calendarFragment = new CalendarFragment();
+    private ProfileFragment profileFragment = new ProfileFragment();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -71,20 +71,21 @@ public class CalendarFragment extends Fragment {
                 View bottomSheetView = inflater.inflate(R.layout.fragment_bottom_dialog, root.findViewById(R.id.bottomDialogContainer));
                 EditText titleDialog = bottomSheetView.findViewById(R.id.title_dialog);
                 EditText descriptionDialog = bottomSheetView.findViewById(R.id.description_dialog);
-                EditText deadlineDialog = bottomSheetView.findViewById(R.id.deadline_dialog);
+//                EditText deadlineDialog = bottomSheetView.findViewById(R.id.deadline_dialog);
 //                EditText daysleftDialog  = bottomSheetView.findViewById(R.id.daysleft_dialog);
 
                 String title = titleDialog.getText().toString();
                 String description = descriptionDialog.getText().toString();
-                String deadline = deadlineDialog.getText().toString();
+//                String deadline = deadlineDialog.getText().toString();
                 String daysleft = "5";
+                Boolean isCompleted = false;
 
                 bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
                         String uuid = UUID.randomUUID().toString();
-                        Event event = new Event(title, description, deadline, daysleft, uuid);
+                        Event event = new Event(title, description, "deadline", daysleft, uuid, isCompleted);
                         firebase.child(uuid).child("title").setValue(event.getTitle());
                         firebase.child(uuid).child("description").setValue(event.getDescription());
                         firebase.child(uuid).child("deadline").setValue(event.getDeadline());

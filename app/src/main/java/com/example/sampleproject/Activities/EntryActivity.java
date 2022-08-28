@@ -18,7 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class EntryActivity extends AppCompatActivity {
+public class EntryActivity extends AppCompatActivity implements View.OnClickListener {
+    private Button entryMemberOne;
 
     //// FIREBASE ////
     @Override
@@ -28,28 +29,35 @@ public class EntryActivity extends AppCompatActivity {
 
         //// Components ////
         // TODO: change to recyclerview?
-        Button entryMemberOne = findViewById(R.id.member1_entry);
-        entryMemberOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Animation animation = new TranslateAnimation(0, 0, 0, 10);
-                animation.setDuration(200);
-                entryMemberOne.startAnimation(animation);
-                Intent intentSub = new Intent(EntryActivity.this, ApplicationActivity.class);
-                startActivity(intentSub);
-            }
-        });
+        entryMemberOne = findViewById(R.id.member1_entry);
+        entryMemberOne.setOnClickListener(this);
         Button entryMemberTwo = findViewById(R.id.member2_entry);
-        entryMemberTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(EntryActivity.this, "did something", Toast.LENGTH_LONG).show();
-                System.out.println("not just me");
-                FirebaseDatabase database = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link));
-                DatabaseReference myRef = database.getReference("message");
-                myRef.setValue("THIS helplheplhpe WORK LA too, World!");
-            }
-        });
+        entryMemberTwo.setOnClickListener(this);
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.member2_entry ) {
+            checkFirebase();
+        } else if (view.getId() == R.id.member1_entry ) {
+            openApplication();
+        }
+    }
+
+    private void openApplication() {
+        Animation animation = new TranslateAnimation(0, 0, 0, 10);
+        animation.setDuration(200);
+        entryMemberOne.startAnimation(animation);
+        Intent intentSub = new Intent(EntryActivity.this, ApplicationActivity.class);
+        startActivity(intentSub);
+    }
+
+    private void checkFirebase() {
+        Toast.makeText(EntryActivity.this, "did something", Toast.LENGTH_LONG).show();
+        System.out.println("not just me");
+        FirebaseDatabase database = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link));
+        DatabaseReference myRef = database.getReference("message");
+        myRef.setValue("THIS helplheplhpe WORK LA too, World!");
     }
 }

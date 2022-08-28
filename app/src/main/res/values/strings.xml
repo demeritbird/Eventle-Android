@@ -7,4 +7,7 @@
 
     <string name="noDaysInCalendar">42</string>
     <string name="action_settings">Settings</string>
+
+
+    <!-- TODO: Make strings nicer lmao, categorise them accordingly.-->
 </resources>

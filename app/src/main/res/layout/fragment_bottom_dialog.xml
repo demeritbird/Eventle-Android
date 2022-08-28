@@ -24,11 +24,34 @@
         android:layout_marginBottom="10dp"
         android:background="@color/greyed_out" />
 
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_private_sel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="for me" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_public_sel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="others" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,12 +86,7 @@
                 android:layout_height="wrap_content"
                 android:text="description" />
 
-            <EditText
-                android:id="@+id/description_dialog"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="blank"
-                android:textSize="10sp" />
+
 
         </LinearLayout>
 
@@ -84,12 +102,24 @@
                 android:layout_height="wrap_content"
                 android:text="deadline" />
 
-            <EditText
-                android:id="@+id/deadline_dialog"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="blank"
-                android:textSize="10sp" />
+            <Button
+                android:id="@+id/btnDate"
+                style="?android:spinnerDropDownItemStyle"
+                android:layout_width="103dp"
+                android:layout_height="37dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="35dp"
+                android:background="#00FFFFFF"
+                android:text="JAN 01 2020"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+<!--            <EditText-->
+<!--                android:id="@+id/deadline_dialog"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="blank"-->
+<!--                android:textSize="10sp" />-->
         </LinearLayout>
 
         <LinearLayout
@@ -112,6 +142,14 @@
                 android:textSize="10sp" />
         </LinearLayout>
 
+        <EditText
+            android:id="@+id/description_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine" />
+
 
     </LinearLayout>
 
@@ -121,61 +159,61 @@
         android:layout_marginBottom="10dp"
         android:background="@color/greyed_out" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="12dp">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="?android:attr/selectableItemBackground"-->
+<!--        android:clickable="true"-->
+<!--        android:focusable="true"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="12dp">-->
 
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="10dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_baseline_home_24"
-            app:tint="@color/main_blue" />
+<!--        <ImageView-->
+<!--            android:layout_width="25dp"-->
+<!--            android:layout_height="25dp"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:contentDescription="@string/app_name"-->
+<!--            android:src="@drawable/ic_baseline_home_24"-->
+<!--            app:tint="@color/main_blue" />-->
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="25dp"
-            android:text="walao"
-            android:textColor="@color/dialogPrimary"
-            android:textSize="15dp" />
-    </LinearLayout>
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="15dp"-->
+<!--            android:layout_marginEnd="25dp"-->
+<!--            android:text="walao"-->
+<!--            android:textColor="@color/dialogPrimary"-->
+<!--            android:textSize="15dp" />-->
+<!--    </LinearLayout>-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="12dp">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="?android:attr/selectableItemBackground"-->
+<!--        android:clickable="true"-->
+<!--        android:focusable="true"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="12dp">-->
 
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="10dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_baseline_home_24"
-            app:tint="@color/main_blue" />
+<!--        <ImageView-->
+<!--            android:layout_width="25dp"-->
+<!--            android:layout_height="25dp"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:contentDescription="@string/app_name"-->
+<!--            android:src="@drawable/ic_baseline_home_24"-->
+<!--            app:tint="@color/main_blue" />-->
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="25dp"
-            android:text="walao"
-            android:textColor="@color/dialogPrimary"
-            android:textSize="15dp" />
-    </LinearLayout>
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="15dp"-->
+<!--            android:layout_marginEnd="25dp"-->
+<!--            android:text="walao"-->
+<!--            android:textColor="@color/dialogPrimary"-->
+<!--            android:textSize="15dp" />-->
+<!--    </LinearLayout>-->
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonDialog"

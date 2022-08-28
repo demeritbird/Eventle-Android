@@ -6,18 +6,29 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
+import com.example.sampleproject.Components.CalendarPickerDialog;
 import com.example.sampleproject.R;
 import com.example.sampleproject.Models.Event;
 import com.example.sampleproject.Models.EventAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class HomeFragment extends Fragment {
 
@@ -30,34 +41,59 @@ public class HomeFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-
+        recyclerView = root.findViewById(R.id.recycler1);
         ///// Recycler View ////
-        actRecycler(root);
+        initRecycler(root);
 
         return root;
-
     }
 
+    // TODO: move to helper function file, this file is only for view
+    public void initRecycler(View root) {
 
-    public void actRecycler(View root) {
-
-        root.getContext();
+        System.out.println("here");
         // Create a instance of the database and get its reference
         mbase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
         //FIXME: change daysleft to int
+
+
+        mbase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    DataSnapshot deadlineString = snapshot.child("deadline");
+                    System.out.println(deadlineString.getValue());
+                    System.out.println("asdasdasd");
+                    Date deadlineDate = new Date(deadlineString.getValue().toString());
+
+                    int day = deadlineDate.getDate();
+                    int month = deadlineDate.getMonth();
+                    int year = deadlineDate.getYear();
+
+                    Date today = new Date();
+                    long daysBetween = TimeUnit.DAYS.convert(deadlineDate.getTime()-today.getTime(), TimeUnit.MILLISECONDS);
+                    snapshot.child("daysleft").getRef().setValue(String.valueOf(daysBetween));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.w("sad", "Failed to read value.", error.toException());
+            }
+        });
+
         Query queryBy = mbase.orderByChild("daysleft").limitToFirst(2);
 
-        recyclerView = root.findViewById(R.id.recycler1);
+
         recyclerView.setNestedScrollingEnabled(false);
 
         // To display the Recycler view linearly
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate data
-        FirebaseRecyclerOptions<Event> options
-                = new FirebaseRecyclerOptions.Builder<Event>()
-                .setQuery(queryBy, Event.class)
-                .build();
+        FirebaseRecyclerOptions<Event> options = new FirebaseRecyclerOptions.Builder<Event>()
+                                                        .setQuery(queryBy, Event.class)
+                                                        .build();
         // Connecting object of required Adapter class to the Adapter class itself
         adapter = new EventAdapter(options);
         // Connecting Adapter class with the Recycler view*/
