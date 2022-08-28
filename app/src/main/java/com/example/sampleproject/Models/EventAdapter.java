@@ -126,38 +126,6 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                     btnPrivacySelect(privateSel, publicSel);
 
 
-//                    checkBox.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            boolean checked = ((CheckBox) v).isChecked();
-//                            // Check which checkbox was clicked
-//                            if (checked){
-//                                isComplete =true;
-//                                firebase.child("iscomplete").setValue(true);
-//                            }
-//                            else{
-//                                isComplete = false;
-//                                firebase.child("iscomplete").setValue(false);
-//                            }
-//                        }
-//                    });
-
-//                    checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                        @Override
-//                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-//                            System.out.println("asdsadsadasdasdasdasd");
-//                            if (checkBox.isChecked()) {
-//                                isComplete =true;
-//                                System.out.println("yes");
-//                                firebase.child("iscomplete").setValue(true);
-//                            } else {
-//                                isComplete = false;
-//                                firebase.child("iscomplete").setValue(false);
-//                            }
-//                        }
-//                    });
-
-
                     // Button //
                     postToFireBase(bottomSheetView, event, firebase);
                     bottomSheetDialog.setContentView(bottomSheetView);
