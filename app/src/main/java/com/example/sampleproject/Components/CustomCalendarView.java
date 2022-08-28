@@ -115,7 +115,6 @@ public class CustomCalendarView extends LinearLayout {
             @Override
             public void onItemClick(AdapterView<?> view, View cell, int position, long id) {
                 eventHandler.onDayLongPress((Date) view.getItemAtPosition(position));
-
             }
         });
 
