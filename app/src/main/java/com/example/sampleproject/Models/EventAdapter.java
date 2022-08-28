@@ -125,7 +125,6 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                     // Refactor Code here
                     btnPrivacySelect(privateSel, publicSel);
 
-
                     // Button //
                     postToFireBase(bottomSheetView, event, firebase);
                     bottomSheetDialog.setContentView(bottomSheetView);
