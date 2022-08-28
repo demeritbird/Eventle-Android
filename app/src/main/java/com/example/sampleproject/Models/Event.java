@@ -7,19 +7,19 @@ public class Event {
     private String deadline;
     private String daysleft;
     private String uid;
-    private Boolean iscompleted;
+    private Boolean isprivate;
 
     public Event() {}
 
 
     // FIXME: Change to int type for daysleft --> requires a helper function i guess
-    public Event(String title, String description, String deadline, String daysleft, String uid, Boolean iscompleted) {
+    public Event(String title, String description, String deadline, String daysleft, String uid, Boolean isprivate) {
         this.title = title;
         this.description = description;
         this.deadline = deadline;
         this.daysleft = daysleft;
         this.uid = uid;
-        this.iscompleted = iscompleted;
+        this.isprivate = isprivate;
     }
 
     // Getter and setter method
@@ -33,8 +33,8 @@ public class Event {
     public void setDaysLeft(String daysLeft) {this.daysleft = daysleft; }
     public  String getUid() { return uid; }
     public void setUid(String uid) {this.uid = uid; }
-    public  Boolean getIsCompleted() { return iscompleted; }
-    public void setIsCompleted(String uid) {this.iscompleted = iscompleted; }
+    public  Boolean getIsPrivate() { return isprivate; }
+    public void setIsPrivate() {this.isprivate = isprivate; }
 
 
 

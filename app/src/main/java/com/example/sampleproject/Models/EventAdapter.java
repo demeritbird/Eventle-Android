@@ -59,7 +59,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
 
 
         holder.uid = model.getUid();
-        holder.isCompleted = model.getIsCompleted();
+        holder.isPrivate = model.getIsPrivate();
     }
 
     @NonNull
@@ -74,7 +74,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
     class eventsViewHolder extends RecyclerView.ViewHolder {
         TextView title, description, deadline, daysleft;
         String uid;
-        Boolean isCompleted;
+        Boolean isPrivate;
 
         public eventsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -110,7 +110,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                     Button publicSel = bottomSheetView.findViewById(R.id.btn_public_sel);
 
 
-                    if (isCompleted) {
+                    if (isPrivate) {
                         privateSel.setBackgroundColor(Color.YELLOW);
                         publicSel.setBackgroundColor(Color.GRAY);
                     } else {
@@ -124,18 +124,20 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                     privateSel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            isCompleted = false;
-                            publicSel.setBackgroundColor(Color.RED);
-                            privateSel.setBackgroundColor(Color.GRAY);
+                            isPrivate = true;
+                            privateSel.setBackgroundColor(Color.YELLOW);
+                            publicSel.setBackgroundColor(Color.GRAY);
+
                         }
                     });
 
                     publicSel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            isCompleted = true;
-                            privateSel.setBackgroundColor(Color.YELLOW);
-                            publicSel.setBackgroundColor(Color.GRAY);
+
+                            isPrivate = false;
+                            publicSel.setBackgroundColor(Color.RED);
+                            privateSel.setBackgroundColor(Color.GRAY);
                         }
                     });
 
@@ -144,14 +146,18 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                     bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            Date newDate = new Date(btnDate.getText().toString());
+                            System.out.println(newDate);
+
+
                             Toast.makeText(view.getContext(), "nice la", Toast.LENGTH_SHORT).show();
-                            Event event = new Event(titleDialog.getText().toString(), descriptionDialog.getText().toString(), "5".toString(), left, uid, isCompleted);
+                            Event event = new Event(titleDialog.getText().toString(), descriptionDialog.getText().toString(), newDate.toString(), left, uid, isPrivate);
                             firebase.child("title").setValue(event.getTitle());
                             firebase.child("description").setValue(event.getDescription());
                             firebase.child("deadline").setValue(event.getDeadline());
                             firebase.child("daysleft").setValue(event.getDaysLeft());
                             firebase.child("uid").setValue(event.getUid());
-                            firebase.child("iscomplete").setValue(event.getIsCompleted());
+                            firebase.child("isprivate").setValue(event.getIsPrivate());
 
                             System.out.println(btnDate.getText().toString());
 
