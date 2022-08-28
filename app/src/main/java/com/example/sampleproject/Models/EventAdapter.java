@@ -78,7 +78,6 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
             Button editButton = itemView.findViewById(R.id.check_button);
             CheckBox checkBox = (CheckBox) itemView.findViewById(R.id.cb_complete);
 
-            // fixme: help
             if (isComplete == null || isComplete) {
                 checkBox.setChecked(true);
             }
