@@ -14,8 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sampleproject.Components.CalendarPickerDialog;
 import com.example.sampleproject.Components.CustomCalendarView;
 import com.example.sampleproject.Models.Event;
 import com.example.sampleproject.Models.EventAdapter;
@@ -49,12 +51,17 @@ public class CalendarFragment extends Fragment {
     Button btnPrivate;
     Button btnPublic;
 
-
+    TextView todayText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_calendar, container, false);
         recyclerView = root.findViewById(R.id.recycler2);
+        todayText = root.findViewById(R.id.tv_selDate);
+        Date today = new Date();
+        String todayString = CalendarPickerDialog.makeDateString(today.getDay(), today.getMonth(), today.getYear());
+
+        todayText.setText(todayString);
 
 
         initRecycler(root);
@@ -71,7 +78,6 @@ public class CalendarFragment extends Fragment {
                 selectedDate = date;
 
 
-
                 Calendar now = Calendar.getInstance();
                 now.setTime(selectedDate);
                 now.set(Calendar.HOUR, 0);
@@ -82,7 +88,7 @@ public class CalendarFragment extends Fragment {
                 selectedDate = now.getTime();
 
                 System.out.println(selectedDate);
-                Toast.makeText(getContext(), selectedDate.toString() , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), selectedDate.toString(), Toast.LENGTH_SHORT).show();
                 System.out.println("---asd");
                 updateRecycler(root);
             }
@@ -204,6 +210,8 @@ public class CalendarFragment extends Fragment {
         recyclerAdapter.updateOptions(options);
         recyclerView.setAdapter(recyclerAdapter);
 
+        String selDateString = CalendarPickerDialog.makeDateString(selectedDate.getDate(), selectedDate.getMonth() + 1, selectedDate.getYear() + 1900);
+        todayText.setText(selDateString);
     }
 
     // Function to tell the app to start getting from database on starting of the activity
