@@ -16,6 +16,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.sampleproject.Fragments.CalendarFragment;
 import com.example.sampleproject.Models.Event;
 import com.example.sampleproject.R;
 import com.google.firebase.database.DataSnapshot;
@@ -45,6 +46,8 @@ public class CustomCalendarView extends LinearLayout {
     private Button btnNext;
     private TextView txtDate;
     private GridView grid;
+
+    public static Date dateSelected = new Date("Tue Sep 27 00:00:00 GMT 2022");
 
     CustomCalendarView cv = findViewById(R.id.calendar_view);
 
@@ -114,7 +117,27 @@ public class CustomCalendarView extends LinearLayout {
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> view, View cell, int position, long id) {
-                eventHandler.onDayLongPress((Date) view.getItemAtPosition(position));
+
+                Date unchanged = (Date) view.getItemAtPosition(position);
+
+
+                Calendar now = Calendar.getInstance();
+                now.setTime(unchanged);
+                now.set(Calendar.HOUR, 0);
+                now.set(Calendar.MINUTE, 0);
+                now.set(Calendar.SECOND, 0);
+                now.set(Calendar.HOUR_OF_DAY, 0);
+
+                Date changed = now.getTime();
+
+                eventHandler.onDayLongPress(changed);
+
+                cv.invokeFirebaseEvent(cv);
+                dateSelected = changed;
+
+
+
+
             }
         });
 

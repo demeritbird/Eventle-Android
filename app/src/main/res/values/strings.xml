@@ -9,6 +9,17 @@
     <string name="Default_Username">User</string>
 
 
+    <string name="privateSetting">Private</string>
+    <string name="publicSetting">Public</string>
+
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="deadline">Deadline</string>
+
+    <string name="add_event">Add Event</string>
+    <string name="submit">Submit</string>
+
+
     <string name="Upcoming_Events">Upcoming Events</string>
     <string name="Events_On">Events on</string>
     <string name="Default_Date">1 Jan 1970</string>

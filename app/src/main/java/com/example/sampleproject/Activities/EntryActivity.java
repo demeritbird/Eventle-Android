@@ -45,6 +45,7 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
         animation.setDuration(200);
         entryMemberOne.startAnimation(animation);
         Intent intentSub = new Intent(EntryActivity.this, ApplicationActivity.class);
+
         startActivity(intentSub);
     }
 
@@ -53,6 +54,6 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
         System.out.println("not just me");
         FirebaseDatabase database = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link));
         DatabaseReference myRef = database.getReference("message");
-        myRef.setValue("THIS helplheplhpe WORK LA too, World!");
+        myRef.setValue("no u, World!");
     }
 }

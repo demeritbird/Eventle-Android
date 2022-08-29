@@ -13,9 +13,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="15dp"
-        android:text="Add Event"
+        android:text="@string/add_event"
         android:textColor="@color/dialogPrimaryText"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <View
@@ -41,13 +41,13 @@
                 android:id="@+id/btn_private_sel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="for me" />
+                android:text="@string/privateSetting" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_public_sel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="others" />
+                android:text="@string/publicSetting" />
 
         </LinearLayout>
 
@@ -59,16 +59,15 @@
 
             <TextView
                 android:id="@+id/title_text"
-                android:layout_width="106dp"
+                android:layout_width="106sp"
                 android:layout_height="wrap_content"
-                android:text="title" />
+                android:text="@string/title" />
 
             <EditText
                 android:id="@+id/title_dialog"
-                android:layout_width="290dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="blank"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -82,7 +81,7 @@
                 android:id="@+id/description_text"
                 android:layout_width="106dp"
                 android:layout_height="wrap_content"
-                android:text="description" />
+                android:text="@string/description" />
 
         </LinearLayout>
 
@@ -96,17 +95,17 @@
                 android:id="@+id/deadline_text"
                 android:layout_width="105dp"
                 android:layout_height="wrap_content"
-                android:text="deadline" />
+                android:text="@string/deadline" />
 
             <Button
                 android:id="@+id/btn_deadline"
                 style="?android:spinnerDropDownItemStyle"
-                android:layout_width="103dp"
-                android:layout_height="37dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="35dp"
-                android:background="#00FFFFFF"
-                android:text="JAN 01 2020"
+                android:background="@color/main_blue"
+                android:text="@string/Default_Date"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 
@@ -118,25 +117,25 @@
             <!--                android:textSize="10sp" />-->
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:padding="5dp">-->
 
-            <TextView
-                android:id="@+id/daysleft_text"
-                android:layout_width="105dp"
-                android:layout_height="wrap_content"
-                android:text="daysleft" />
+<!--            <TextView-->
+<!--                android:id="@+id/daysleft_text"-->
+<!--                android:layout_width="105dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="daysleft" />-->
 
-            <EditText
-                android:id="@+id/daysleft_dialog"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="blank"
-                android:textSize="10sp" />
-        </LinearLayout>
+<!--            <EditText-->
+<!--                android:id="@+id/daysleft_dialog"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="blank"-->
+<!--                android:textSize="10sp" />-->
+<!--        </LinearLayout>-->
 
         <EditText
             android:id="@+id/description_dialog"
@@ -163,7 +162,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/main_button"
-        android:text="click me"
+        android:text="@string/submit"
         android:textSize="15sp" />
 
 </LinearLayout>

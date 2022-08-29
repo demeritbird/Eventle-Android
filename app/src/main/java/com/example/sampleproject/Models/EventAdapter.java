@@ -49,6 +49,14 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
         holder.uid = model.getUid();
         holder.isPrivate = model.getIsPrivate();
         holder.isComplete = model.getIsComplete();
+
+        if (model.getIsComplete()) {
+            holder.completeButton.setBackgroundColor(Color.RED);
+        } else {
+            holder.completeButton.setBackgroundColor(Color.GRAY);
+        }
+
+
     }
 
     @NonNull
@@ -66,6 +74,10 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
         String uid;
         Boolean isPrivate, isComplete;
 
+        Button completeButton = itemView.findViewById(R.id.btn_isComplete);
+        Button editButton = itemView.findViewById(R.id.btn_editEvent);
+        Button delButton = itemView.findViewById(R.id.btn_delEvent);
+
         public eventsViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
@@ -73,17 +85,30 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
             deadline = itemView.findViewById(R.id.deadline);
             daysleft = itemView.findViewById(R.id.days_left);
 
-            Button editButton = itemView.findViewById(R.id.btn_editEvent);
-            CheckBox checkBox = (CheckBox) itemView.findViewById(R.id.cb_complete);
-            Button delButton = itemView.findViewById(R.id.btn_delEvent);
 
-            if (isComplete == null || isComplete) {
-                checkBox.setChecked(true);
-            }
 
             onClickEdit(editButton);
             onClickDelete(delButton);
 
+            completeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DatabaseReference firebase = FirebaseDatabase.getInstance(view.getContext().getResources().getString(R.string.firebase_link)).getReference().child("events").child(uid);
+
+                    if (isComplete) {
+                        System.out.println("event set to false");
+                        firebase.child("iscomplete").setValue(false);
+                        completeButton.setBackgroundColor(Color.GRAY);
+                    } else {
+                        System.out.println("event set to true");
+                        firebase.child("iscomplete").setValue(true);
+                        completeButton.setBackgroundColor(Color.RED);
+                    }
+
+
+
+                }
+            });
 
         }
 
