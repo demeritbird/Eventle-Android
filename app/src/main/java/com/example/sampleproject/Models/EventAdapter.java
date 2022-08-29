@@ -21,7 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.eventsViewHolder> {
 
@@ -36,17 +35,16 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
         holder.title.setText(model.getTitle());
         holder.description.setText(model.getDescription());
 
-        String deadlineString = model.getDeadline();
-        Date deadlineDate = new Date(deadlineString);
+        Date deadlineDate = new Date(model.getDeadline());
         int day = deadlineDate.getDate();
         int month = deadlineDate.getMonth();
         int year = deadlineDate.getYear();
         holder.deadline.setText(CalendarPickerDialog.makeDateString(day, month + 1, year + 1900));
 
-        Date today = new Date();
-        long daysBetween = TimeUnit.DAYS.convert(Math.abs(deadlineDate.getTime() - today.getTime()), TimeUnit.MILLISECONDS);
-        holder.daysleft.setText(String.valueOf(daysBetween));
-
+//        Date today = new Date();
+//        long daysBetween = TimeUnit.DAYS.convert(Math.abs(deadlineDate.getTime() - today.getTime()), TimeUnit.MILLISECONDS);
+//        holder.daysleft.setText(String.valueOf(daysBetween));
+        holder.daysleft.setText(model.getDaysLeft());
         Boolean isCompleted;
         holder.uid = model.getUid();
         holder.isPrivate = model.getIsPrivate();
@@ -75,14 +73,28 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
             deadline = itemView.findViewById(R.id.deadline);
             daysleft = itemView.findViewById(R.id.days_left);
 
-            Button editButton = itemView.findViewById(R.id.check_button);
+            Button editButton = itemView.findViewById(R.id.btn_editEvent);
             CheckBox checkBox = (CheckBox) itemView.findViewById(R.id.cb_complete);
+            Button delButton = itemView.findViewById(R.id.btn_delEvent);
 
             if (isComplete == null || isComplete) {
                 checkBox.setChecked(true);
             }
 
             onClickEdit(editButton);
+            onClickDelete(delButton);
+
+
+        }
+
+        private void onClickDelete(Button delButton) {
+            delButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DatabaseReference firebase = FirebaseDatabase.getInstance(view.getContext().getResources().getString(R.string.firebase_link)).getReference().child("events").child(uid);
+                    firebase.removeValue();
+                }
+            });
         }
 
         private void onClickEdit(Button editButton) {
