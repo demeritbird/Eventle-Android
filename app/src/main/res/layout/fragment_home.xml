@@ -14,19 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <!-- fix height and width also -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28sp"
-            android:layout_marginBottom="20dp"
 
-            android:clipToPadding="false"
-            android:paddingBottom="?attr/actionBarSize"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/upcomingEvents" />
 
 
         <!-- fix height width here FIXME: use styles-->
@@ -96,6 +84,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/framelayout_line" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28sp"
+            android:layout_marginBottom="20dp"
+
+            android:clipToPadding="false"
+            android:paddingBottom="?attr/actionBarSize"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/upcomingEvents"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

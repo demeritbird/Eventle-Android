@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -41,9 +40,6 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
         int year = deadlineDate.getYear();
         holder.deadline.setText(CalendarPickerDialog.makeDateString(day, month + 1, year + 1900));
 
-//        Date today = new Date();
-//        long daysBetween = TimeUnit.DAYS.convert(Math.abs(deadlineDate.getTime() - today.getTime()), TimeUnit.MILLISECONDS);
-//        holder.daysleft.setText(String.valueOf(daysBetween));
         holder.daysleft.setText(model.getDaysLeft());
         Boolean isCompleted;
         holder.uid = model.getUid();
@@ -52,6 +48,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
 
         if (model.getIsComplete()) {
             holder.completeButton.setBackgroundColor(Color.RED);
+            holder.yes.setBackgroundColor(Color.GRAY);
         } else {
             holder.completeButton.setBackgroundColor(Color.GRAY);
         }
@@ -61,8 +58,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
 
     @NonNull
     @Override
-    public eventsViewHolder
-    onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public eventsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_event_card, parent, false);
 
         return new eventsViewHolder(view);
@@ -73,6 +69,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
         TextView title, description, deadline, daysleft;
         String uid;
         Boolean isPrivate, isComplete;
+        View yes =itemView.findViewById(R.id.event_background);
 
         Button completeButton = itemView.findViewById(R.id.btn_isComplete);
         Button editButton = itemView.findViewById(R.id.btn_editEvent);
