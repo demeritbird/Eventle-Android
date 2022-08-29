@@ -1,7 +1,9 @@
 package com.example.sampleproject.Fragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.sampleproject.Components.CalendarPickerDialog;
 import com.example.sampleproject.R;
@@ -22,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -44,6 +49,32 @@ public class HomeFragment extends Fragment {
         recyclerView = root.findViewById(R.id.recycler1);
         ///// Recycler View ////
         initRecycler(root);
+        Bundle resultIntent = getActivity().getIntent().getExtras();
+        String id = resultIntent.getString("id", "2");
+        String newUserName = resultIntent.getString("username", "no");
+
+        ImageView userImage = root.findViewById(R.id.userImage);
+        DatabaseReference firebase2 = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("members").child("member" + id).child("image").child("imageUri");
+        firebase2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String yes = dataSnapshot.getValue().toString();
+                if (!yes.equals("")) {
+                    Uri imageUri = Uri.parse(yes);
+                    Picasso.get().load(imageUri).placeholder(R.drawable.dembirdimage).into(userImage);
+                } else {
+                    System.out.println("no image");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+            }
+        });
+
+        TextView username = root.findViewById(R.id.username_text);
+        username.setText(newUserName);
+
 
         return root;
     }

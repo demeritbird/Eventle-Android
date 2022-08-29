@@ -31,7 +31,7 @@
 
         <!-- fix height width here FIXME: use styles-->
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/userImage"
             style="@style/profileImage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +71,7 @@
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            app:layout_constraintTop_toBottomOf="@+id/userImage" />
 
         <TextView
             android:id="@+id/username_text"
