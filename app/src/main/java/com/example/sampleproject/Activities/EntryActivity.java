@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.sampleproject.R;
 import com.google.firebase.database.DataSnapshot;
@@ -18,13 +17,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
 public class EntryActivity extends AppCompatActivity implements View.OnClickListener {
     private Button entryMemberOne;
+    private Button entryMemberTwo;
 
-    //// FIREBASE ////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,30 +30,29 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
         //// Components ////
         entryMemberOne = findViewById(R.id.btn_member1_entry);
         entryMemberOne.setOnClickListener(this);
-        Button entryMemberTwo = findViewById(R.id.btn_member2_entry);
+        entryMemberTwo = findViewById(R.id.btn_member2_entry);
         entryMemberTwo.setOnClickListener(this);
 
         DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("members");
         DatabaseReference memberOneFirebase = firebase.child("member1").child("name");
         DatabaseReference memberTwoFirebase = firebase.child("member2").child("name");
-        memberone(memberOneFirebase, entryMemberOne);
-        memberone(memberTwoFirebase, entryMemberTwo);
+        updateMemberName(memberOneFirebase, entryMemberOne);
+        updateMemberName(memberTwoFirebase, entryMemberTwo);
 
 
     }
 
-    private void memberone(DatabaseReference firebase, Button memberButton) {
+    private void updateMemberName(DatabaseReference firebase, Button memberButton) {
 
         firebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String yes = dataSnapshot.getValue().toString();
-                memberButton.setText(yes);
+                String newMemberName = dataSnapshot.getValue().toString();
+                memberButton.setText(newMemberName);
             }
-
             @Override
             public void onCancelled(DatabaseError error) {
-                Log.w("sad", "Failed to read value.", error.toException());
+                Log.w(String.valueOf(R.string.TAG_MESSAGE), "Failed to read value.", error.toException());
             }
         });
     }
@@ -65,27 +60,19 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_member2_entry) {
-            checkFirebase();
+            openApplication(entryMemberTwo, "2");
         } else if (view.getId() == R.id.btn_member1_entry) {
-            openApplication();
+            openApplication(entryMemberOne, "1");
         }
     }
 
-    private void openApplication() {
+    private void openApplication(Button memberButton, String id) {
         Animation animation = new TranslateAnimation(0, 0, 0, 10);
         animation.setDuration(200);
-        entryMemberOne.startAnimation(animation);
+        memberButton.startAnimation(animation);
         Intent intentSub = new Intent(EntryActivity.this, ApplicationActivity.class);
-        intentSub.putExtra("username", entryMemberOne.getText());
-        intentSub.putExtra("id","1");
+        intentSub.putExtra("username", memberButton.getText());
+        intentSub.putExtra("id",id);
         startActivity(intentSub);
-    }
-
-    private void checkFirebase() {
-        Toast.makeText(EntryActivity.this, "did something", Toast.LENGTH_LONG).show();
-        System.out.println("not just me");
-        FirebaseDatabase database = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link));
-        DatabaseReference myRef = database.getReference("message");
-        myRef.setValue("no u, World!");
     }
 }
