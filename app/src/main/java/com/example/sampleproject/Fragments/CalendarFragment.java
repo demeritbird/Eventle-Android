@@ -60,6 +60,8 @@ public class CalendarFragment extends Fragment {
 
     TextView todayText;
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_calendar, container, false);
@@ -70,8 +72,12 @@ public class CalendarFragment extends Fragment {
 
         todayText.setText(todayString);
 
+        Bundle resultIntent = getActivity().getIntent().getExtras();
+        String id = resultIntent.getString("id", "1");
+        String otherId = resultIntent.getString("otherId", "2");
 
-        initRecycler(root);
+
+        initRecycler(root, id);
 
 
         //// Init Calendar View ////
@@ -94,7 +100,7 @@ public class CalendarFragment extends Fragment {
 
                 selectedDate = now.getTime();
                 Toast.makeText(getContext(), selectedDate.toString(), Toast.LENGTH_SHORT).show();
-                updateRecycler(root);
+                updateRecycler(root, id);
             }
         });
 
@@ -192,24 +198,28 @@ public class CalendarFragment extends Fragment {
                         } else if (newDaysLeft.charAt(0) == '-') {
                             Toast.makeText(getContext(),R.string.error_wrongDate, Toast.LENGTH_SHORT).show();
                         } else {
-                            DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
+
+
+                            //DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
+                            DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference()
+                                                            .child("members");
                             String uuid = UUID.randomUUID().toString();
                             Event event = new Event(newTitle[0], newDescription[0], newDate.toString(),  Integer.valueOf(newDaysLeft), uuid, isPrivate[0], false);
 
-                            //// Post to Firebase TODO: put in another function ////
-                            firebase.child(uuid).child("title").setValue(event.getTitle());
-                            firebase.child(uuid).child("description").setValue(event.getDescription());
-                            firebase.child(uuid).child("deadline").setValue(event.getDeadline());
-                            firebase.child(uuid).child("daysleft").setValue(event.getDaysLeft());
-                            firebase.child(uuid).child("uid").setValue(event.getUid());
-                            firebase.child(uuid).child("isprivate").setValue(event.getIsPrivate());
-                            firebase.child(uuid).child("iscomplete").setValue(event.getIsComplete());
-                            firebase.child(uuid).child("priority").setValue(event.getDaysLeft());
+                            if (event.getIsPrivate()) {
+                                postToFirebase(firebase, uuid, event,id);
+                            } else {
+                                postToFirebase(firebase, uuid, event,id);
+                                postToFirebase(firebase, uuid, event,otherId);
+                            }
+
+
+                            postToFirebase(firebase, uuid, event,id);
 
                             Toast.makeText(getContext(), "added!", Toast.LENGTH_SHORT).show();
                             bottomSheetDialog.dismiss();
 
-                            updateRecycler(root);
+                            updateRecycler(root,id);
 
                             // Reload Page w new fragment.
                             Fragment f;
@@ -232,32 +242,25 @@ public class CalendarFragment extends Fragment {
         return root;
     }
 
+    private void postToFirebase(DatabaseReference firebase, String uuid, Event event, String selId) {
+        DatabaseReference selFirebase = firebase.child("member"+selId).child("events").child(uuid);
 
-    private void btnPrivacySettingOnClickListeners() {
-
+        selFirebase.child("title").setValue(event.getTitle());
+        selFirebase.child("description").setValue(event.getDescription());
+        selFirebase.child("deadline").setValue(event.getDeadline());
+        selFirebase.child("daysleft").setValue(event.getDaysLeft());
+        selFirebase.child("uid").setValue(event.getUid());
+        selFirebase.child("isprivate").setValue(event.getIsPrivate());
+        selFirebase.child("iscomplete").setValue(event.getIsComplete());
+        selFirebase.child("priority").setValue(event.getDaysLeft());
     }
 
-    private void postToFireBase(View bottomSheetView, String title, String description, String daysleft) {
-//        bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
-//                String uuid = UUID.randomUUID().toString();
-//                Event event = new Event(title, description, "deadline", daysleft, uuid, isPrivate, isComplete);
-//                firebase.child(uuid).child("title").setValue(event.getTitle());
-//                firebase.child(uuid).child("description").setValue(event.getDescription());
-//                firebase.child(uuid).child("deadline").setValue(event.getDeadline());
-//                firebase.child(uuid).child("daysleft").setValue(event.getDaysLeft());
-//                firebase.child(uuid).child("uid").setValue(event.getUid());
-//
-//                Toast.makeText(getContext(), "added!", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-    }
 
-    private void initRecycler(View root) {
+
+    private void initRecycler(View root, String selId) {
         // Create a instance of the database and get its reference
-        mbase = (DatabaseReference) FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
+        mbase = (DatabaseReference) FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference()
+                                                    .child("members").child("member"+selId).child("events");
         Query query = mbase.orderByChild("deadline").equalTo(selectedDate.toString());
 
         FirebaseRecyclerOptions<Event> options
@@ -281,9 +284,10 @@ public class CalendarFragment extends Fragment {
         recyclerView.setAdapter(recyclerAdapter);
     }
 
-    private void updateRecycler(View root) {
+    private void updateRecycler(View root, String selId) {
         // Create a instance of the database and get its reference
-        mbase = (DatabaseReference) FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
+        mbase = (DatabaseReference) FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference()
+                .child("members").child("member"+selId).child("events");
         Query query = mbase.orderByChild("deadline").equalTo(selectedDate.toString());
 
         // FIXME: must just be month, day year la, use the date formatter than we will roll from there

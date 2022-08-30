@@ -60,19 +60,20 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_member2_entry) {
-            openApplication(entryMemberTwo, "2");
+            openApplication(entryMemberTwo, "2", "1");
         } else if (view.getId() == R.id.btn_member1_entry) {
-            openApplication(entryMemberOne, "1");
+            openApplication(entryMemberOne, "1", "2");
         }
     }
 
-    private void openApplication(Button memberButton, String id) {
+    private void openApplication(Button memberButton, String id, String otherId) {
         Animation animation = new TranslateAnimation(0, 0, 0, 10);
         animation.setDuration(200);
         memberButton.startAnimation(animation);
         Intent intentSub = new Intent(EntryActivity.this, ApplicationActivity.class);
         intentSub.putExtra("username", memberButton.getText());
         intentSub.putExtra("id",id);
+        intentSub.putExtra("otherId",otherId);
         startActivity(intentSub);
     }
 }
