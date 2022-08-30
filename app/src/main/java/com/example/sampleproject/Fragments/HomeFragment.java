@@ -27,6 +27,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -88,7 +89,20 @@ public class HomeFragment extends Fragment {
                     Date deadlineDate = new Date(deadlineString.getValue().toString());
 
                     Date today = new Date();
-                    long daysBetween = TimeUnit.DAYS.convert(deadlineDate.getTime()-today.getTime(), TimeUnit.MILLISECONDS);
+
+                    Calendar todayCal = Calendar.getInstance();
+                    todayCal.setTime(today);
+                    todayCal.set(Calendar.HOUR,0);
+                    todayCal.set(Calendar.MINUTE,0);
+                    todayCal.set(Calendar.SECOND,-1);
+                    Date newToday = todayCal.getTime();
+
+                    System.out.println(deadlineDate);
+                    System.out.println(newToday.toString());
+
+                    long daysBetween = TimeUnit.DAYS.convert(deadlineDate.getTime()-newToday.getTime(), TimeUnit.MILLISECONDS);
+                    System.out.println(daysBetween);
+                    System.out.println("-----------");
 
                     if (snapshot.child("iscomplete").getValue().toString() == "true") {
                         snapshot.child("priority").getRef().setValue("999999999999999");

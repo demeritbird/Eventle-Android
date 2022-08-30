@@ -174,7 +174,14 @@ public class CalendarFragment extends Fragment {
                     public void onClick(View view) {
                         Date newDate = new Date(btnDeadline.getText().toString());
                         Date today = new Date();
-                        long daysBetween = TimeUnit.DAYS.convert(newDate.getTime()-today.getTime(), TimeUnit.MILLISECONDS);
+                        Calendar todayCal = Calendar.getInstance();
+                        todayCal.setTime(today);
+                        todayCal.set(Calendar.HOUR,0);
+                        todayCal.set(Calendar.MINUTE,0);
+                        todayCal.set(Calendar.SECOND,-1);
+                        Date newToday = todayCal.getTime();
+
+                        long daysBetween = TimeUnit.DAYS.convert(newDate.getTime()-newToday.getTime(), TimeUnit.MILLISECONDS);
                         String newDaysLeft = String.valueOf(daysBetween);
 
                         ////  Check Validation ////

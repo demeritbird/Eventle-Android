@@ -22,6 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -218,7 +219,15 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                         public void onClick(View view) {
                             Date newDate = new Date(btnDeadline.getText().toString());
                             Date today = new Date();
-                            long daysBetween = TimeUnit.DAYS.convert(newDate.getTime()-today.getTime(), TimeUnit.MILLISECONDS);
+                            Calendar todayCal = Calendar.getInstance();
+                            todayCal.setTime(today);
+                            todayCal.set(Calendar.HOUR,0);
+                            todayCal.set(Calendar.MINUTE,0);
+                            todayCal.set(Calendar.SECOND,-1);
+                            Date newToday = todayCal.getTime();
+
+                            long daysBetween = TimeUnit.DAYS.convert(newDate.getTime()-newToday.getTime(), TimeUnit.MILLISECONDS);
+
                             String newDaysLeft = String.valueOf(daysBetween);
 
                             ////  Check Validation ////
