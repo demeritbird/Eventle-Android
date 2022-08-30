@@ -1,6 +1,7 @@
 package com.example.sampleproject.Fragments;
 
 import android.graphics.Color;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -102,8 +103,8 @@ public class CalendarFragment extends Fragment {
         calendarView.invokeFirebaseEvent(calendarView);
 
 
-        final String[] newTitle = new String[1];;
-        final String[] newDescription = new String[1];;
+        final String[] newTitle = {""};
+        final String[] newDescription = {""};;
         final Boolean[] isPrivate = {false};
         Date newDate= new Date();
 
@@ -119,17 +120,11 @@ public class CalendarFragment extends Fragment {
                 EditText descriptionDialog = bottomSheetView.findViewById(R.id.description_dialog);
 
 
-                final String[] title = {titleDialog.getText().toString()};
-                String description = descriptionDialog.getText().toString();
-                String daysleft = "5";
-
                 titleDialog.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
                     @Override
                     public void afterTextChanged(Editable editable) {
                         newTitle[0] = editable.toString();
@@ -138,10 +133,8 @@ public class CalendarFragment extends Fragment {
                 descriptionDialog.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
                     @Override
                     public void afterTextChanged(Editable editable) {
                         newDescription[0] = editable.toString();
@@ -184,30 +177,43 @@ public class CalendarFragment extends Fragment {
                         long daysBetween = TimeUnit.DAYS.convert(newDate.getTime()-today.getTime(), TimeUnit.MILLISECONDS);
                         String newDaysLeft = String.valueOf(daysBetween);
 
-                        DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
-                        String uuid = UUID.randomUUID().toString();
-                        Event event = new Event(newTitle[0], newDescription[0], newDate.toString(), newDaysLeft, uuid, isPrivate[0], false);
-                        firebase.child(uuid).child("title").setValue(event.getTitle());
-                        firebase.child(uuid).child("description").setValue(event.getDescription());
-                        firebase.child(uuid).child("deadline").setValue(event.getDeadline());
-                        firebase.child(uuid).child("daysleft").setValue(event.getDaysLeft());
-                        firebase.child(uuid).child("uid").setValue(event.getUid());
-                        firebase.child(uuid).child("isprivate").setValue(event.getIsPrivate());
-                        firebase.child(uuid).child("iscomplete").setValue(event.getIsComplete());
-                        firebase.child(uuid).child("priority").setValue(event.getDaysLeft());
+                        ////  Check Validation ////
+                        if (newTitle[0].equals("")) {
+                            Toast.makeText(getContext(),R.string.error_emptyTitle, Toast.LENGTH_SHORT).show();
+                        } else if (newDescription[0].equals("")) {
+                            Toast.makeText(getContext(),R.string.error_emptyDescription, Toast.LENGTH_SHORT).show();
+                        } else if (newDaysLeft.charAt(0) == '-') {
+                            Toast.makeText(getContext(),R.string.error_wrongDate, Toast.LENGTH_SHORT).show();
+                        } else {
+                            DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
+                            String uuid = UUID.randomUUID().toString();
+                            Event event = new Event(newTitle[0], newDescription[0], newDate.toString(), newDaysLeft, uuid, isPrivate[0], false);
 
-                        Toast.makeText(getContext(), "added!", Toast.LENGTH_SHORT).show();
-                        bottomSheetDialog.dismiss();
+                            //// Post to Firebase TODO: put in another function ////
+                            firebase.child(uuid).child("title").setValue(event.getTitle());
+                            firebase.child(uuid).child("description").setValue(event.getDescription());
+                            firebase.child(uuid).child("deadline").setValue(event.getDeadline());
+                            firebase.child(uuid).child("daysleft").setValue(event.getDaysLeft());
+                            firebase.child(uuid).child("uid").setValue(event.getUid());
+                            firebase.child(uuid).child("isprivate").setValue(event.getIsPrivate());
+                            firebase.child(uuid).child("iscomplete").setValue(event.getIsComplete());
+                            firebase.child(uuid).child("priority").setValue(event.getDaysLeft());
 
-                        updateRecycler(root);
+                            Toast.makeText(getContext(), "added!", Toast.LENGTH_SHORT).show();
+                            bottomSheetDialog.dismiss();
 
-                        // Reload Page w new fragment.
-                        Fragment f;
-                        f = new CalendarFragment();
-                        FragmentTransaction ft2 =   getFragmentManager().beginTransaction();
-                        ft2.replace(R.id.framelayout_line,f);
-                        ft2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                        ft2.commit();
+                            updateRecycler(root);
+
+                            // Reload Page w new fragment.
+                            Fragment f;
+                            f = new CalendarFragment();
+                            FragmentTransaction ft2 =   getFragmentManager().beginTransaction();
+                            ft2.replace(R.id.framelayout_line,f);
+                            ft2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                            ft2.commit();
+                        }
+
+
                     }
                 });
 

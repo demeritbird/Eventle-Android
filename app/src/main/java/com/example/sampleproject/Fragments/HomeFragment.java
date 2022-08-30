@@ -106,7 +106,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        Query queryBy = mbase.orderByChild("priority").limitToFirst(5);
+        Query queryBy = mbase.orderByChild("priority").startAt("0").limitToFirst(4);
 
 
         recyclerView.setNestedScrollingEnabled(false);

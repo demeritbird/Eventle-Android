@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -152,7 +153,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
 
                     // Edit Event //
                     TextView eventTitle = bottomSheetView.findViewById(R.id.event_title);
-                    eventTitle.setText("Edit Event");
+                    eventTitle.setText(R.string.edit_event);
 
                     // Title //
                     EditText titleDialog = bottomSheetView.findViewById(R.id.title_dialog);
@@ -162,10 +163,8 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                     titleDialog.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
                         @Override
                         public void afterTextChanged(Editable editable) {
                             newTitle[0] = editable.toString();
@@ -181,10 +180,8 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                     descriptionDialog.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
                         @Override
                         public void afterTextChanged(Editable editable) {
                             newDescription[0] = editable.toString();
@@ -196,12 +193,6 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                     Button btnDeadline = bottomSheetView.findViewById(R.id.btn_deadline);
                     btnDeadline.setText(deadline.getText().toString());
                     CalendarPickerDialog.initDatePicker(btnDeadline.getContext(), btnDeadline);
-                    //btnDeadline.setText(CalendarPickerDialog.getTodayDate());
-
-
-
-
-                    // Days left naive //
 
 
                     // privacy //
@@ -230,17 +221,25 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                             long daysBetween = TimeUnit.DAYS.convert(newDate.getTime()-today.getTime(), TimeUnit.MILLISECONDS);
                             String newDaysLeft = String.valueOf(daysBetween);
 
-
-                            Event event = new Event(newTitle[0], newDescription[0], newDate.toString(), newDaysLeft, uid, isPrivate, isComplete);
-                            System.out.println(newDate.toString());
-                            firebase.child("title").setValue(event.getTitle());
-                            firebase.child("description").setValue(event.getDescription());
-                            firebase.child("deadline").setValue(event.getDeadline());
-                            firebase.child("daysleft").setValue(event.getDaysLeft());
-                            firebase.child("uid").setValue(event.getUid());
-                            firebase.child("isprivate").setValue(event.getIsPrivate());
-                            firebase.child("iscomplete").setValue(event.getIsComplete());
-                            bottomSheetDialog.dismiss();
+                            ////  Check Validation ////
+                            if (newTitle[0].equals("")) {
+                                Toast.makeText(bottomSheetDialog.getContext(),R.string.error_emptyTitle, Toast.LENGTH_SHORT).show();
+                            } else if (newDescription[0].equals("")) {
+                                Toast.makeText(bottomSheetDialog.getContext(),R.string.error_emptyDescription, Toast.LENGTH_SHORT).show();
+                            } else if (newDaysLeft.charAt(0) == '-') {
+                                Toast.makeText(bottomSheetDialog.getContext(),R.string.error_wrongDate, Toast.LENGTH_SHORT).show();
+                            } else {
+                                Event event = new Event(newTitle[0], newDescription[0], newDate.toString(), newDaysLeft, uid, isPrivate, isComplete);
+                                firebase.child("title").setValue(event.getTitle());
+                                firebase.child("description").setValue(event.getDescription());
+                                firebase.child("deadline").setValue(event.getDeadline());
+                                firebase.child("daysleft").setValue(event.getDaysLeft());
+                                firebase.child("uid").setValue(event.getUid());
+                                firebase.child("isprivate").setValue(event.getIsPrivate());
+                                firebase.child("priority").setValue(event.getDaysLeft());
+                                firebase.child("iscomplete").setValue(event.getIsComplete());
+                                bottomSheetDialog.dismiss();
+                            }
                         }
                     });
 
