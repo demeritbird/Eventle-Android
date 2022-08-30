@@ -1,13 +1,17 @@
 package com.example.sampleproject.Fragments;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +43,7 @@ import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class CalendarFragment extends Fragment {
     public RecyclerView recyclerView;
@@ -47,6 +52,7 @@ public class CalendarFragment extends Fragment {
     Date selectedDate = CustomCalendarView.dateSelected;
     Boolean isPrivate = false;
     Boolean isComplete = false;
+//    private CalendarFragment calendarFragment = new CalendarFragment();
 
     Button btnPrivate;
     Button btnPublic;
@@ -86,7 +92,6 @@ public class CalendarFragment extends Fragment {
                 now.set(Calendar.HOUR_OF_DAY, 0);
 
                 selectedDate = now.getTime();
-
                 Toast.makeText(getContext(), selectedDate.toString(), Toast.LENGTH_SHORT).show();
                 updateRecycler(root);
             }
@@ -94,6 +99,13 @@ public class CalendarFragment extends Fragment {
 
         //// Init GET firebase ////
         calendarView.invokeFirebaseEvent(calendarView);
+
+
+        final String[] newTitle = new String[1];;
+        final String[] newDescription = new String[1];;
+        final Boolean[] isPrivate = {false};
+        Date newDate= new Date();
+
 
         //// Init Components ////
         FloatingActionButton dialogButton = root.findViewById(R.id.fab);
@@ -105,24 +117,98 @@ public class CalendarFragment extends Fragment {
                 EditText titleDialog = bottomSheetView.findViewById(R.id.title_dialog);
                 EditText descriptionDialog = bottomSheetView.findViewById(R.id.description_dialog);
 
-                String title = titleDialog.getText().toString();
+
+                final String[] title = {titleDialog.getText().toString()};
                 String description = descriptionDialog.getText().toString();
                 String daysleft = "5";
 
+                titleDialog.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        newTitle[0] = editable.toString();
+                    }
+                });
+                descriptionDialog.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        newDescription[0] = editable.toString();
+                    }
+                });
+
+                Button btnDeadline = bottomSheetView.findViewById(R.id.btn_deadline);
+                CalendarPickerDialog.initDatePicker(btnDeadline.getContext(), btnDeadline);
+                btnDeadline.setText(CalendarPickerDialog.getTodayDate());
 
                 btnPrivate = bottomSheetView.findViewById(R.id.btn_private_sel);
                 btnPublic = bottomSheetView.findViewById(R.id.btn_public_sel);
 
                 btnPublic.setBackgroundColor(Color.RED);
                 btnPrivate.setBackgroundColor(Color.GRAY);
+                btnPrivate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        isPrivate[0] = true;
+                        btnPrivate.setBackgroundColor(Color.YELLOW);
+                        btnPublic.setBackgroundColor(Color.GRAY);
+                    }
+                });
 
-                Button btnDeadline = bottomSheetView.findViewById(R.id.btn_deadline);
-                CalendarPickerDialog.initDatePicker(btnDeadline.getContext(), btnDeadline);
-                btnDeadline.setText(CalendarPickerDialog.getTodayDate());
-                // Refactor Code here
-                btnPrivacySettingOnClickListeners();
-                postToFireBase(bottomSheetView, title, description, daysleft);
+                btnPublic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        isPrivate[0] = false;
+                        btnPublic.setBackgroundColor(Color.RED);
+                        btnPrivate.setBackgroundColor(Color.GRAY);
+                    }
+                });
 
+
+                bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Date newDate = new Date(btnDeadline.getText().toString());
+                        Date today = new Date();
+                        long daysBetween = TimeUnit.DAYS.convert(newDate.getTime()-today.getTime(), TimeUnit.MILLISECONDS);
+                        String newDaysLeft = String.valueOf(daysBetween);
+
+                        DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
+                        String uuid = UUID.randomUUID().toString();
+                        Event event = new Event(newTitle[0], newDescription[0], newDate.toString(), newDaysLeft, uuid, isPrivate[0], false);
+                        firebase.child(uuid).child("title").setValue(event.getTitle());
+                        firebase.child(uuid).child("description").setValue(event.getDescription());
+                        firebase.child(uuid).child("deadline").setValue(event.getDeadline());
+                        firebase.child(uuid).child("daysleft").setValue(event.getDaysLeft());
+                        firebase.child(uuid).child("uid").setValue(event.getUid());
+                        firebase.child(uuid).child("isprivate").setValue(event.getIsPrivate());
+                        firebase.child(uuid).child("iscomplete").setValue(event.getIsComplete());
+                        firebase.child(uuid).child("priority").setValue(event.getDaysLeft());
+
+                        Toast.makeText(getContext(), "added!", Toast.LENGTH_SHORT).show();
+                        bottomSheetDialog.dismiss();
+
+                        updateRecycler(root);
+
+                        // Reload Page w new fragment.
+                        Fragment f;
+                        f = new CalendarFragment();
+                        FragmentTransaction ft2 =   getFragmentManager().beginTransaction();
+                        ft2.replace(R.id.framelayout_line,f);
+                        ft2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        ft2.commit();
+                    }
+                });
 
                 bottomSheetDialog.setContentView(bottomSheetView);
                 bottomSheetDialog.show();
@@ -134,41 +220,25 @@ public class CalendarFragment extends Fragment {
 
 
     private void btnPrivacySettingOnClickListeners() {
-        btnPrivate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isPrivate = true;
-                btnPrivate.setBackgroundColor(Color.YELLOW);
-                btnPublic.setBackgroundColor(Color.GRAY);
-            }
-        });
 
-        btnPublic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isPrivate = false;
-                btnPublic.setBackgroundColor(Color.RED);
-                btnPrivate.setBackgroundColor(Color.GRAY);
-            }
-        });
     }
 
     private void postToFireBase(View bottomSheetView, String title, String description, String daysleft) {
-        bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
-                String uuid = UUID.randomUUID().toString();
-                Event event = new Event(title, description, "deadline", daysleft, uuid, isPrivate, isComplete);
-                firebase.child(uuid).child("title").setValue(event.getTitle());
-                firebase.child(uuid).child("description").setValue(event.getDescription());
-                firebase.child(uuid).child("deadline").setValue(event.getDeadline());
-                firebase.child(uuid).child("daysleft").setValue(event.getDaysLeft());
-                firebase.child(uuid).child("uid").setValue(event.getUid());
-
-                Toast.makeText(getContext(), "added!", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
+//                String uuid = UUID.randomUUID().toString();
+//                Event event = new Event(title, description, "deadline", daysleft, uuid, isPrivate, isComplete);
+//                firebase.child(uuid).child("title").setValue(event.getTitle());
+//                firebase.child(uuid).child("description").setValue(event.getDescription());
+//                firebase.child(uuid).child("deadline").setValue(event.getDeadline());
+//                firebase.child(uuid).child("daysleft").setValue(event.getDaysLeft());
+//                firebase.child(uuid).child("uid").setValue(event.getUid());
+//
+//                Toast.makeText(getContext(), "added!", Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     private void initRecycler(View root) {
