@@ -1,19 +1,15 @@
 package com.example.sampleproject.Fragments;
 
 import android.graphics.Color;
-import android.nfc.Tag;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +37,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -67,6 +61,7 @@ public class CalendarFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_calendar, container, false);
         recyclerView = root.findViewById(R.id.recycler2);
         todayText = root.findViewById(R.id.tv_selDate);
+        TextView errorMsg = root.findViewById(R.id.tv_error_msg_calendarr);
         Date today = new Date();
         String todayString = CalendarPickerDialog.makeDateString(today.getDate(), today.getMonth()+1, today.getYear()+1900);
 
@@ -77,7 +72,7 @@ public class CalendarFragment extends Fragment {
         String otherId = resultIntent.getString("otherId", "2");
 
 
-        initRecycler(root, id);
+        initRecycler(root, id, errorMsg);
 
 
         //// Init Calendar View ////
@@ -100,7 +95,7 @@ public class CalendarFragment extends Fragment {
 
                 selectedDate = now.getTime();
                 Toast.makeText(getContext(), selectedDate.toString(), Toast.LENGTH_SHORT).show();
-                updateRecycler(root, id);
+                updateRecycler(root, id, errorMsg);
             }
         });
 
@@ -219,7 +214,7 @@ public class CalendarFragment extends Fragment {
                             Toast.makeText(getContext(), "added!", Toast.LENGTH_SHORT).show();
                             bottomSheetDialog.dismiss();
 
-                            updateRecycler(root,id);
+                            updateRecycler(root,id,errorMsg);
 
                             // Reload Page w new fragment.
                             Fragment f;
@@ -257,7 +252,7 @@ public class CalendarFragment extends Fragment {
 
 
 
-    private void initRecycler(View root, String selId) {
+    private void initRecycler(View root, String selId, TextView errorMsg) {
         // Create a instance of the database and get its reference
         mbase = (DatabaseReference) FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference()
                                                     .child("members").child("member"+selId).child("events");
@@ -280,11 +275,29 @@ public class CalendarFragment extends Fragment {
 
         // Connecting object of required Adapter class to the Adapter class itself
         recyclerAdapter = new EventAdapter(options);
+        checkEmptyList(query, errorMsg);
         // Connecting Adapter class with the Recycler view*/
         recyclerView.setAdapter(recyclerAdapter);
     }
 
-    private void updateRecycler(View root, String selId) {
+    private void checkEmptyList(Query query, TextView errorMsg) {
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() == null) {
+                    errorMsg.setVisibility(View.VISIBLE);
+                } else {
+                    errorMsg.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    private void updateRecycler(View root, String selId, TextView errorMsg) {
         // Create a instance of the database and get its reference
         mbase = (DatabaseReference) FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference()
                 .child("members").child("member"+selId).child("events");
@@ -297,6 +310,7 @@ public class CalendarFragment extends Fragment {
                 .build();
 
         recyclerAdapter.updateOptions(options);
+        checkEmptyList(query, errorMsg);
         recyclerView.setAdapter(recyclerAdapter);
 
         String selDateString = CalendarPickerDialog.makeDateString(selectedDate.getDate(), selectedDate.getMonth() + 1, selectedDate.getYear() + 1900);

@@ -29,6 +29,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 public class HomeFragment extends Fragment {
@@ -43,13 +45,14 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView = root.findViewById(R.id.recycler1);
+        TextView errorMsg = root.findViewById(R.id.tv_errormsg);
 
         ///// Recycler View ////
 
         Bundle resultIntent = getActivity().getIntent().getExtras();
         String id = resultIntent.getString("id", "1");
         String newUserName = resultIntent.getString("username", "no");
-        initRecycler(root, id);
+        initRecycler(root, id, errorMsg);
         ImageView userImage = root.findViewById(R.id.userImage);
         DatabaseReference firebase2 = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("members").child("member" + id).child("image").child("imageUri");
         firebase2.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -77,7 +80,7 @@ public class HomeFragment extends Fragment {
     }
 
     // TODO: move to helper function file, this file is only for view
-    public void initRecycler(View root, String selId) {
+    public void initRecycler(View root, String selId, TextView errorMsg) {
         // Create a instance of the database and get its reference
         mbase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference()
                     .child("members").child("member"+selId).child("events");
@@ -114,16 +117,11 @@ public class HomeFragment extends Fragment {
                 Log.w(String.valueOf(R.string.firebase_readError), "Failed to read value.", error.toException());
             }
         });
-
-
         Query queryBy = mbase.orderByChild("priority").startAt(0).limitToFirst(3);
 
-
         recyclerView.setNestedScrollingEnabled(false);
-
         // To display the Recycler view linearly
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate data
         FirebaseRecyclerOptions<Event> options = new FirebaseRecyclerOptions.Builder<Event>()
                                                         .setQuery(queryBy, Event.class)
@@ -131,7 +129,24 @@ public class HomeFragment extends Fragment {
         // Connecting object of required Adapter class to the Adapter class itself
         recyclerAdapter = new EventAdapter(options);
         // Connecting Adapter class with the Recycler view*/
+        checkEmptyList(queryBy, errorMsg);
+
         recyclerView.setAdapter(recyclerAdapter);
+    }
+
+    private void checkEmptyList(Query query, TextView errorMsg) {
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() == null) {
+                    errorMsg.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     // Function to tell the app to start getting from database on starting of the activity
