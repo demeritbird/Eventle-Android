@@ -40,6 +40,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/Default_Date" />
 
+            <TextView
+                android:id="@+id/tv_error_msg_calendarr"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="error no events"
+                android:visibility="invisible" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

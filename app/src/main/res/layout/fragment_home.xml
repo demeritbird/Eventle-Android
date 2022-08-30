@@ -99,6 +99,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/upcomingEvents"/>
 
+        <TextView
+            android:id="@+id/tv_errormsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No events!"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/recycler1"
+            app:layout_constraintStart_toStartOf="@+id/recycler1"
+            app:layout_constraintTop_toBottomOf="@+id/upcomingEvents" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
