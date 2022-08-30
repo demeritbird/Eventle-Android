@@ -22,6 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -44,7 +45,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
         int year = deadlineDate.getYear();
         holder.deadline.setText(CalendarPickerDialog.makeDateString(day, month + 1, year + 1900));
 
-        holder.daysleft.setText(model.getDaysLeft());
+        holder.daysleft.setText(String.valueOf(model.getDaysLeft()));
         Boolean isCompleted;
         holder.uid = model.getUid();
         holder.isPrivate = model.getIsPrivate();
@@ -69,7 +70,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
     }
 
 
-    class eventsViewHolder extends RecyclerView.ViewHolder   implements View.OnClickListener{
+    class eventsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView title, description, deadline, daysleft;
         String uid;
         Boolean isPrivate, isComplete;
@@ -116,11 +117,9 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                 public void onClick(View view) {
                     DatabaseReference firebase = FirebaseDatabase.getInstance(view.getContext().getResources().getString(R.string.firebase_link)).getReference().child("events").child(uid);
                     if (isComplete) {
-                        System.out.println("event set to false");
                         firebase.child("iscomplete").setValue(false);
                         completeButton.setBackgroundColor(Color.GRAY);
                     } else {
-                        System.out.println("event set to true");
                         firebase.child("iscomplete").setValue(true);
                         completeButton.setBackgroundColor(Color.RED);
                     }
@@ -218,7 +217,15 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                         public void onClick(View view) {
                             Date newDate = new Date(btnDeadline.getText().toString());
                             Date today = new Date();
-                            long daysBetween = TimeUnit.DAYS.convert(newDate.getTime()-today.getTime(), TimeUnit.MILLISECONDS);
+                            Calendar todayCal = Calendar.getInstance();
+                            todayCal.setTime(today);
+                            todayCal.set(Calendar.HOUR,0);
+                            todayCal.set(Calendar.MINUTE,0);
+                            todayCal.set(Calendar.SECOND,-1);
+                            Date newToday = todayCal.getTime();
+
+                            long daysBetween = TimeUnit.DAYS.convert(newDate.getTime()-newToday.getTime(), TimeUnit.MILLISECONDS);
+
                             String newDaysLeft = String.valueOf(daysBetween);
 
                             ////  Check Validation ////
@@ -229,7 +236,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                             } else if (newDaysLeft.charAt(0) == '-') {
                                 Toast.makeText(bottomSheetDialog.getContext(),R.string.error_wrongDate, Toast.LENGTH_SHORT).show();
                             } else {
-                                Event event = new Event(newTitle[0], newDescription[0], newDate.toString(), newDaysLeft, uid, isPrivate, isComplete);
+                                Event event = new Event(newTitle[0], newDescription[0], newDate.toString(),  Integer.valueOf(newDaysLeft), uid, isPrivate, isComplete);
                                 firebase.child("title").setValue(event.getTitle());
                                 firebase.child("description").setValue(event.getDescription());
                                 firebase.child("deadline").setValue(event.getDeadline());

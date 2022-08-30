@@ -27,6 +27,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -88,25 +89,32 @@ public class HomeFragment extends Fragment {
                     Date deadlineDate = new Date(deadlineString.getValue().toString());
 
                     Date today = new Date();
-                    long daysBetween = TimeUnit.DAYS.convert(deadlineDate.getTime()-today.getTime(), TimeUnit.MILLISECONDS);
 
+                    Calendar todayCal = Calendar.getInstance();
+                    todayCal.setTime(today);
+                    todayCal.set(Calendar.HOUR,0);
+                    todayCal.set(Calendar.MINUTE,0);
+                    todayCal.set(Calendar.SECOND,-1);
+                    Date newToday = todayCal.getTime();
+
+                    long daysBetween = TimeUnit.DAYS.convert(deadlineDate.getTime()-newToday.getTime(), TimeUnit.MILLISECONDS);
                     if (snapshot.child("iscomplete").getValue().toString() == "true") {
                         snapshot.child("priority").getRef().setValue("999999999999999");
-                        snapshot.child("daysleft").getRef().setValue(String.valueOf(daysBetween));
+                        snapshot.child("daysleft").getRef().setValue((int) daysBetween);
                     } else {
-                        snapshot.child("priority").getRef().setValue(String.valueOf(daysBetween));
-                        snapshot.child("daysleft").getRef().setValue(String.valueOf(daysBetween));
+                        snapshot.child("priority").getRef().setValue((int) daysBetween);
+                        snapshot.child("daysleft").getRef().setValue((int) daysBetween);
                     }
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-                Log.w("sad", "Failed to read value.", error.toException());
+                Log.w(String.valueOf(R.string.firebase_readError), "Failed to read value.", error.toException());
             }
         });
 
-        Query queryBy = mbase.orderByChild("priority").startAt("0").limitToFirst(4);
+        Query queryBy = mbase.orderByChild("priority").startAt(0).limitToFirst(4);
 
 
         recyclerView.setNestedScrollingEnabled(false);

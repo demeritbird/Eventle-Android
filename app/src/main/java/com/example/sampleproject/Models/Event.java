@@ -5,7 +5,7 @@ public class Event {
     private String title;
     private String description;
     private String deadline;
-    private String daysleft;
+    private Integer daysleft;
     private String uid;
     private Boolean isprivate;
     private Boolean iscomplete;
@@ -14,7 +14,7 @@ public class Event {
 
 
     // FIXME: Change to int type for daysleft --> requires a helper function i guess
-    public Event(String title, String description, String deadline, String daysleft, String uid, Boolean isprivate, Boolean iscomplete) {
+    public Event(String title, String description, String deadline, Integer daysleft, String uid, Boolean isprivate, Boolean iscomplete) {
         this.title = title;
         this.description = description;
         this.deadline = deadline;
@@ -31,8 +31,8 @@ public class Event {
     public void setDescription(String description) { this.description = description; }
     public String getDeadline() { return deadline; }
     public void setDeadline(String deadline) { this.deadline = deadline; }
-    public  String getDaysLeft() { return daysleft; }
-    public void setDaysLeft(String daysLeft) {this.daysleft = daysleft; }
+    public  Integer getDaysLeft() { return daysleft; }
+    public void setDaysLeft(Integer daysLeft) {this.daysleft = daysleft; }
     public  String getUid() { return uid; }
     public void setUid(String uid) {this.uid = uid; }
     public  Boolean getIsPrivate() { return isprivate; }
