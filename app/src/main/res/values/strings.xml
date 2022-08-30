@@ -17,7 +17,9 @@
     <string name="deadline">Deadline</string>
 
     <string name="add_event">Add Event</string>
+    <string name="edit_event">Edit Event</string>
     <string name="submit">Submit</string>
+
 
 
     <string name="Upcoming_Events">Upcoming Events</string>
@@ -28,6 +30,13 @@
     <string name="TAG_MESSAGE">Tag Message Reply</string>
     <string name="DATE_FORMAT">MMM yyyy</string>
     <string name="noDaysInCalendar">42</string>
+
+
+
+    <!-- Error Messages -->
+    <string name="error_emptyTitle">Please fill in title!</string>
+    <string name="error_emptyDescription">Please fill in description!</string>
+    <string name="error_wrongDate">Please fill in a future date!</string>
 
     <string name="action_settings">Settings</string>
 

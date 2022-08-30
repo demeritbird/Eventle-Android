@@ -47,7 +47,7 @@ public class CustomCalendarView extends LinearLayout {
     private TextView txtDate;
     private GridView grid;
 
-    public static Date dateSelected = new Date("Tue Sep 27 00:00:00 GMT 2022");
+    public static Date dateSelected = new Date();
 
     CustomCalendarView cv = findViewById(R.id.calendar_view);
 
