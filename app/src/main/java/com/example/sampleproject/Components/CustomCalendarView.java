@@ -1,9 +1,11 @@
 package com.example.sampleproject.Components;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -118,6 +120,7 @@ public class CustomCalendarView extends LinearLayout {
             @Override
             public void onItemClick(AdapterView<?> view, View cell, int position, long id) {
 
+
                 Date unchanged = (Date) view.getItemAtPosition(position);
                 Calendar now = Calendar.getInstance();
                 now.setTime(unchanged);
@@ -150,9 +153,13 @@ public class CustomCalendarView extends LinearLayout {
     }
 
     public void invokeFirebaseEvent(CustomCalendarView calendarView) {
+        Bundle resultIntent = ((Activity) getContext()).getIntent().getExtras();
+        String id = resultIntent.getString("id", "1");
+        String otherId = resultIntent.getString("otherId", "2");
+
         HashSet<Date> events = new HashSet<>();
         FirebaseDatabase database = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link));
-        DatabaseReference myRef = database.getReference().child("events");
+        DatabaseReference myRef = database.getReference().child("members").child("member"+id).child("events");
 
         // Read from the database
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {

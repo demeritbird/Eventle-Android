@@ -45,11 +45,11 @@ public class HomeFragment extends Fragment {
         recyclerView = root.findViewById(R.id.recycler1);
 
         ///// Recycler View ////
-        initRecycler(root);
-        Bundle resultIntent = getActivity().getIntent().getExtras();
-        String id = resultIntent.getString("id", "2");
-        String newUserName = resultIntent.getString("username", "no");
 
+        Bundle resultIntent = getActivity().getIntent().getExtras();
+        String id = resultIntent.getString("id", "1");
+        String newUserName = resultIntent.getString("username", "no");
+        initRecycler(root, id);
         ImageView userImage = root.findViewById(R.id.userImage);
         DatabaseReference firebase2 = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("members").child("member" + id).child("image").child("imageUri");
         firebase2.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -77,9 +77,10 @@ public class HomeFragment extends Fragment {
     }
 
     // TODO: move to helper function file, this file is only for view
-    public void initRecycler(View root) {
+    public void initRecycler(View root, String selId) {
         // Create a instance of the database and get its reference
-        mbase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
+        mbase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference()
+                    .child("members").child("member"+selId).child("events");
 
         mbase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -114,7 +115,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        Query queryBy = mbase.orderByChild("priority").startAt(0).limitToFirst(4);
+
+        Query queryBy = mbase.orderByChild("priority").startAt(0).limitToFirst(3);
 
 
         recyclerView.setNestedScrollingEnabled(false);

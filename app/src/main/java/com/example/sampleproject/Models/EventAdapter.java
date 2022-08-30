@@ -1,6 +1,8 @@
 package com.example.sampleproject.Models;
 
+import android.app.Activity;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import com.example.sampleproject.Components.CalendarPickerDialog;
 import com.example.sampleproject.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -88,11 +91,14 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
             daysleft = itemView.findViewById(R.id.days_left);
             final String[] newTitle = {title.getText().toString()};
             final String[] newDescription = {description.getText().toString()};
+            Bundle resultIntent = ((Activity) itemView.getContext()).getIntent().getExtras();
+            String id = resultIntent.getString("id", "1");
+            String otherId = resultIntent.getString("otherId", "2");
 
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClickEdit(editButton, newTitle, newDescription);
+                    onClickEdit(editButton, newTitle, newDescription, id, otherId);
                 }
             });
             delButton.setOnClickListener(this);
@@ -137,7 +143,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
             });
         }
 
-        private void onClickEdit(Button editButton, String[] newTitle, String[] newDescription) {
+        private void onClickEdit(Button editButton, String[] newTitle, String[] newDescription, String id, String otherId) {
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -208,7 +214,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                     btnPrivacySelect(privateSel, publicSel);
 
 
-                    DatabaseReference firebase = FirebaseDatabase.getInstance(view.getContext().getResources().getString(R.string.firebase_link)).getReference().child("events").child(uid);
+                    DatabaseReference firebase = FirebaseDatabase.getInstance(view.getContext().getResources().getString(R.string.firebase_link)).getReference();
 
 
                     // Button //
@@ -237,14 +243,16 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                                 Toast.makeText(bottomSheetDialog.getContext(),R.string.error_wrongDate, Toast.LENGTH_SHORT).show();
                             } else {
                                 Event event = new Event(newTitle[0], newDescription[0], newDate.toString(),  Integer.valueOf(newDaysLeft), uid, isPrivate, isComplete);
-                                firebase.child("title").setValue(event.getTitle());
-                                firebase.child("description").setValue(event.getDescription());
-                                firebase.child("deadline").setValue(event.getDeadline());
-                                firebase.child("daysleft").setValue(event.getDaysLeft());
-                                firebase.child("uid").setValue(event.getUid());
-                                firebase.child("isprivate").setValue(event.getIsPrivate());
-                                firebase.child("priority").setValue(event.getDaysLeft());
-                                firebase.child("iscomplete").setValue(event.getIsComplete());
+
+                                if (isPrivate) {
+                                    editToFirebase(event, firebase, id);
+                                    removeFromFireBase(event, firebase, otherId);
+                                } else {
+                                    editToFirebase(event, firebase, id);
+                                    editToFirebase(event, firebase, otherId);
+                                }
+                                System.out.println("------------------------");
+                                //editToFirebase(event, firebase, id);
                                 bottomSheetDialog.dismiss();
                             }
                         }
@@ -255,6 +263,24 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                     bottomSheetDialog.show();
                 }
             });
+        }
+
+        private void editToFirebase(Event event, DatabaseReference firebase, String selId) {
+            DatabaseReference selFirebase = firebase.child("members").child("member"+selId).child("events").child(event.getUid());
+
+            selFirebase.child("title").setValue(event.getTitle());
+            selFirebase.child("description").setValue(event.getDescription());
+            selFirebase.child("deadline").setValue(event.getDeadline());
+            selFirebase.child("daysleft").setValue(event.getDaysLeft());
+            selFirebase.child("uid").setValue(event.getUid());
+            selFirebase.child("isprivate").setValue(event.getIsPrivate());
+            selFirebase.child("priority").setValue(event.getDaysLeft());
+            selFirebase.child("iscomplete").setValue(event.getIsComplete());
+        }
+
+
+        private void removeFromFireBase(Event event, DatabaseReference firebase, String otherId) {
+            firebase.child("members").child("member"+otherId).child("events").child(event.getUid()).setValue(null);
         }
 
         private void btnPrivacySelect(Button privateSel, Button publicSel) {
@@ -278,6 +304,8 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
         }
 
     }
+
+
 
     private void postToFireBase(View bottomSheetView, Event event, DatabaseReference firebase) {
 //        bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
