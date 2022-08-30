@@ -66,18 +66,18 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
 
     @NonNull
     @Override
-    public eventsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
+    public eventsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_event_card, parent, false);
 
         return new eventsViewHolder(view);
     }
 
 
-    class eventsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class eventsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView title, description, deadline, daysleft;
         String uid;
         Boolean isPrivate, isComplete;
-        View yes =itemView.findViewById(R.id.event_background);
+        View yes = itemView.findViewById(R.id.event_background);
 
         Button completeButton = itemView.findViewById(R.id.btn_isComplete);
         Button editButton = itemView.findViewById(R.id.btn_editEvent);
@@ -98,10 +98,16 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClickEdit(editButton, newTitle, newDescription, id, otherId);
+                    onClickEdit(v, editButton, newTitle, newDescription, id, otherId);
                 }
             });
-            delButton.setOnClickListener(this);
+            delButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("one");
+                    onClickDelete(v, delButton, id, otherId);
+                }
+            });
             completeButton.setOnClickListener(this);
 
 
@@ -111,8 +117,6 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
         public void onClick(View view) {
             if (view.getId() == R.id.btn_isComplete) {
                 onClickComplete(completeButton);
-            }  else if(view.getId() == R.id.btn_delEvent) {
-                onClickDelete(delButton);
             }
         }
 
@@ -133,140 +137,142 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
             });
         }
 
-        private void onClickDelete(Button delButton) {
-            delButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    DatabaseReference firebase = FirebaseDatabase.getInstance(view.getContext().getResources().getString(R.string.firebase_link)).getReference().child("events").child(uid);
-                    firebase.removeValue();
-                }
-            });
+        private void onClickDelete(View view, Button delButton, String id, String otherId) {
+
+            DatabaseReference firebase = FirebaseDatabase.getInstance(view.getContext().getResources().getString(R.string.firebase_link)).getReference();
+            removeFromFireBase(uid, firebase, id);
+            removeFromFireBase(uid, firebase, otherId);
+            System.out.println("two");
+
         }
 
-        private void onClickEdit(Button editButton, String[] newTitle, String[] newDescription, String id, String otherId) {
-            editButton.setOnClickListener(new View.OnClickListener() {
+        private void onClickEdit(View view, Button editButton, String[] newTitle, String[] newDescription, String id, String otherId) {
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(view.getContext(), R.style.BottomSheetDialogTheme);
+            View bottomSheetView = LayoutInflater.from(bottomSheetDialog.getContext()).inflate(R.layout.fragment_bottom_dialog, null);
+            newTitle[0] = title.getText().toString();
+            newDescription[0] = description.getText().toString();
+
+
+            // Text Components
+
+
+            // Edit Event //
+            TextView eventTitle = bottomSheetView.findViewById(R.id.event_title);
+            eventTitle.setText(R.string.edit_event);
+
+            // Title //
+            EditText titleDialog = bottomSheetView.findViewById(R.id.title_dialog);
+            titleDialog.setText(title.getText());
+
+
+            titleDialog.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void onClick(View view) {
-                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(view.getContext(), R.style.BottomSheetDialogTheme);
-                    View bottomSheetView = LayoutInflater.from(bottomSheetDialog.getContext()).inflate(R.layout.fragment_bottom_dialog, null);
-                    newTitle[0] = title.getText().toString();
-                    newDescription[0] = description.getText().toString();
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
 
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
 
-                    // Text Components
-
-
-                    // Edit Event //
-                    TextView eventTitle = bottomSheetView.findViewById(R.id.event_title);
-                    eventTitle.setText(R.string.edit_event);
-
-                    // Title //
-                    EditText titleDialog = bottomSheetView.findViewById(R.id.title_dialog);
-                    titleDialog.setText(title.getText());
-
-
-                    titleDialog.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
-                        @Override
-                        public void afterTextChanged(Editable editable) {
-                            newTitle[0] = editable.toString();
-                            System.out.println(newTitle[0]);
-                        }
-                    });
-
-                    // Description
-                    EditText descriptionDialog = bottomSheetView.findViewById(R.id.description_dialog);
-                    descriptionDialog.setText(description.getText());
-
-
-                    descriptionDialog.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
-                        @Override
-                        public void afterTextChanged(Editable editable) {
-                            newDescription[0] = editable.toString();
-                        }
-                    });
-
-
-                    // Deadline Date Dialog //
-                    Button btnDeadline = bottomSheetView.findViewById(R.id.btn_deadline);
-                    btnDeadline.setText(deadline.getText().toString());
-                    CalendarPickerDialog.initDatePicker(btnDeadline.getContext(), btnDeadline);
-
-
-                    // privacy //
-                    Boolean newPrivacy;
-                    Button privateSel = bottomSheetView.findViewById(R.id.btn_private_sel);
-                    Button publicSel = bottomSheetView.findViewById(R.id.btn_public_sel);
-                    if (isPrivate) {
-                        privateSel.setBackgroundColor(Color.YELLOW);
-                        publicSel.setBackgroundColor(Color.GRAY);
-                    } else {
-                        publicSel.setBackgroundColor(Color.RED);
-                        privateSel.setBackgroundColor(Color.GRAY);
-                    }
-                    btnPrivacySelect(privateSel, publicSel);
-
-
-                    DatabaseReference firebase = FirebaseDatabase.getInstance(view.getContext().getResources().getString(R.string.firebase_link)).getReference();
-
-
-                    // Button //
-                    bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Date newDate = new Date(btnDeadline.getText().toString());
-                            Date today = new Date();
-                            Calendar todayCal = Calendar.getInstance();
-                            todayCal.setTime(today);
-                            todayCal.set(Calendar.HOUR,0);
-                            todayCal.set(Calendar.MINUTE,0);
-                            todayCal.set(Calendar.SECOND,-1);
-                            Date newToday = todayCal.getTime();
-
-                            long daysBetween = TimeUnit.DAYS.convert(newDate.getTime()-newToday.getTime(), TimeUnit.MILLISECONDS);
-
-                            String newDaysLeft = String.valueOf(daysBetween);
-
-                            ////  Check Validation ////
-                            if (newTitle[0].equals("")) {
-                                Toast.makeText(bottomSheetDialog.getContext(),R.string.error_emptyTitle, Toast.LENGTH_SHORT).show();
-                            } else if (newDescription[0].equals("")) {
-                                Toast.makeText(bottomSheetDialog.getContext(),R.string.error_emptyDescription, Toast.LENGTH_SHORT).show();
-                            } else if (newDaysLeft.charAt(0) == '-') {
-                                Toast.makeText(bottomSheetDialog.getContext(),R.string.error_wrongDate, Toast.LENGTH_SHORT).show();
-                            } else {
-                                Event event = new Event(newTitle[0], newDescription[0], newDate.toString(),  Integer.valueOf(newDaysLeft), uid, isPrivate, isComplete);
-
-                                if (isPrivate) {
-                                    editToFirebase(event, firebase, id);
-                                    removeFromFireBase(event, firebase, otherId);
-                                } else {
-                                    editToFirebase(event, firebase, id);
-                                    editToFirebase(event, firebase, otherId);
-                                }
-                                System.out.println("------------------------");
-                                //editToFirebase(event, firebase, id);
-                                bottomSheetDialog.dismiss();
-                            }
-                        }
-                    });
-
-                    //postToFireBase(bottomSheetView, event, firebase);
-                    bottomSheetDialog.setContentView(bottomSheetView);
-                    bottomSheetDialog.show();
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    newTitle[0] = editable.toString();
+                    System.out.println(newTitle[0]);
                 }
             });
+
+            // Description
+            EditText descriptionDialog = bottomSheetView.findViewById(R.id.description_dialog);
+            descriptionDialog.setText(description.getText());
+
+
+            descriptionDialog.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    newDescription[0] = editable.toString();
+                }
+            });
+
+
+            // Deadline Date Dialog //
+            Button btnDeadline = bottomSheetView.findViewById(R.id.btn_deadline);
+            btnDeadline.setText(deadline.getText().toString());
+            CalendarPickerDialog.initDatePicker(btnDeadline.getContext(), btnDeadline);
+
+
+            // privacy //
+            Boolean newPrivacy;
+            Button privateSel = bottomSheetView.findViewById(R.id.btn_private_sel);
+            Button publicSel = bottomSheetView.findViewById(R.id.btn_public_sel);
+            if (isPrivate) {
+                privateSel.setBackgroundColor(Color.YELLOW);
+                publicSel.setBackgroundColor(Color.GRAY);
+            } else {
+                publicSel.setBackgroundColor(Color.RED);
+                privateSel.setBackgroundColor(Color.GRAY);
+            }
+            btnPrivacySelect(privateSel, publicSel);
+
+
+            DatabaseReference firebase = FirebaseDatabase.getInstance(view.getContext().getResources().getString(R.string.firebase_link)).getReference();
+
+
+            // Button //
+            bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Date newDate = new Date(btnDeadline.getText().toString());
+                    Date today = new Date();
+                    Calendar todayCal = Calendar.getInstance();
+                    todayCal.setTime(today);
+                    todayCal.set(Calendar.HOUR, 0);
+                    todayCal.set(Calendar.MINUTE, 0);
+                    todayCal.set(Calendar.SECOND, -1);
+                    Date newToday = todayCal.getTime();
+
+                    long daysBetween = TimeUnit.DAYS.convert(newDate.getTime() - newToday.getTime(), TimeUnit.MILLISECONDS);
+
+                    String newDaysLeft = String.valueOf(daysBetween);
+
+                    ////  Check Validation ////
+                    if (newTitle[0].equals("")) {
+                        Toast.makeText(bottomSheetDialog.getContext(), R.string.error_emptyTitle, Toast.LENGTH_SHORT).show();
+                    } else if (newDescription[0].equals("")) {
+                        Toast.makeText(bottomSheetDialog.getContext(), R.string.error_emptyDescription, Toast.LENGTH_SHORT).show();
+                    } else if (newDaysLeft.charAt(0) == '-') {
+                        Toast.makeText(bottomSheetDialog.getContext(), R.string.error_wrongDate, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Event event = new Event(newTitle[0], newDescription[0], newDate.toString(), Integer.valueOf(newDaysLeft), uid, isPrivate, isComplete);
+
+                        if (isPrivate) {
+                            editToFirebase(event, firebase, id);
+                            removeFromFireBase(uid, firebase, otherId);
+                        } else {
+                            editToFirebase(event, firebase, id);
+                            editToFirebase(event, firebase, otherId);
+                        }
+                        System.out.println("------------------------");
+                        //editToFirebase(event, firebase, id);
+                        bottomSheetDialog.dismiss();
+                    }
+                }
+            });
+
+            //postToFireBase(bottomSheetView, event, firebase);
+            bottomSheetDialog.setContentView(bottomSheetView);
+            bottomSheetDialog.show();
         }
 
         private void editToFirebase(Event event, DatabaseReference firebase, String selId) {
-            DatabaseReference selFirebase = firebase.child("members").child("member"+selId).child("events").child(event.getUid());
+            DatabaseReference selFirebase = firebase.child("members").child("member" + selId).child("events").child(event.getUid());
 
             selFirebase.child("title").setValue(event.getTitle());
             selFirebase.child("description").setValue(event.getDescription());
@@ -279,8 +285,8 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
         }
 
 
-        private void removeFromFireBase(Event event, DatabaseReference firebase, String otherId) {
-            firebase.child("members").child("member"+otherId).child("events").child(event.getUid()).setValue(null);
+        private void removeFromFireBase(String uid, DatabaseReference firebase, String otherId) {
+            firebase.child("members").child("member" + otherId).child("events").child(uid).setValue(null);
         }
 
         private void btnPrivacySelect(Button privateSel, Button publicSel) {
@@ -303,22 +309,5 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
             });
         }
 
-    }
-
-
-
-    private void postToFireBase(View bottomSheetView, Event event, DatabaseReference firebase) {
-//        bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                firebase.child("title").setValue(event.getTitle());
-//                firebase.child("description").setValue(event.getDescription());
-//                firebase.child("deadline").setValue(event.getDeadline());
-//                firebase.child("daysleft").setValue(event.getDaysLeft());
-//                firebase.child("uid").setValue(event.getUid());
-//                firebase.child("isprivate").setValue(event.getIsPrivate());
-//                firebase.child("iscomplete").setValue(event.getIsComplete());
-//            }
-//        });
     }
 }
