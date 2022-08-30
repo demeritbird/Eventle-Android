@@ -87,9 +87,7 @@ public class CalendarFragment extends Fragment {
 
                 selectedDate = now.getTime();
 
-                System.out.println(selectedDate);
                 Toast.makeText(getContext(), selectedDate.toString(), Toast.LENGTH_SHORT).show();
-                System.out.println("---asd");
                 updateRecycler(root);
             }
         });
@@ -118,10 +116,13 @@ public class CalendarFragment extends Fragment {
                 btnPublic.setBackgroundColor(Color.RED);
                 btnPrivate.setBackgroundColor(Color.GRAY);
 
-
+                Button btnDeadline = bottomSheetView.findViewById(R.id.btn_deadline);
+                CalendarPickerDialog.initDatePicker(btnDeadline.getContext(), btnDeadline);
+                btnDeadline.setText(CalendarPickerDialog.getTodayDate());
                 // Refactor Code here
                 btnPrivacySettingOnClickListeners();
                 postToFireBase(bottomSheetView, title, description, daysleft);
+
 
                 bottomSheetDialog.setContentView(bottomSheetView);
                 bottomSheetDialog.show();
