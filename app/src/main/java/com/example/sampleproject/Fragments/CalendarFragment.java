@@ -97,6 +97,7 @@ public class CalendarFragment extends Fragment {
             }
         });
 
+
         //// Init GET firebase ////
         calendarView.invokeFirebaseEvent(calendarView);
 
