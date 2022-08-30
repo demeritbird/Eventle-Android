@@ -119,8 +119,6 @@ public class CustomCalendarView extends LinearLayout {
             public void onItemClick(AdapterView<?> view, View cell, int position, long id) {
 
                 Date unchanged = (Date) view.getItemAtPosition(position);
-
-
                 Calendar now = Calendar.getInstance();
                 now.setTime(unchanged);
                 now.set(Calendar.HOUR, 0);
@@ -134,9 +132,6 @@ public class CustomCalendarView extends LinearLayout {
 
                 cv.invokeFirebaseEvent(cv);
                 dateSelected = changed;
-
-
-
 
             }
         });
@@ -257,7 +252,7 @@ public class CustomCalendarView extends LinearLayout {
 
             if (month != today.getMonth() || year != today.getYear()) {
                 // if this day is outside current month, grey it out
-                ((TextView) view).setTextColor(getResources().getColor(R.color.main_blue));
+                ((TextView) view).setTextColor(getResources().getColor(R.color.dark_grey_1));
             } else if (day == today.getDate()) {
                 // if it is today, set it to blue/bold
                 ((TextView) view).setTypeface(null, Typeface.BOLD);

@@ -34,6 +34,7 @@
 
 
     <!-- Error Messages -->
+    <string name="firebase_readError">Firebase Error!</string>
     <string name="error_emptyTitle">Please fill in title!</string>
     <string name="error_emptyDescription">Please fill in description!</string>
     <string name="error_wrongDate">Please fill in a future date!</string>

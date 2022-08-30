@@ -66,7 +66,7 @@ public class CalendarFragment extends Fragment {
         recyclerView = root.findViewById(R.id.recycler2);
         todayText = root.findViewById(R.id.tv_selDate);
         Date today = new Date();
-        String todayString = CalendarPickerDialog.makeDateString(today.getDay(), today.getMonth(), today.getYear());
+        String todayString = CalendarPickerDialog.makeDateString(today.getDate(), today.getMonth()+1, today.getYear()+1900);
 
         todayText.setText(todayString);
 
@@ -194,7 +194,7 @@ public class CalendarFragment extends Fragment {
                         } else {
                             DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
                             String uuid = UUID.randomUUID().toString();
-                            Event event = new Event(newTitle[0], newDescription[0], newDate.toString(), newDaysLeft, uuid, isPrivate[0], false);
+                            Event event = new Event(newTitle[0], newDescription[0], newDate.toString(),  Integer.valueOf(newDaysLeft), uuid, isPrivate[0], false);
 
                             //// Post to Firebase TODO: put in another function ////
                             firebase.child(uuid).child("title").setValue(event.getTitle());

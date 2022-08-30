@@ -97,30 +97,24 @@ public class HomeFragment extends Fragment {
                     todayCal.set(Calendar.SECOND,-1);
                     Date newToday = todayCal.getTime();
 
-                    System.out.println(deadlineDate);
-                    System.out.println(newToday.toString());
-
                     long daysBetween = TimeUnit.DAYS.convert(deadlineDate.getTime()-newToday.getTime(), TimeUnit.MILLISECONDS);
-                    System.out.println(daysBetween);
-                    System.out.println("-----------");
-
                     if (snapshot.child("iscomplete").getValue().toString() == "true") {
                         snapshot.child("priority").getRef().setValue("999999999999999");
-                        snapshot.child("daysleft").getRef().setValue(String.valueOf(daysBetween));
+                        snapshot.child("daysleft").getRef().setValue((int) daysBetween);
                     } else {
-                        snapshot.child("priority").getRef().setValue(String.valueOf(daysBetween));
-                        snapshot.child("daysleft").getRef().setValue(String.valueOf(daysBetween));
+                        snapshot.child("priority").getRef().setValue((int) daysBetween);
+                        snapshot.child("daysleft").getRef().setValue((int) daysBetween);
                     }
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-                Log.w("sad", "Failed to read value.", error.toException());
+                Log.w(String.valueOf(R.string.firebase_readError), "Failed to read value.", error.toException());
             }
         });
 
-        Query queryBy = mbase.orderByChild("priority").startAt("0").limitToFirst(4);
+        Query queryBy = mbase.orderByChild("priority").startAt(0).limitToFirst(4);
 
 
         recyclerView.setNestedScrollingEnabled(false);
