@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sampleproject.Fragments.CalendarFragment;
 import com.example.sampleproject.Models.Event;
@@ -75,7 +76,19 @@ public class CustomCalendarView extends LinearLayout {
         assignUiElements();
         assignClickHandlers();
 
-        updateCalendar();
+        Date unchanged = new Date();
+        Calendar now = Calendar.getInstance();
+        now.setTime(unchanged);
+        now.set(Calendar.HOUR, 0);
+        now.set(Calendar.MINUTE, 0);
+        now.set(Calendar.SECOND, 0);
+        now.set(Calendar.HOUR_OF_DAY, 0);
+
+        Date changed = now.getTime();
+        dateSelected = changed;
+
+        cv.invokeFirebaseEvent(cv);
+//        cv.updateCalendar();
     }
 
     private void loadDateFormat(AttributeSet attrs) {
@@ -130,11 +143,11 @@ public class CustomCalendarView extends LinearLayout {
                 now.set(Calendar.HOUR_OF_DAY, 0);
 
                 Date changed = now.getTime();
-
+                dateSelected = changed;
                 eventHandler.onDayLongPress(changed);
 
                 cv.invokeFirebaseEvent(cv);
-                dateSelected = changed;
+
 
             }
         });
@@ -171,6 +184,7 @@ public class CustomCalendarView extends LinearLayout {
                     //FIXME: Fails if the deadline is not in a good date format.
                     events.add(addDate);
                 }
+                System.out.println("helpppppppppppppppppppppp");
                 calendarView.updateCalendar(events);
             }
 
@@ -186,8 +200,10 @@ public class CustomCalendarView extends LinearLayout {
     }
 
     public void updateCalendar(HashSet<Date> events) {
+        System.out.println("tow");
         ArrayList<Date> cells = new ArrayList<>();
         Calendar calendar = (Calendar) currentDate.clone();
+
 
         // determine the cell for current month's beginning
         calendar.set(Calendar.DAY_OF_MONTH, 1);
@@ -201,6 +217,8 @@ public class CustomCalendarView extends LinearLayout {
             cells.add(calendar.getTime());
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
+
+        System.out.println(events.size());
 
         // update grid
         grid.setAdapter(new CalendarAdapter(getContext(), cells, events));

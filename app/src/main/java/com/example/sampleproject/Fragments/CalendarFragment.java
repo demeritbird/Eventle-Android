@@ -217,12 +217,7 @@ public class CalendarFragment extends Fragment {
                             updateRecycler(root,id,errorMsg);
 
                             // Reload Page w new fragment.
-                            Fragment f;
-                            f = new CalendarFragment();
-                            FragmentTransaction ft2 =   getFragmentManager().beginTransaction();
-                            ft2.replace(R.id.framelayout_line,f);
-                            ft2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                            ft2.commit();
+                            refreshFragment();
                         }
 
 
@@ -235,6 +230,15 @@ public class CalendarFragment extends Fragment {
         });
 
         return root;
+    }
+
+    private void refreshFragment() {
+        Fragment f;
+        f = new CalendarFragment();
+        FragmentTransaction ft2 =   getFragmentManager().beginTransaction();
+        ft2.replace(R.id.framelayout_line,f);
+        ft2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft2.commit();
     }
 
     private void postToFirebase(DatabaseReference firebase, String uuid, Event event, String selId) {
@@ -254,9 +258,22 @@ public class CalendarFragment extends Fragment {
 
     private void initRecycler(View root, String selId, TextView errorMsg) {
         // Create a instance of the database and get its reference
+
+
+        Calendar now = Calendar.getInstance();
+        now.setTime(selectedDate);
+        now.set(Calendar.HOUR, 0);
+        now.set(Calendar.MINUTE, 0);
+        now.set(Calendar.SECOND, 0);
+        now.set(Calendar.HOUR_OF_DAY, 0);
+
+        Date changed = now.getTime();
+
+
         mbase = (DatabaseReference) FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference()
                                                     .child("members").child("member"+selId).child("events");
-        Query query = mbase.orderByChild("deadline").equalTo(selectedDate.toString());
+        Query query = mbase.orderByChild("deadline").equalTo(changed.toString());
+        System.out.println(selectedDate.toString());
 
         FirebaseRecyclerOptions<Event> options
                 = new FirebaseRecyclerOptions.Builder<Event>()
