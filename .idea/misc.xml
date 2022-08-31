@@ -9,12 +9,25 @@
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable-v24/ic_arrow_right.xml" value="0.114" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.256" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/bottom_dialog_background.xml" value="0.102" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/bottom_nav_selector.xml" value="0.1365" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/button_bg.xml" value="0.103" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/circle_boundary.xml" value="0.114" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/element_darken.xml" value="0.176" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/element_darken_2.xml" value="0.177" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/element_darken_text.xml" value="0.177" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/event_date.xml" value="0.1175" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/eventcard_cb.xml" value="0.2585" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/eventcard_cb_complete.xml" value="0.2585" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/eventcard_textbg.xml" value="0.2595" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/eventcard_textbg_complete.xml" value="0.2595" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/eventcard_viewbg.xml" value="0.2585" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/eventcard_viewbg_complete.xml" value="0.2595" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/ic_arrow_left.xml" value="0.114" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.256" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/ic_baseline_calendar_24.xml" value="0.102" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.2595" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/ic_baseline_done_24.xml" value="0.2595" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.2595" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.1025" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/ic_baseline_notifications_24.xml" value="0.1025" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.231" />
@@ -28,24 +41,25 @@
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/rounded_corner.xml" value="0.103" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/drawable/see_button.xml" value="0.114" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/activity_application.xml" value="0.2" />
-        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/activity_entrypage.xml" value="0.264" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/activity_entrypage.xml" value="0.536" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/activity_sub.xml" value="0.264" />
-        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/calendar_view.xml" value="0.2955729166666667" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/calendar_view.xml" value="0.264" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/control_calendar.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/control_calendar_day.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/control_calendar_view.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/event_card.xml" value="0.4" />
-        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/fragment_bottom_dialog.xml" value="0.3744075829383886" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/fragment_bottom_dialog.xml" value="0.264" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/fragment_calendar.xml" value="0.264" />
-        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/fragment_event_card.xml" value="0.152" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/fragment_event_card.xml" value="0.4" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/fragment_event_card_complete.xml" value="0.39708265802269044" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/fragment_home.xml" value="0.264" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/fragment_notification.xml" value="0.21965579710144928" />
-        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/fragment_profile.xml" value="0.264" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/fragment_profile.xml" value="0.44380069524913096" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/fragment_settings.xml" value="0.21965579710144928" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/layout_bottom_dialog.xml" value="0.1" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/layout/person.xml" value="0.264" />
-        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/menu/calendar_menu.xml" value="0.1921875" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sample-project-schedule-app/app/src/main/res/menu/menu_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Lek Jie Wei/Desktop/sampleProject/app/src/main/res/layout/activity_main.xml" value="0.264" />

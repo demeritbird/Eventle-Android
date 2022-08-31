@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,7 @@ import com.example.sampleproject.R;
 import com.example.sampleproject.Models.Event;
 import com.example.sampleproject.Models.EventAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -62,6 +64,7 @@ public class HomeFragment extends Fragment {
                 if (!yes.equals("")) {
                     Uri imageUri = Uri.parse(yes);
                     Picasso.get().load(imageUri).placeholder(R.drawable.dembirdimage).into(userImage);
+                    System.out.println("heereerer!~!!!!");
                 } else {
                     System.out.println("no image");
                 }
@@ -83,7 +86,7 @@ public class HomeFragment extends Fragment {
     public void initRecycler(View root, String selId, TextView errorMsg) {
         // Create a instance of the database and get its reference
         mbase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference()
-                    .child("members").child("member"+selId).child("events");
+                .child("members").child("member" + selId).child("events");
 
         mbase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -96,18 +99,30 @@ public class HomeFragment extends Fragment {
 
                     Calendar todayCal = Calendar.getInstance();
                     todayCal.setTime(today);
-                    todayCal.set(Calendar.HOUR,0);
-                    todayCal.set(Calendar.MINUTE,0);
-                    todayCal.set(Calendar.SECOND,-1);
+                    todayCal.set(Calendar.HOUR, 0);
+                    todayCal.set(Calendar.MINUTE, 0);
+                    todayCal.set(Calendar.SECOND, -1);
                     Date newToday = todayCal.getTime();
 
-                    long daysBetween = TimeUnit.DAYS.convert(deadlineDate.getTime()-newToday.getTime(), TimeUnit.MILLISECONDS);
+                    long daysBetween = TimeUnit.DAYS.convert(deadlineDate.getTime() - newToday.getTime(), TimeUnit.MILLISECONDS);
                     if (snapshot.child("iscomplete").getValue().toString() == "true") {
-                        snapshot.child("priority").getRef().setValue("999999999999999");
-                        snapshot.child("daysleft").getRef().setValue((int) daysBetween);
+                        snapshot.child("priority").getRef().setValue(999999 + Integer.parseInt(snapshot.child("daysleft").getValue().toString()));
+
+                        if (newToday.getDay() == deadlineDate.getDay()) {
+                            snapshot.child("daysleft").getRef().setValue((int) daysBetween - 1);
+                        } else {
+                            snapshot.child("daysleft").getRef().setValue((int) daysBetween);
+                        }
+
                     } else {
-                        snapshot.child("priority").getRef().setValue((int) daysBetween);
-                        snapshot.child("daysleft").getRef().setValue((int) daysBetween);
+
+                        if (newToday.getDay() == deadlineDate.getDay()) {
+                            snapshot.child("daysleft").getRef().setValue((int) daysBetween - 1);
+                            snapshot.child("priority").getRef().setValue((int) daysBetween -1 );
+                        } else {
+                            snapshot.child("daysleft").getRef().setValue((int) daysBetween);
+                            snapshot.child("priority").getRef().setValue((int) daysBetween);
+                        }
                     }
                 }
             }
@@ -124,10 +139,75 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate data
         FirebaseRecyclerOptions<Event> options = new FirebaseRecyclerOptions.Builder<Event>()
-                                                        .setQuery(queryBy, Event.class)
-                                                        .build();
+                .setQuery(queryBy, Event.class)
+                .build();
         // Connecting object of required Adapter class to the Adapter class itself
         recyclerAdapter = new EventAdapter(options);
+        // Connecting Adapter class with the Recycler view*/
+        checkEmptyList(queryBy, errorMsg);
+
+        recyclerView.setAdapter(recyclerAdapter);
+    }
+
+    public void updateRecycler(View root, String selId, TextView errorMsg) {
+
+        mbase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference()
+                .child("members").child("member" + selId).child("events");
+
+        mbase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    DataSnapshot deadlineString = snapshot.child("deadline");
+                    Date deadlineDate = new Date(deadlineString.getValue().toString());
+
+                    Date today = new Date();
+
+                    Calendar todayCal = Calendar.getInstance();
+                    todayCal.setTime(today);
+                    todayCal.set(Calendar.HOUR, 0);
+                    todayCal.set(Calendar.MINUTE, 0);
+                    todayCal.set(Calendar.SECOND, -1);
+                    Date newToday = todayCal.getTime();
+
+                    long daysBetween = TimeUnit.DAYS.convert(deadlineDate.getTime() - newToday.getTime(), TimeUnit.MILLISECONDS);
+
+                    if (snapshot.child("iscomplete").getValue().toString() == "true") {
+                        snapshot.child("priority").getRef().setValue(99999 + Integer.parseInt(snapshot.child("daysleft").getValue().toString()));
+
+                        if (newToday.getDay() == deadlineDate.getDay()) {
+                            snapshot.child("daysleft").getRef().setValue((int) daysBetween - 1);
+                        } else {
+                            snapshot.child("daysleft").getRef().setValue((int) daysBetween);
+                        }
+
+                    } else {
+
+                        if (newToday.getDay() == deadlineDate.getDay()) {
+                            snapshot.child("daysleft").getRef().setValue((int) daysBetween - 1);
+                            snapshot.child("priority").getRef().setValue((int) daysBetween -1 );
+                        } else {
+                            snapshot.child("daysleft").getRef().setValue((int) daysBetween);
+                            snapshot.child("priority").getRef().setValue((int) daysBetween);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.w(String.valueOf(R.string.firebase_readError), "Failed to read value.", error.toException());
+            }
+        });
+        Query queryBy = mbase.orderByChild("priority").startAt(0).endAt(99999).limitToFirst(3);
+
+        // To display the Recycler view linearly
+        // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate data
+        FirebaseRecyclerOptions<Event> options = new FirebaseRecyclerOptions.Builder<Event>()
+                .setQuery(queryBy, Event.class)
+                .build();
+        // Connecting object of required Adapter class to the Adapter class itself
+        recyclerAdapter.updateOptions(options);
         // Connecting Adapter class with the Recycler view*/
         checkEmptyList(queryBy, errorMsg);
 

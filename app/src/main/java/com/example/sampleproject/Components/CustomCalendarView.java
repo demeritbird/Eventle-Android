@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,8 +46,8 @@ public class CustomCalendarView extends LinearLayout {
     private EventHandler eventHandler = null;
 
     private LinearLayout header;
-    private Button btnPrev;
-    private Button btnNext;
+    private ImageButton btnPrev;
+    private ImageButton btnNext;
     private TextView txtDate;
     private GridView grid;
 
@@ -281,7 +282,7 @@ public class CustomCalendarView extends LinearLayout {
             } else if (day == today.getDate()) {
                 // if it is today, set it to blue/bold
                 ((TextView) view).setTypeface(null, Typeface.BOLD);
-                ((TextView) view).setTextColor(getResources().getColor(R.color.main_blue));
+                ((TextView) view).setTextColor(getResources().getColor(R.color.dark_blue_2));
             }
 
             // set text

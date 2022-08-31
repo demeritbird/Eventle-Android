@@ -273,7 +273,7 @@ public class CalendarFragment extends Fragment {
         mbase = (DatabaseReference) FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference()
                                                     .child("members").child("member"+selId).child("events");
         Query query = mbase.orderByChild("deadline").equalTo(changed.toString());
-        System.out.println(selectedDate.toString());
+
 
         FirebaseRecyclerOptions<Event> options
                 = new FirebaseRecyclerOptions.Builder<Event>()
@@ -320,7 +320,6 @@ public class CalendarFragment extends Fragment {
                 .child("members").child("member"+selId).child("events");
         Query query = mbase.orderByChild("deadline").equalTo(selectedDate.toString());
 
-        // FIXME: must just be month, day year la, use the date formatter than we will roll from there
         FirebaseRecyclerOptions<Event> options
                 = new FirebaseRecyclerOptions.Builder<Event>()
                 .setQuery(query, Event.class)

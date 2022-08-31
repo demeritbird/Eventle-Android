@@ -2,6 +2,7 @@ package com.example.sampleproject.Models;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,20 +11,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sampleproject.Components.CalendarPickerDialog;
 import com.example.sampleproject.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -48,20 +53,52 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
         int year = deadlineDate.getYear();
         holder.deadline.setText(CalendarPickerDialog.makeDateString(day, month + 1, year + 1900));
 
-        holder.daysleft.setText(String.valueOf(model.getDaysLeft()));
-        Boolean isCompleted;
+
         holder.uid = model.getUid();
         holder.isPrivate = model.getIsPrivate();
         holder.isComplete = model.getIsComplete();
 
         if (model.getIsComplete()) {
-            holder.completeButton.setBackgroundColor(Color.RED);
-            holder.yes.setBackgroundColor(Color.GRAY);
+            //card backgrd
+            holder.eventcardView.setBackgroundResource( R.drawable.eventcard_viewbg_complete);
+
+            // text backgrd
+            holder.titleView.setBackgroundResource( R.drawable.eventcard_textbg_complete);
+            holder.descView.setBackgroundResource( R.drawable.eventcard_textbg_complete);
+            holder.deadlineView.setBackgroundResource( R.drawable.eventcard_textbg_complete);
+            holder.daysleftView.setBackgroundResource( R.drawable.eventcard_textbg_complete);
+
+            // checkbox backgrd
+            holder.isCompleteView.setBackgroundResource( R.drawable.eventcard_cb_complete);
+            holder.editButton.setBackgroundResource( R.drawable.eventcard_textbg_complete);
+            holder.delButton.setBackgroundResource( R.drawable.eventcard_textbg_complete);
         } else {
-            holder.completeButton.setBackgroundColor(Color.GRAY);
+            holder.eventcardView.setBackgroundResource( R.drawable.eventcard_viewbg);
+
+            //card backgrd
+            holder.eventcardView.setBackgroundResource( R.drawable.eventcard_viewbg);
+
+            // text backgrd
+            holder.titleView.setBackgroundResource( R.drawable.eventcard_textbg);
+            holder.descView.setBackgroundResource( R.drawable.eventcard_textbg);
+            holder.deadlineView.setBackgroundResource( R.drawable.eventcard_textbg);
+            holder.daysleftView.setBackgroundResource( R.drawable.eventcard_textbg);
+
+            // checkbox backgrd
+            holder.isCompleteView.setBackgroundResource( R.drawable.eventcard_cb_complete);
+            holder.editButton.setBackgroundResource( R.drawable.eventcard_textbg);
+            holder.delButton.setBackgroundResource( R.drawable.eventcard_textbg);
+
+            holder.isCompleteView.setBackgroundResource(R.drawable.eventcard_cb);
         }
+        holder.daysleft.setText(String.valueOf(model.getDaysLeft()));
 
-
+        if (model.getDaysLeft() >= 0) {
+            holder.daysleft.setText(String.valueOf(model.getDaysLeft()));
+        } else {
+            holder.daysleft.setText(String.valueOf(model.getDaysLeft() * -1) );
+            holder.daysleftText.setText(R.string.DAYS_AGO);
+        }
     }
 
     @NonNull
@@ -73,15 +110,21 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
     }
 
 
-    class eventsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView title, description, deadline, daysleft;
+    class eventsViewHolder extends RecyclerView.ViewHolder {
+        TextView title, description, deadline, daysleft, daysleftText;
         String uid;
         Boolean isPrivate, isComplete;
-        View yes = itemView.findViewById(R.id.event_background);
+        // views//
+        View eventcardView = itemView.findViewById(R.id.event_background);
+        View titleView = itemView.findViewById(R.id.title);
+        View descView = itemView.findViewById(R.id.description);
+        View deadlineView = itemView.findViewById(R.id.deadline);
+        View daysleftView = itemView.findViewById(R.id.days_left);
 
-        Button completeButton = itemView.findViewById(R.id.btn_isComplete);
-        Button editButton = itemView.findViewById(R.id.btn_editEvent);
-        Button delButton = itemView.findViewById(R.id.btn_delEvent);
+        View isCompleteView = itemView.findViewById(R.id.btn_isComplete);
+        AppCompatButton completeButton = itemView.findViewById(R.id.btn_isComplete);
+        ImageButton editButton = itemView.findViewById(R.id.btn_editEvent);
+        ImageButton delButton = itemView.findViewById(R.id.btn_delEvent);
 
         public eventsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -89,6 +132,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
             description = itemView.findViewById(R.id.description);
             deadline = itemView.findViewById(R.id.deadline);
             daysleft = itemView.findViewById(R.id.days_left);
+            daysleftText = itemView.findViewById(R.id.tv_daysleft);
             final String[] newTitle = {title.getText().toString()};
             final String[] newDescription = {description.getText().toString()};
             Bundle resultIntent = ((Activity) itemView.getContext()).getIntent().getExtras();
@@ -108,36 +152,46 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                     onClickDelete(v, delButton, id, otherId);
                 }
             });
-            completeButton.setOnClickListener(this);
-
-
-        }
-
-        @Override
-        public void onClick(View view) {
-            if (view.getId() == R.id.btn_isComplete) {
-                onClickComplete(completeButton);
-            }
-        }
-
-
-        private void onClickComplete(Button completeButton) {
             completeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DatabaseReference firebase = FirebaseDatabase.getInstance(view.getContext().getResources().getString(R.string.firebase_link)).getReference().child("events").child(uid);
+                    DatabaseReference firebase = FirebaseDatabase.getInstance(view.getContext().getResources().getString(R.string.firebase_link)).getReference().child("members").child("member"+id).child("events").child(uid);
                     if (isComplete) {
                         firebase.child("iscomplete").setValue(false);
-                        completeButton.setBackgroundColor(Color.GRAY);
+
+                        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                snapshot.child("priority").getRef().setValue(Integer.parseInt(snapshot.child("daysleft").getValue().toString()) );
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                     } else {
                         firebase.child("iscomplete").setValue(true);
-                        completeButton.setBackgroundColor(Color.RED);
+
+                        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                snapshot.child("priority").getRef().setValue(Integer.parseInt(snapshot.child("daysleft").getValue().toString()) +99999 );
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                     }
                 }
             });
+
+
         }
 
-        private void onClickDelete(View view, Button delButton, String id, String otherId) {
+        private void onClickDelete(View view, ImageButton delButton, String id, String otherId) {
 
             DatabaseReference firebase = FirebaseDatabase.getInstance(view.getContext().getResources().getString(R.string.firebase_link)).getReference();
             removeFromFireBase(uid, firebase, id);
@@ -146,7 +200,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
 
         }
 
-        private void onClickEdit(View view, Button editButton, String[] newTitle, String[] newDescription, String id, String otherId) {
+        private void onClickEdit(View view, ImageButton editButton, String[] newTitle, String[] newDescription, String id, String otherId) {
             BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(view.getContext(), R.style.BottomSheetDialogTheme);
             View bottomSheetView = LayoutInflater.from(bottomSheetDialog.getContext()).inflate(R.layout.fragment_bottom_dialog, null);
             newTitle[0] = title.getText().toString();
