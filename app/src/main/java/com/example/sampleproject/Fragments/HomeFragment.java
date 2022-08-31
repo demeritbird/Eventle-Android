@@ -140,6 +140,8 @@ public class HomeFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() == null) {
                     errorMsg.setVisibility(View.VISIBLE);
+                } else {
+                    errorMsg.setVisibility(View.GONE);
                 }
             }
 

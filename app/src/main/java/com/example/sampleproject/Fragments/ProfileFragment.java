@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.sampleproject.Models.Member;
 import com.example.sampleproject.R;
@@ -36,6 +37,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.Executor;
 
 import javax.annotation.Nullable;
@@ -47,6 +50,8 @@ public class ProfileFragment extends Fragment {
     ImageView userImage;
     String id;
     private FirebaseAuth mAuth;
+    private int eventsInWeek = 0;
+    private int eventsInMonth = 0;
 
 
     @Override
@@ -65,9 +70,9 @@ public class ProfileFragment extends Fragment {
         id = resultIntent.getString("id", "2");
         String newUserName = resultIntent.getString("username", "no");
 
-        DatabaseReference firebase2 = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("members").child("member" + id).child("image").child("imageUri");
-
-        firebase2.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("members").child("member" + id);
+        DatabaseReference firebaseImage = firebase.child("image").child("imageUri");
+        firebaseImage.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String yes = dataSnapshot.getValue().toString();
@@ -89,10 +94,12 @@ public class ProfileFragment extends Fragment {
 
         usernameEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -113,22 +120,69 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        DatabaseReference firebaseEvents = firebase.child("events");
+        firebaseEvents.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                eventsInWeek = 0;
+                eventsInMonth = 0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    //TODO: for that week and for that month.
+
+
+                    Date today = new Date();
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(today);
+
+                    Date childDate = new Date(String.valueOf(snapshot.child("deadline").getValue()));
+                    Calendar cal2 = Calendar.getInstance();
+                    cal2.setTime(childDate);
+
+
+
+                    boolean isSameWeek = cal.get(Calendar.WEEK_OF_YEAR) == cal2.get(Calendar.WEEK_OF_YEAR) &&
+                                cal.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
+                    if ( isSameWeek ) { eventsInWeek += 1; }
+
+                    // month //
+                    boolean isSameMonth = cal.get(Calendar.MONTH) == cal2.get(Calendar.MONTH)&&
+                            cal.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
+                    if (isSameMonth) { eventsInMonth += 1; }
+                }
+
+                // Set Week //
+                String stringEventsInWeek = String.valueOf(eventsInWeek);
+                TextView eventsInWeek = root.findViewById(R.id.tv_eventsPerWeek);
+                eventsInWeek.setText(stringEventsInWeek);
+
+                // Set Month //
+                String stringEventsInMoth = String.valueOf(eventsInMonth);
+                TextView eventsInMoth = root.findViewById(R.id.tv_eventsPerMonth);
+                eventsInMoth.setText(stringEventsInMoth);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         return root;
     }
 
     private void signInAsAnonymous() {
         mAuth.signInAnonymously().addOnSuccessListener((Activity) getContext(), new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        // do your stuff
-                    }
-                })
-                .addOnFailureListener((Executor) this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        Log.e("as", "signInAnonymously:FAILURE", exception);
-                    }
-                });
+        @Override
+        public void onSuccess(AuthResult authResult) {
+                // do your stuff
+            }
+        })
+        .addOnFailureListener((Executor) this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e("as", "signInAnonymously:FAILURE", exception);
+            }
+        });
     }
 
     @Override
