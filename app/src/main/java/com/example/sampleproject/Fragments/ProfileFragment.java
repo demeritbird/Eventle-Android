@@ -159,6 +159,8 @@ public class ProfileFragment extends Fragment {
                 String stringEventsInMoth = String.valueOf(eventsInMonth);
                 TextView eventsInMoth = root.findViewById(R.id.tv_eventsPerMonth);
                 eventsInMoth.setText(stringEventsInMoth);
+
+
             }
 
             @Override

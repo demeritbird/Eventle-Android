@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -21,36 +22,41 @@
             android:paddingBottom="12dp">
 
             <!-- date title -->
-            <Button
+            <ImageButton
                 android:id="@+id/calendar_prev_button"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginStart="40dp"
+                android:layout_marginTop="28dp"
+                android:background="@drawable/eventcard_textbg"
                 android:src="@drawable/ic_arrow_left"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.08"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.837" />
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+
+            <ImageButton
                 android:id="@+id/calendar_next_button"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="40dp"
+                android:layout_marginTop="28dp"
+                android:background="@drawable/eventcard_textbg"
                 android:src="@drawable/ic_arrow_right"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.92"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/calendar_date_display"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Current Date"
-                app:layout_constraintEnd_toStartOf="@+id/calendar_next_button"
-                app:layout_constraintStart_toEndOf="@+id/calendar_prev_button"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/spartan_bold"
+                android:text="@string/default_monthyear"
+                android:textSize="32sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -62,60 +68,32 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="SUN"
-                android:textColor="@color/dark_grey_2" />
+                style="@style/CalendarDays"
+                android:text="@string/SUN" />
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="TUE"
-                android:textColor="@color/dark_grey_2" />
+                style="@style/CalendarDays"
+                android:text="@string/MON" />
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="WED"
-                android:textColor="@color/dark_grey_2" />
+                style="@style/CalendarDays"
+                android:text="@string/TUE" />
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="THU"
-                android:textColor="@color/dark_grey_2" />
+                style="@style/CalendarDays"
+                android:text="@string/WED" />
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="FRI"
-                android:textColor="@color/dark_grey_2" />
+                style="@style/CalendarDays"
+                android:text="@string/THU" />
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="SAT"
-                android:textColor="@color/dark_grey_2" />
+                style="@style/CalendarDays"
+                android:text="@string/FRI" />
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="SUN"
-                android:textColor="@color/dark_grey_2" />
+                style="@style/CalendarDays"
+                android:text="@string/SAT" />
         </LinearLayout>
 
         <!-- days view -->

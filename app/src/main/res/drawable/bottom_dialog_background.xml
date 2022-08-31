@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!--<shape xmlns:android="http://schemas.android.com/apk/res/android"-->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Top Half -->
     <item android:bottom="20sp">
         <shape android:shape="rectangle">
             <size android:height="20dp" />
@@ -10,6 +12,7 @@
         </shape>
     </item>
 
+    <!-- Bottom Half -->
     <item android:top="280sp">
         <shape android:shape="rectangle">
             <size android:height="20dp" />
