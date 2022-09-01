@@ -1,22 +1,38 @@
 <resources>
+    <!-- project mains -->
     <string name="project_name">Scheduler App</string>
     <string name="app_name">eventle</string>
 
     <string name="firebase_link">https://scheduleapp-3ebb7-default-rtdb.asia-southeast1.firebasedatabase.app</string>
-
+    <string name="firestore_link">gs://scheduleapp-3ebb7.appspot.com</string>
 
     <string name="Welcome_Message">Welcome,</string>
     <string name="Default_Username">User</string>
+    <string name="Default_MemberOneName">Member1</string>
+    <string name="Default_MemberTwoName">Member2</string>
+
+    <!-- Date and Days-->
+    <string name="DATE_FORMAT">MMM yyyy</string>
     <string name="default_date">1 Jan 1970</string>
     <string name="default_monthyear">Jan 1970</string>
+    <string name="default_singlecalday">00</string>
+    <string name="noDaysInCalendar">42</string>
+
     <string name="default_daysleft">1234</string>
+
+    <string name="DAYS_LEFT">days left</string>
     <string name="DAYS_AGO">days ago</string>
 
+
+    <!-- text -->
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+
+    <string name="Upcoming_Events">Upcoming Events</string>
+    <string name="Events_On">Events on</string>
     <string name="due">Due:</string>
 
-    <string name="privateSetting">Private</string>
-    <string name="publicSetting">Public</string>
 
+    <!-- event card -->
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="deadline">Deadline</string>
@@ -25,7 +41,10 @@
     <string name="edit_event">Edit Event</string>
     <string name="submit">Submit</string>
 
-    <!-- day-->
+    <string name="privateSetting">Private</string>
+    <string name="publicSetting">Public</string>
+
+    <!-- calendar day-->
     <string name="SUN">SUN</string>
     <string name="MON">MON</string>
     <string name="TUE">TUE</string>
@@ -34,32 +53,28 @@
     <string name="FRI">FRI</string>
     <string name="SAT">SAT</string>
 
-
     <!-- insights -->
     <string name="insight_title">Insights</string>
     <string name="insight_week">events this week!</string>
     <string name="insight_month">events this month!</string>
 
-    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
-    <string name="Upcoming_Events">Upcoming Events</string>
-    <string name="Events_On">Events on</string>
-    <string name="Default_Date">1 Jan 1970</string>
-
-<!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
-    <string name="TAG_MESSAGE">Tag Message Reply</string>
-    <string name="DATE_FORMAT">MMM yyyy</string>
-    <string name="noDaysInCalendar">42</string>
-
-
+    <!-- Success Messages -->
+    <string name="success_readFirebase">Firebase Success!</string>
+    <string name="success_eventAdded">Event Added!</string>
 
     <!-- Error Messages -->
-    <string name="firebase_readError">Firebase Error!</string>
+    <string name="error_readFirebase">Firebase Error!</string>
     <string name="error_emptyTitle">Please fill in title!</string>
     <string name="error_emptyDescription">Please fill in description!</string>
     <string name="error_wrongDate">Please fill in a future date!</string>
+    <string name="error_noEvents">No Events!</string>
+    <string name="error_signinFail">Sign In Anonymously Failed!</string>
 
+    <string name="TAG_failValue">"Failed to read value."</string>
+    <string name="TAG_failImage">"Failed to read image."</string>
+
+    <!-- others -->
     <string name="action_settings">Settings</string>
+    <string name="TAG_MESSAGE">Tag Message Reply</string>
 
-
-    <!-- TODO: Make strings nicer lmao, categorise them accordingly.-->
 </resources>

@@ -11,7 +11,7 @@
     tools:context=".Activities.EntryActivity">
 
     <FrameLayout
-        android:id="@+id/framelayout_line"
+        android:id="@+id/framelayout_area"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_navigation" />
@@ -25,7 +25,6 @@
         app:backgroundTint="@color/light_grey_1"
 
         app:itemIconTint="@drawable/bottom_nav_selector"
-        app:itemTextColor="@drawable/bottom_nav_selector"
-         />
+        app:itemTextColor="@drawable/bottom_nav_selector"/>
 
 </RelativeLayout>

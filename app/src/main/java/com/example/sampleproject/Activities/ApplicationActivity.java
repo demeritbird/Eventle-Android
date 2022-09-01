@@ -24,19 +24,19 @@ public class ApplicationActivity extends AppCompatActivity {
 
         //// Bottom Navigation Fragments ////
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_line, homeFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_area, homeFragment).commit();
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_line, homeFragment).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_area, homeFragment).commit();
                         return true;
                     case R.id.calendar:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_line, calendarFragment).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_area, calendarFragment).commit();
                         return true;
                     case R.id.profile:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_line, profileFragment).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_area, profileFragment).commit();
                         return true;
                 }
                 return false;

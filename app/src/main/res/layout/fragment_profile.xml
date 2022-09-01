@@ -46,11 +46,11 @@
 
         <TextView
             android:id="@+id/tv_eventsPerWeek"
-            android:layout_width="26dp"
-            android:layout_height="41dp"
-            android:fontFamily="@font/spartan_semibold"
-            android:text="0"
+
             android:textSize="32sp"
+            android:text="0"
+
+            style="@style/profile_insightnumber"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.2"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,9 +59,7 @@
 
         <TextView
             android:id="@+id/tv_eventsPerMonth"
-            android:layout_width="26dp"
-            android:layout_height="41dp"
-            android:fontFamily="@font/spartan_semibold"
+            style="@style/profile_insightnumber"
             android:text="0"
             android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -71,23 +69,14 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="41dp"
-            android:layout_marginStart="8dp"
-
-            android:gravity="bottom"
+           style="@style/profile_insightheader"
             android:text="@string/insight_month"
             app:layout_constraintStart_toEndOf="@+id/tv_eventsPerMonth"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="41dp"
-            android:layout_marginStart="8dp"
-
-
-            android:gravity="bottom"
+            style="@style/profile_insightheader"
             android:text="@string/insight_week"
             app:layout_constraintStart_toEndOf="@+id/tv_eventsPerWeek"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />

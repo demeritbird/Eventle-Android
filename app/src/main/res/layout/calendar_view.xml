@@ -21,32 +21,7 @@
             android:paddingRight="30dp"
             android:paddingBottom="12dp">
 
-            <!-- date title -->
-            <ImageButton
-                android:id="@+id/calendar_prev_button"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="28dp"
-                android:background="@drawable/eventcard_textbg"
-                android:src="@drawable/ic_arrow_left"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.08"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <ImageButton
-                android:id="@+id/calendar_next_button"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="28dp"
-                android:background="@drawable/eventcard_textbg"
-                android:src="@drawable/ic_arrow_right"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.92"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
+            <!-- Date Title & Btn Selectors -->
             <TextView
                 android:id="@+id/calendar_date_display"
                 android:layout_width="wrap_content"
@@ -58,8 +33,31 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/calendar_prev_button"
+                style="@style/calendarpage_slcbuttons"
+                android:background="@drawable/eventcard_textbg"
+                android:src="@drawable/ic_arrow_left"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.08"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageButton
+                android:id="@+id/calendar_next_button"
+                style="@style/calendarpage_slcbuttons"
+                android:src="@drawable/ic_arrow_right"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.92"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- List of Days of Week -->
         <LinearLayout
             android:id="@+id/calendar_header"
             android:layout_width="match_parent"
