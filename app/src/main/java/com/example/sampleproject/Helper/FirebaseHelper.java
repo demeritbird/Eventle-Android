@@ -32,13 +32,13 @@ public class FirebaseHelper {
         final int[] eventsInWeeks = {eventsInWeek};
         final int[] eventsInMonths = {eventsInMonth};
 
-
         DatabaseReference firebaseEvents = firebaseMemberId.child("events");
         firebaseEvents.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventsInWeeks[0] = 0;
                 eventsInMonths[0] = 0;
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                     Date today = new Date();
@@ -85,7 +85,7 @@ public class FirebaseHelper {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String imageString = dataSnapshot.getValue().toString();
-                if (!imageString.equals("") || imageString != null) {
+                if (!imageString.equals("")) {
                     URI[0] = Uri.parse(imageString);
                     Picasso.get().load(URI[0]).placeholder(R.drawable.dembirdimage).into(userImage);
                 } else {
@@ -94,8 +94,7 @@ public class FirebaseHelper {
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
-            }
+            public void onCancelled(DatabaseError error) {}
         });
     }
 
@@ -111,7 +110,14 @@ public class FirebaseHelper {
         selFirebase.child("daysleft").setValue(event.getDaysLeft());
         selFirebase.child("uid").setValue(event.getUid());
         selFirebase.child("isprivate").setValue(event.getIsPrivate());
-        selFirebase.child("priority").setValue(event.getDaysLeft());
+
+        if (event.getIsComplete()) {
+            selFirebase.child("priority").setValue(event.getDaysLeft() + 99999);
+        } else {
+            selFirebase.child("priority").setValue(event.getDaysLeft());
+        }
+
+
         selFirebase.child("iscomplete").setValue(event.getIsComplete());
     }
 
@@ -119,10 +125,8 @@ public class FirebaseHelper {
         firebase.child("member" + selId).child("events").child(uid).setValue(null);
     }
 
-    public static void uploadImagemageToFirebase(Uri uri, DatabaseReference dbRef, String id) {
-
+    public static void uploadImageToFirebase(Uri uri, DatabaseReference dbRef, String id) {
         StorageReference storageReference = FirebaseStorage.getInstance("gs://scheduleapp-3ebb7.appspot.com").getReference();
-
         StorageReference fileRef = storageReference.child(System.currentTimeMillis() + "." + ".jpg");
 
         fileRef.putFile(uri).addOnSuccessListener((new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -139,7 +143,7 @@ public class FirebaseHelper {
         })).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                System.out.println("FAIL");
+                Log.e(String.valueOf(R.string.TAG_failValue), String.valueOf(R.string.error_readFirebase));
             }
         });
     }

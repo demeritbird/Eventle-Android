@@ -18,28 +18,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.sampleproject.Helper.FirebaseHelper;
-import com.example.sampleproject.Models.Member;
 import com.example.sampleproject.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.concurrent.Executor;
 
 import javax.annotation.Nullable;
@@ -131,7 +120,7 @@ public class ProfileFragment extends Fragment {
 
             if (imageUri != null) {
                 DatabaseReference firebaseMembers = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("members");
-                FirebaseHelper.uploadImagemageToFirebase(imageUri, firebaseMembers, id);
+                FirebaseHelper.uploadImageToFirebase(imageUri, firebaseMembers, id);
             } else {
                 Log.w(String.valueOf(R.string.error_readFirebase), String.valueOf(R.string.TAG_failImage));
             }

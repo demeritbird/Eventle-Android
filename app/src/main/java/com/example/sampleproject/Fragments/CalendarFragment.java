@@ -152,7 +152,7 @@ public class CalendarFragment extends Fragment {
                     }
                 });
 
-
+                // FIXME: Refactor here //
                 bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -160,7 +160,6 @@ public class CalendarFragment extends Fragment {
                         Date today = new Date();
 
                         Calendar todayCal = TimeHelper.setDateTimeOneDown(today);
-
                         Date newToday = todayCal.getTime();
 
                         long newDaysLeft = TimeHelper.calcDaysBetween(newDate,newToday);
@@ -276,7 +275,6 @@ public class CalendarFragment extends Fragment {
 
         recyclerAdapter.updateOptions(options);
         MiscHelper.checkEmptyList(query, errorMsg);
-        //checkEmptyList(query, errorMsg);
         recyclerView.setAdapter(recyclerAdapter);
 
         String selDateString = CalendarPickerDialog.makeDateString(selectedDate.getDate(), selectedDate.getMonth() + 1, selectedDate.getYear() + 1900);

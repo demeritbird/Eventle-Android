@@ -168,6 +168,24 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
 
         }
 
+        private void changePriority(DatabaseReference firebaseUid, Boolean setComplete) {
+            firebaseUid.child("iscomplete").setValue(setComplete);
+            firebaseUid.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (setComplete){
+                        MiscHelper.increasePriority(snapshot);
+
+                    } else {
+                        MiscHelper.remainPriority(snapshot);
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) { }
+            });
+        }
+
+
         private void onClickComplete(DatabaseReference firebaseMembers, String id) {
             DatabaseReference firebaseUid = firebaseMembers.child("member"+ id).child("events").child(uid);
             if (isComplete) {
@@ -176,23 +194,6 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                 changePriority(firebaseUid, true);
             }
         }
-
-        private void changePriority(DatabaseReference firebaseUid, Boolean isComplete) {
-            firebaseUid.child("iscomplete").setValue(isComplete);
-            firebaseUid.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (isComplete){
-                        MiscHelper.remainPriority(snapshot);
-                    } else {
-                        MiscHelper.increasePriority(snapshot);
-                    }
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) { }
-            });
-        }
-
 
         private void onClickDelete(View view, DatabaseReference firebaseMembers, String id, String otherId) {
             FirebaseHelper.delFromFirebase(uid, firebaseMembers, id);
@@ -259,6 +260,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
             btnPrivacySelect(btnPrivate, btnPublic);
 
             // Submit Button //
+            // FIXME: Refactor here //
             bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -284,9 +286,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                         } else {
                             FirebaseHelper.postToFirebase(event, firebaseMembers, id);
                             FirebaseHelper.postToFirebase(event, firebaseMembers, otherId);
-
                         }
-
                         bottomSheetDialog.dismiss();
                     }
                 }

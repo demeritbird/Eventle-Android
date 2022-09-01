@@ -81,19 +81,10 @@ public class CustomCalendarView extends LinearLayout {
         Date unchanged = new Date();
 
         Calendar nowCal = TimeHelper.setDateTimeToZero(unchanged);
-
-//        Calendar nowCal = Calendar.getInstance();
-//        nowCal.setTime(unchanged);
-//        nowCal.set(Calendar.HOUR, 0);
-//        nowCal.set(Calendar.MINUTE, 0);
-//        nowCal.set(Calendar.SECOND, 0);
-//        nowCal.set(Calendar.HOUR_OF_DAY, 0);
-
         Date changed = nowCal.getTime();
         dateSelected = changed;
 
         cv.invokeFirebaseEvent(cv);
-//        cv.updateCalendar();
     }
 
     private void loadDateFormat(AttributeSet attrs) {
@@ -142,13 +133,6 @@ public class CustomCalendarView extends LinearLayout {
                 Date unchanged = (Date) view.getItemAtPosition(position);
 
                 Calendar nowCal = TimeHelper.setDateTimeToZero(unchanged);
-//                Calendar nowCal = Calendar.getInstance();
-//                nowCal.setTime(unchanged);
-//                nowCal.set(Calendar.HOUR, 0);
-//                nowCal.set(Calendar.MINUTE, 0);
-//                nowCal.set(Calendar.SECOND, 0);
-//                nowCal.set(Calendar.HOUR_OF_DAY, 0);
-
                 Date changed = nowCal.getTime();
                 dateSelected = changed;
                 eventHandler.onDayLongPress(changed);

@@ -78,19 +78,19 @@ public class HomeFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     DataSnapshot deadlineString = snapshot.child("deadline");
+
                     Date deadlineDate = new Date(deadlineString.getValue().toString());
 
                     Date today = new Date();
-
                     Calendar todayCal = TimeHelper.setDateTimeOneDown(today);
-
                     Date newToday = todayCal.getTime();
 
                     long daysBetween = TimeUnit.DAYS.convert(deadlineDate.getTime() - newToday.getTime(), TimeUnit.MILLISECONDS);
+
                     if (snapshot.child("iscomplete").getValue().toString() == "true") {
                         MiscHelper.increasePriority(snapshot);
 
-                        if (newToday.getDay() == deadlineDate.getDay()) {
+                        if (newToday.getDay() >= deadlineDate.getDay()) {
                             snapshot.child("daysleft").getRef().setValue((int) daysBetween - 1);
                         } else {
                             snapshot.child("daysleft").getRef().setValue((int) daysBetween);
@@ -98,7 +98,7 @@ public class HomeFragment extends Fragment {
 
                     } else {
 
-                        if (newToday.getDay() == deadlineDate.getDay()) {
+                        if (newToday.getDay() >= deadlineDate.getDay()) {
                             snapshot.child("daysleft").getRef().setValue((int) daysBetween - 1);
                             snapshot.child("priority").getRef().setValue((int) daysBetween - 1);
                         } else {
