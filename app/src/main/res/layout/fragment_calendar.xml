@@ -40,7 +40,7 @@
                 android:id="@+id/tv_selDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/Default_Date"
+                android:text="@string/default_date"
                 android:textSize="20sp"/>
 
             <TextView
@@ -48,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="error no events"
+                android:text="@string/error_noEvents"
                 android:visibility="gone" />
 
             <RelativeLayout
@@ -58,13 +58,7 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="28sp"
-                    android:layout_marginBottom="20dp"
-
-                    android:clipToPadding="false"
-                    android:paddingBottom="?attr/actionBarSize"
+                    style="@style/recyclerview"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
@@ -80,7 +74,7 @@
         android:id="@+id/fab"
         android:layout_width="238sp"
         android:layout_height="238sp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="30sp"
         android:layout_marginTop="30sp"
@@ -88,6 +82,6 @@
         android:layout_marginBottom="30sp"
         android:clipToPadding="false"
         android:paddingBottom="?attr/actionBarSize"
-        app:backgroundTint="@color/main_blue"
+        app:backgroundTint="@color/dark_blue_1"
         app:srcCompat="@drawable/ic_baseline_add_24" />
 </RelativeLayout>

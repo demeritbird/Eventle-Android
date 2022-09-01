@@ -1,8 +1,6 @@
 package com.example.sampleproject.Models;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,6 +18,9 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sampleproject.Components.CalendarPickerDialog;
+import com.example.sampleproject.Helper.FirebaseHelper;
+import com.example.sampleproject.Helper.MiscHelper;
+import com.example.sampleproject.Helper.TimeHelper;
 import com.example.sampleproject.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -32,7 +33,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.eventsViewHolder> {
 
@@ -53,59 +53,63 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
         int year = deadlineDate.getYear();
         holder.deadline.setText(CalendarPickerDialog.makeDateString(day, month + 1, year + 1900));
 
-
         holder.uid = model.getUid();
         holder.isPrivate = model.getIsPrivate();
         holder.isComplete = model.getIsComplete();
 
         if (model.getIsComplete()) {
-            //card backgrd
-            holder.eventcardView.setBackgroundResource( R.drawable.eventcard_viewbg_complete);
-
-            // text backgrd
-            holder.titleView.setBackgroundResource( R.drawable.eventcard_textbg_complete);
-            holder.descView.setBackgroundResource( R.drawable.eventcard_textbg_complete);
-            holder.deadlineView.setBackgroundResource( R.drawable.eventcard_textbg_complete);
-            holder.daysleftView.setBackgroundResource( R.drawable.eventcard_textbg_complete);
-
-            // checkbox backgrd
-            holder.isCompleteView.setBackgroundResource( R.drawable.eventcard_cb_complete);
-            holder.editButton.setBackgroundResource( R.drawable.eventcard_textbg_complete);
-            holder.delButton.setBackgroundResource( R.drawable.eventcard_textbg_complete);
+            setComponentsComplete(holder);
         } else {
-            holder.eventcardView.setBackgroundResource( R.drawable.eventcard_viewbg);
-
-            //card backgrd
-            holder.eventcardView.setBackgroundResource( R.drawable.eventcard_viewbg);
-
-            // text backgrd
-            holder.titleView.setBackgroundResource( R.drawable.eventcard_textbg);
-            holder.descView.setBackgroundResource( R.drawable.eventcard_textbg);
-            holder.deadlineView.setBackgroundResource( R.drawable.eventcard_textbg);
-            holder.daysleftView.setBackgroundResource( R.drawable.eventcard_textbg);
-
-            // checkbox backgrd
-            holder.isCompleteView.setBackgroundResource( R.drawable.eventcard_cb_complete);
-            holder.editButton.setBackgroundResource( R.drawable.eventcard_textbg);
-            holder.delButton.setBackgroundResource( R.drawable.eventcard_textbg);
-
-            holder.isCompleteView.setBackgroundResource(R.drawable.eventcard_cb);
+            setComponentsUncomplete(holder);
         }
         holder.daysleft.setText(String.valueOf(model.getDaysLeft()));
 
         if (model.getDaysLeft() >= 0) {
             holder.daysleft.setText(String.valueOf(model.getDaysLeft()));
         } else {
-            holder.daysleft.setText(String.valueOf(model.getDaysLeft() * -1) );
+            holder.daysleft.setText(String.valueOf(model.getDaysLeft() * -1));
             holder.daysleftText.setText(R.string.DAYS_AGO);
         }
+    }
+
+    private void setComponentsUncomplete(@NonNull eventsViewHolder holder) {
+        holder.eventcardView.setBackgroundResource( R.drawable.eventcard_viewbg);
+
+        //card backgrd
+        holder.eventcardView.setBackgroundResource( R.drawable.eventcard_viewbg);
+
+        // text backgrd
+        holder.titleView.setBackgroundResource( R.drawable.eventcard_textbg);
+        holder.descView.setBackgroundResource( R.drawable.eventcard_textbg);
+        holder.deadlineView.setBackgroundResource( R.drawable.eventcard_textbg);
+        holder.daysleftView.setBackgroundResource( R.drawable.eventcard_textbg);
+
+        // checkbox backgrd
+        holder.isCompleteView.setBackgroundResource(R.drawable.eventcard_cb);
+        holder.editButton.setBackgroundResource( R.drawable.eventcard_textbg);
+        holder.delButton.setBackgroundResource( R.drawable.eventcard_textbg);
+    }
+
+    private void setComponentsComplete(@NonNull eventsViewHolder holder) {
+        //card backgrd
+        holder.eventcardView.setBackgroundResource( R.drawable.eventcard_viewbg_complete);
+
+        // text backgrd
+        holder.titleView.setBackgroundResource( R.drawable.eventcard_textbg_complete);
+        holder.descView.setBackgroundResource( R.drawable.eventcard_textbg_complete);
+        holder.deadlineView.setBackgroundResource( R.drawable.eventcard_textbg_complete);
+        holder.daysleftView.setBackgroundResource( R.drawable.eventcard_textbg_complete);
+
+        // checkbox backgrd
+        holder.isCompleteView.setBackgroundResource( R.drawable.eventcard_cb_complete);
+        holder.editButton.setBackgroundResource( R.drawable.eventcard_textbg_complete);
+        holder.delButton.setBackgroundResource( R.drawable.eventcard_textbg_complete);
     }
 
     @NonNull
     @Override
     public eventsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_event_card, parent, false);
-
         return new eventsViewHolder(view);
     }
 
@@ -128,86 +132,78 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
 
         public eventsViewHolder(@NonNull View itemView) {
             super(itemView);
+            DatabaseReference firebaseMembers = FirebaseDatabase.getInstance(itemView.getContext().getResources().getString(R.string.firebase_link)).getReference().child("members");
+
+            //// Init Components ////
             title = itemView.findViewById(R.id.title);
             description = itemView.findViewById(R.id.description);
             deadline = itemView.findViewById(R.id.deadline);
             daysleft = itemView.findViewById(R.id.days_left);
             daysleftText = itemView.findViewById(R.id.tv_daysleft);
+
+            //// Init Variables ////
             final String[] newTitle = {title.getText().toString()};
             final String[] newDescription = {description.getText().toString()};
+
+
+            //// Init Intents ////
             Bundle resultIntent = ((Activity) itemView.getContext()).getIntent().getExtras();
             String id = resultIntent.getString("id", "1");
             String otherId = resultIntent.getString("otherId", "2");
 
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    onClickEdit(v, editButton, newTitle, newDescription, id, otherId);
-                }
+                public void onClick(View v) { onClickEdit(v, firebaseMembers, newTitle, newDescription, id, otherId); }
             });
             delButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.out.println("one");
-                    onClickDelete(v, delButton, id, otherId);
+                    onClickDelete(v, firebaseMembers, id, otherId);
                 }
             });
             completeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    DatabaseReference firebase = FirebaseDatabase.getInstance(view.getContext().getResources().getString(R.string.firebase_link)).getReference().child("members").child("member"+id).child("events").child(uid);
-                    if (isComplete) {
-                        firebase.child("iscomplete").setValue(false);
-
-                        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                snapshot.child("priority").getRef().setValue(Integer.parseInt(snapshot.child("daysleft").getValue().toString()) );
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-                    } else {
-                        firebase.child("iscomplete").setValue(true);
-
-                        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                snapshot.child("priority").getRef().setValue(Integer.parseInt(snapshot.child("daysleft").getValue().toString()) +99999 );
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-                    }
-                }
+                public void onClick(View view) { onClickComplete(firebaseMembers, id); }
             });
 
-
         }
 
-        private void onClickDelete(View view, ImageButton delButton, String id, String otherId) {
-
-            DatabaseReference firebase = FirebaseDatabase.getInstance(view.getContext().getResources().getString(R.string.firebase_link)).getReference();
-            removeFromFireBase(uid, firebase, id);
-            removeFromFireBase(uid, firebase, otherId);
-            System.out.println("two");
-
+        private void onClickComplete(DatabaseReference firebaseMembers, String id) {
+            DatabaseReference firebaseUid = firebaseMembers.child("member"+ id).child("events").child(uid);
+            if (isComplete) {
+                changePriority(firebaseUid, false);
+            } else {
+                changePriority(firebaseUid, true);
+            }
         }
 
-        private void onClickEdit(View view, ImageButton editButton, String[] newTitle, String[] newDescription, String id, String otherId) {
+        private void changePriority(DatabaseReference firebaseUid, Boolean isComplete) {
+            firebaseUid.child("iscomplete").setValue(isComplete);
+            firebaseUid.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (isComplete){
+                        MiscHelper.remainPriority(snapshot);
+                    } else {
+                        MiscHelper.increasePriority(snapshot);
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) { }
+            });
+        }
+
+
+        private void onClickDelete(View view, DatabaseReference firebaseMembers, String id, String otherId) {
+            FirebaseHelper.delFromFirebase(uid, firebaseMembers, id);
+            FirebaseHelper.delFromFirebase(uid, firebaseMembers, otherId);
+        }
+
+        private void onClickEdit(View view, DatabaseReference firebaseMembers, String[] newTitle, String[] newDescription, String id, String otherId) {
             BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(view.getContext(), R.style.BottomSheetDialogTheme);
             View bottomSheetView = LayoutInflater.from(bottomSheetDialog.getContext()).inflate(R.layout.fragment_bottom_dialog, null);
             newTitle[0] = title.getText().toString();
             newDescription[0] = description.getText().toString();
-
-
-            // Text Components
 
 
             // Edit Event //
@@ -217,37 +213,28 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
             // Title //
             EditText titleDialog = bottomSheetView.findViewById(R.id.title_dialog);
             titleDialog.setText(title.getText());
-
-
             titleDialog.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                }
+                public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
                 @Override
                 public void afterTextChanged(Editable editable) {
                     newTitle[0] = editable.toString();
-                    System.out.println(newTitle[0]);
                 }
             });
 
             // Description
             EditText descriptionDialog = bottomSheetView.findViewById(R.id.description_dialog);
             descriptionDialog.setText(description.getText());
-
-
             descriptionDialog.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                }
+                public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
                 @Override
                 public void afterTextChanged(Editable editable) {
@@ -261,107 +248,73 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
             btnDeadline.setText(deadline.getText().toString());
             CalendarPickerDialog.initDatePicker(btnDeadline.getContext(), btnDeadline);
 
-
-            // privacy //
-            Boolean newPrivacy;
-            Button privateSel = bottomSheetView.findViewById(R.id.btn_private_sel);
-            Button publicSel = bottomSheetView.findViewById(R.id.btn_public_sel);
+            // Privacy Setting //
+            Button btnPrivate = bottomSheetView.findViewById(R.id.btn_private_sel);
+            Button btnPublic = bottomSheetView.findViewById(R.id.btn_public_sel);
             if (isPrivate) {
-                privateSel.setBackgroundColor(Color.YELLOW);
-                publicSel.setBackgroundColor(Color.GRAY);
+                MiscHelper.selectPrivate(btnPrivate,btnPublic);
             } else {
-                publicSel.setBackgroundColor(Color.RED);
-                privateSel.setBackgroundColor(Color.GRAY);
+                MiscHelper.selectPublic(btnPublic,btnPrivate);
             }
-            btnPrivacySelect(privateSel, publicSel);
+            btnPrivacySelect(btnPrivate, btnPublic);
 
-
-            DatabaseReference firebase = FirebaseDatabase.getInstance(view.getContext().getResources().getString(R.string.firebase_link)).getReference();
-
-
-            // Button //
+            // Submit Button //
             bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Date newDate = new Date(btnDeadline.getText().toString());
                     Date today = new Date();
-                    Calendar todayCal = Calendar.getInstance();
-                    todayCal.setTime(today);
-                    todayCal.set(Calendar.HOUR, 0);
-                    todayCal.set(Calendar.MINUTE, 0);
-                    todayCal.set(Calendar.SECOND, -1);
+
+                    Calendar todayCal = TimeHelper.setDateTimeOneDown(today);
                     Date newToday = todayCal.getTime();
 
-                    long daysBetween = TimeUnit.DAYS.convert(newDate.getTime() - newToday.getTime(), TimeUnit.MILLISECONDS);
-
-                    String newDaysLeft = String.valueOf(daysBetween);
+                    long newDaysLeft = TimeHelper.calcDaysBetween(newDate,newToday);
 
                     ////  Check Validation ////
                     if (newTitle[0].equals("")) {
                         Toast.makeText(bottomSheetDialog.getContext(), R.string.error_emptyTitle, Toast.LENGTH_SHORT).show();
                     } else if (newDescription[0].equals("")) {
                         Toast.makeText(bottomSheetDialog.getContext(), R.string.error_emptyDescription, Toast.LENGTH_SHORT).show();
-                    } else if (newDaysLeft.charAt(0) == '-') {
-                        Toast.makeText(bottomSheetDialog.getContext(), R.string.error_wrongDate, Toast.LENGTH_SHORT).show();
                     } else {
-                        Event event = new Event(newTitle[0], newDescription[0], newDate.toString(), Integer.valueOf(newDaysLeft), uid, isPrivate, isComplete);
+                        Event event = new Event(newTitle[0], newDescription[0], newDate.toString(), (int) newDaysLeft, uid, isPrivate, isComplete);
 
                         if (isPrivate) {
-                            editToFirebase(event, firebase, id);
-                            removeFromFireBase(uid, firebase, otherId);
+                            FirebaseHelper.postToFirebase(event, firebaseMembers, id);
+                            FirebaseHelper.delFromFirebase(uid, firebaseMembers, otherId);
                         } else {
-                            editToFirebase(event, firebase, id);
-                            editToFirebase(event, firebase, otherId);
+                            FirebaseHelper.postToFirebase(event, firebaseMembers, id);
+                            FirebaseHelper.postToFirebase(event, firebaseMembers, otherId);
+
                         }
-                        System.out.println("------------------------");
-                        //editToFirebase(event, firebase, id);
+
                         bottomSheetDialog.dismiss();
                     }
                 }
             });
 
-            //postToFireBase(bottomSheetView, event, firebase);
             bottomSheetDialog.setContentView(bottomSheetView);
             bottomSheetDialog.show();
         }
 
-        private void editToFirebase(Event event, DatabaseReference firebase, String selId) {
-            DatabaseReference selFirebase = firebase.child("members").child("member" + selId).child("events").child(event.getUid());
 
-            selFirebase.child("title").setValue(event.getTitle());
-            selFirebase.child("description").setValue(event.getDescription());
-            selFirebase.child("deadline").setValue(event.getDeadline());
-            selFirebase.child("daysleft").setValue(event.getDaysLeft());
-            selFirebase.child("uid").setValue(event.getUid());
-            selFirebase.child("isprivate").setValue(event.getIsPrivate());
-            selFirebase.child("priority").setValue(event.getDaysLeft());
-            selFirebase.child("iscomplete").setValue(event.getIsComplete());
-        }
-
-
-        private void removeFromFireBase(String uid, DatabaseReference firebase, String otherId) {
-            firebase.child("members").child("member" + otherId).child("events").child(uid).setValue(null);
-        }
-
-        private void btnPrivacySelect(Button privateSel, Button publicSel) {
-            privateSel.setOnClickListener(new View.OnClickListener() {
+        private void btnPrivacySelect(Button btnPrivate, Button btnPublic) {
+            btnPrivate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     isPrivate = true;
-                    privateSel.setBackgroundColor(Color.YELLOW);
-                    publicSel.setBackgroundColor(Color.GRAY);
+                    MiscHelper.selectPrivate(btnPrivate,btnPublic);
                 }
             });
 
-            publicSel.setOnClickListener(new View.OnClickListener() {
+            btnPublic.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     isPrivate = false;
-                    publicSel.setBackgroundColor(Color.RED);
-                    privateSel.setBackgroundColor(Color.GRAY);
+                    MiscHelper.selectPublic(btnPublic,btnPrivate);
                 }
             });
         }
+
 
     }
 }

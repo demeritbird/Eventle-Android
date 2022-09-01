@@ -21,16 +21,17 @@
         android:layout_width="match_parent"
         android:layout_height="264sp"
         android:layout_gravity="center"
-        android:layout_marginTop="40sp"
         android:src="@drawable/entry_image"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_eventle_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_eventle_title"
+        app:layout_constraintVertical_bias="0.15" />
 
     <com.example.sampleproject.Components.CustomButtonView
         android:id="@+id/btn_member1_entry"
         style="@style/entrypage_mainbutton"
-        android:text="Member1"
+        android:text="@string/Default_MemberOneName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_eventle_image" />
@@ -38,7 +39,7 @@
     <com.example.sampleproject.Components.CustomButtonView
         android:id="@+id/btn_member2_entry"
         style="@style/entrypage_mainbutton"
-        android:text="Member2"
+        android:text="@string/Default_MemberTwoName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

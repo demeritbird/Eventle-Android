@@ -33,10 +33,11 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
         entryMemberTwo = findViewById(R.id.btn_member2_entry);
         entryMemberTwo.setOnClickListener(this);
 
-        DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("members");
-        DatabaseReference memberOneFirebase = firebase.child("member1").child("name");
-        DatabaseReference memberTwoFirebase = firebase.child("member2").child("name");
+        //// Update Member Name ////
+        DatabaseReference firebaseMembers = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("members");
+        DatabaseReference memberOneFirebase = firebaseMembers.child("member1").child("name");
         updateMemberName(memberOneFirebase, entryMemberOne);
+        DatabaseReference memberTwoFirebase = firebaseMembers.child("member2").child("name");
         updateMemberName(memberTwoFirebase, entryMemberTwo);
 
 

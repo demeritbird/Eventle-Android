@@ -1,6 +1,5 @@
 package com.example.sampleproject.Fragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -20,6 +19,9 @@ import android.widget.Toast;
 
 import com.example.sampleproject.Components.CalendarPickerDialog;
 import com.example.sampleproject.Components.CustomCalendarView;
+import com.example.sampleproject.Helper.FirebaseHelper;
+import com.example.sampleproject.Helper.MiscHelper;
+import com.example.sampleproject.Helper.TimeHelper;
 import com.example.sampleproject.Models.Event;
 import com.example.sampleproject.Models.EventAdapter;
 import com.example.sampleproject.R;
@@ -33,24 +35,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class CalendarFragment extends Fragment {
     public RecyclerView recyclerView;
     public static EventAdapter recyclerAdapter; // Create Object of the Adapter class
     DatabaseReference mbase; // Create object of the Firebase Realtime Database
     Date selectedDate = CustomCalendarView.dateSelected;
-    Boolean isPrivate = false;
-    Boolean isComplete = false;
-//    private CalendarFragment calendarFragment = new CalendarFragment();
 
     Button btnPrivate;
     Button btnPublic;
+    Button btnDeadline;
 
     TextView todayText;
 
@@ -80,21 +77,12 @@ public class CalendarFragment extends Fragment {
         calendarView.setEventHandler(new CustomCalendarView.EventHandler() {
             @Override
             public void onDayLongPress(Date date) {
-                // show returned day
-                DateFormat df = SimpleDateFormat.getDateInstance();
-//                Toast.makeText(getContext(), df.format(date), Toast.LENGTH_SHORT).show();
+
                 selectedDate = date;
 
+                Calendar nowCal = TimeHelper.setDateTimeToZero(selectedDate);
+                selectedDate = nowCal.getTime();
 
-                Calendar now = Calendar.getInstance();
-                now.setTime(selectedDate);
-                now.set(Calendar.HOUR, 0);
-                now.set(Calendar.MINUTE, 0);
-                now.set(Calendar.SECOND, 0);
-                now.set(Calendar.HOUR_OF_DAY, 0);
-
-                selectedDate = now.getTime();
-                Toast.makeText(getContext(), selectedDate.toString(), Toast.LENGTH_SHORT).show();
                 updateRecycler(root, id, errorMsg);
             }
         });
@@ -107,8 +95,6 @@ public class CalendarFragment extends Fragment {
         final String[] newTitle = {""};
         final String[] newDescription = {""};;
         final Boolean[] isPrivate = {false};
-        Date newDate= new Date();
-
 
         //// Init Components ////
         FloatingActionButton dialogButton = root.findViewById(R.id.fab);
@@ -119,7 +105,9 @@ public class CalendarFragment extends Fragment {
                 View bottomSheetView = inflater.inflate(R.layout.fragment_bottom_dialog, root.findViewById(R.id.bottomDialogContainer));
                 EditText titleDialog = bottomSheetView.findViewById(R.id.title_dialog);
                 EditText descriptionDialog = bottomSheetView.findViewById(R.id.description_dialog);
-
+                btnPrivate = bottomSheetView.findViewById(R.id.btn_private_sel);
+                btnPublic = bottomSheetView.findViewById(R.id.btn_public_sel);
+                btnDeadline = bottomSheetView.findViewById(R.id.btn_deadline);
 
                 titleDialog.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -142,21 +130,17 @@ public class CalendarFragment extends Fragment {
                     }
                 });
 
-                Button btnDeadline = bottomSheetView.findViewById(R.id.btn_deadline);
+
                 CalendarPickerDialog.initDatePicker(btnDeadline.getContext(), btnDeadline);
                 btnDeadline.setText(CalendarPickerDialog.getTodayDate());
 
-                btnPrivate = bottomSheetView.findViewById(R.id.btn_private_sel);
-                btnPublic = bottomSheetView.findViewById(R.id.btn_public_sel);
 
-                btnPublic.setBackgroundColor(Color.RED);
-                btnPrivate.setBackgroundColor(Color.GRAY);
+                MiscHelper.selectPrivate(btnPrivate, btnPublic);
                 btnPrivate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         isPrivate[0] = true;
-                        btnPrivate.setBackgroundColor(Color.YELLOW);
-                        btnPublic.setBackgroundColor(Color.GRAY);
+                        MiscHelper.selectPrivate(btnPrivate, btnPublic);
                     }
                 });
 
@@ -164,8 +148,7 @@ public class CalendarFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         isPrivate[0] = false;
-                        btnPublic.setBackgroundColor(Color.RED);
-                        btnPrivate.setBackgroundColor(Color.GRAY);
+                        MiscHelper.selectPublic(btnPublic, btnPrivate);
                     }
                 });
 
@@ -175,48 +158,37 @@ public class CalendarFragment extends Fragment {
                     public void onClick(View view) {
                         Date newDate = new Date(btnDeadline.getText().toString());
                         Date today = new Date();
-                        Calendar todayCal = Calendar.getInstance();
-                        todayCal.setTime(today);
-                        todayCal.set(Calendar.HOUR,0);
-                        todayCal.set(Calendar.MINUTE,0);
-                        todayCal.set(Calendar.SECOND,-1);
+
+                        Calendar todayCal = TimeHelper.setDateTimeOneDown(today);
+
                         Date newToday = todayCal.getTime();
 
-                        long daysBetween = TimeUnit.DAYS.convert(newDate.getTime()-newToday.getTime(), TimeUnit.MILLISECONDS);
-                        String newDaysLeft = String.valueOf(daysBetween);
+                        long newDaysLeft = TimeHelper.calcDaysBetween(newDate,newToday);
 
                         ////  Check Validation ////
                         if (newTitle[0].equals("")) {
                             Toast.makeText(getContext(),R.string.error_emptyTitle, Toast.LENGTH_SHORT).show();
                         } else if (newDescription[0].equals("")) {
                             Toast.makeText(getContext(),R.string.error_emptyDescription, Toast.LENGTH_SHORT).show();
-                        } else if (newDaysLeft.charAt(0) == '-') {
-                            Toast.makeText(getContext(),R.string.error_wrongDate, Toast.LENGTH_SHORT).show();
                         } else {
 
 
-                            //DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference().child("events");
-                            DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference()
-                                                            .child("members");
+                            DatabaseReference firebaseMembers = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference()
+                                                                                   .child("members");
                             String uuid = UUID.randomUUID().toString();
-                            Event event = new Event(newTitle[0], newDescription[0], newDate.toString(),  Integer.valueOf(newDaysLeft), uuid, isPrivate[0], false);
+                            Event event = new Event(newTitle[0], newDescription[0], newDate.toString(), (int) newDaysLeft, uuid, isPrivate[0], false);
 
                             if (event.getIsPrivate()) {
-                                postToFirebase(firebase, uuid, event,id);
+                                FirebaseHelper.postToFirebase(event, firebaseMembers, id);
                             } else {
-                                postToFirebase(firebase, uuid, event,id);
-                                postToFirebase(firebase, uuid, event,otherId);
+                                FirebaseHelper.postToFirebase(event, firebaseMembers, id);
+                                FirebaseHelper.postToFirebase(event, firebaseMembers, otherId);
                             }
 
-
-                            postToFirebase(firebase, uuid, event,id);
-
-                            Toast.makeText(getContext(), "added!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), R.string.success_eventAdded, Toast.LENGTH_SHORT).show();
                             bottomSheetDialog.dismiss();
 
                             updateRecycler(root,id,errorMsg);
-
-                            // Reload Page w new fragment.
                             refreshFragment();
                         }
 
@@ -227,6 +199,7 @@ public class CalendarFragment extends Fragment {
                 bottomSheetDialog.setContentView(bottomSheetView);
                 bottomSheetDialog.show();
             }
+
         });
 
         return root;
@@ -236,39 +209,17 @@ public class CalendarFragment extends Fragment {
         Fragment f;
         f = new CalendarFragment();
         FragmentTransaction ft2 =   getFragmentManager().beginTransaction();
-        ft2.replace(R.id.framelayout_line,f);
+        ft2.replace(R.id.framelayout_area,f);
         ft2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft2.commit();
     }
 
-    private void postToFirebase(DatabaseReference firebase, String uuid, Event event, String selId) {
-        DatabaseReference selFirebase = firebase.child("member"+selId).child("events").child(uuid);
-
-        selFirebase.child("title").setValue(event.getTitle());
-        selFirebase.child("description").setValue(event.getDescription());
-        selFirebase.child("deadline").setValue(event.getDeadline());
-        selFirebase.child("daysleft").setValue(event.getDaysLeft());
-        selFirebase.child("uid").setValue(event.getUid());
-        selFirebase.child("isprivate").setValue(event.getIsPrivate());
-        selFirebase.child("iscomplete").setValue(event.getIsComplete());
-        selFirebase.child("priority").setValue(event.getDaysLeft());
-    }
-
-
-
     private void initRecycler(View root, String selId, TextView errorMsg) {
         // Create a instance of the database and get its reference
 
+        Calendar nowCal = TimeHelper.setDateTimeToZero(selectedDate);
 
-        Calendar now = Calendar.getInstance();
-        now.setTime(selectedDate);
-        now.set(Calendar.HOUR, 0);
-        now.set(Calendar.MINUTE, 0);
-        now.set(Calendar.SECOND, 0);
-        now.set(Calendar.HOUR_OF_DAY, 0);
-
-        Date changed = now.getTime();
-
+        Date changed = nowCal.getTime();
 
         mbase = (DatabaseReference) FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference()
                                                     .child("members").child("member"+selId).child("events");
@@ -280,8 +231,6 @@ public class CalendarFragment extends Fragment {
                 .setQuery(query, Event.class)
                 .build();
 
-        // FIXME: must just be month, day year la, use the date formatter than we will roll from there
-
         recyclerView = root.findViewById(R.id.recycler2);
         recyclerView.setNestedScrollingEnabled(false);
 
@@ -292,7 +241,8 @@ public class CalendarFragment extends Fragment {
 
         // Connecting object of required Adapter class to the Adapter class itself
         recyclerAdapter = new EventAdapter(options);
-        checkEmptyList(query, errorMsg);
+        //checkEmptyList(query, errorMsg);
+        MiscHelper.checkEmptyList(query, errorMsg);
         // Connecting Adapter class with the Recycler view*/
         recyclerView.setAdapter(recyclerAdapter);
     }
@@ -315,7 +265,6 @@ public class CalendarFragment extends Fragment {
     }
 
     private void updateRecycler(View root, String selId, TextView errorMsg) {
-        // Create a instance of the database and get its reference
         mbase = (DatabaseReference) FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference()
                 .child("members").child("member"+selId).child("events");
         Query query = mbase.orderByChild("deadline").equalTo(selectedDate.toString());
@@ -326,7 +275,8 @@ public class CalendarFragment extends Fragment {
                 .build();
 
         recyclerAdapter.updateOptions(options);
-        checkEmptyList(query, errorMsg);
+        MiscHelper.checkEmptyList(query, errorMsg);
+        //checkEmptyList(query, errorMsg);
         recyclerView.setAdapter(recyclerAdapter);
 
         String selDateString = CalendarPickerDialog.makeDateString(selectedDate.getDate(), selectedDate.getMonth() + 1, selectedDate.getYear() + 1900);

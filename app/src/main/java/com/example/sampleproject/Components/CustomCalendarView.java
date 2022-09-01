@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sampleproject.Fragments.CalendarFragment;
+import com.example.sampleproject.Helper.TimeHelper;
 import com.example.sampleproject.Models.Event;
 import com.example.sampleproject.R;
 import com.google.firebase.database.DataSnapshot;
@@ -78,14 +79,17 @@ public class CustomCalendarView extends LinearLayout {
         assignClickHandlers();
 
         Date unchanged = new Date();
-        Calendar now = Calendar.getInstance();
-        now.setTime(unchanged);
-        now.set(Calendar.HOUR, 0);
-        now.set(Calendar.MINUTE, 0);
-        now.set(Calendar.SECOND, 0);
-        now.set(Calendar.HOUR_OF_DAY, 0);
 
-        Date changed = now.getTime();
+        Calendar nowCal = TimeHelper.setDateTimeToZero(unchanged);
+
+//        Calendar nowCal = Calendar.getInstance();
+//        nowCal.setTime(unchanged);
+//        nowCal.set(Calendar.HOUR, 0);
+//        nowCal.set(Calendar.MINUTE, 0);
+//        nowCal.set(Calendar.SECOND, 0);
+//        nowCal.set(Calendar.HOUR_OF_DAY, 0);
+
+        Date changed = nowCal.getTime();
         dateSelected = changed;
 
         cv.invokeFirebaseEvent(cv);
@@ -136,14 +140,16 @@ public class CustomCalendarView extends LinearLayout {
 
 
                 Date unchanged = (Date) view.getItemAtPosition(position);
-                Calendar now = Calendar.getInstance();
-                now.setTime(unchanged);
-                now.set(Calendar.HOUR, 0);
-                now.set(Calendar.MINUTE, 0);
-                now.set(Calendar.SECOND, 0);
-                now.set(Calendar.HOUR_OF_DAY, 0);
 
-                Date changed = now.getTime();
+                Calendar nowCal = TimeHelper.setDateTimeToZero(unchanged);
+//                Calendar nowCal = Calendar.getInstance();
+//                nowCal.setTime(unchanged);
+//                nowCal.set(Calendar.HOUR, 0);
+//                nowCal.set(Calendar.MINUTE, 0);
+//                nowCal.set(Calendar.SECOND, 0);
+//                nowCal.set(Calendar.HOUR_OF_DAY, 0);
+
+                Date changed = nowCal.getTime();
                 dateSelected = changed;
                 eventHandler.onDayLongPress(changed);
 
@@ -167,25 +173,23 @@ public class CustomCalendarView extends LinearLayout {
     }
 
     public void invokeFirebaseEvent(CustomCalendarView calendarView) {
+        //// Receive Intents ////
         Bundle resultIntent = ((Activity) getContext()).getIntent().getExtras();
         String id = resultIntent.getString("id", "1");
-        String otherId = resultIntent.getString("otherId", "2");
 
         HashSet<Date> events = new HashSet<>();
-        FirebaseDatabase database = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link));
-        DatabaseReference myRef = database.getReference().child("members").child("member"+id).child("events");
+        DatabaseReference firebase = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference();
+        DatabaseReference firebaseMemberEvents = firebase.child("members").child("member"+id).child("events");
 
         // Read from the database
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseMemberEvents.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Event user = snapshot.getValue(Event.class);
                     Date addDate = new Date(user.getDeadline());
-                    //FIXME: Fails if the deadline is not in a good date format.
                     events.add(addDate);
                 }
-                System.out.println("helpppppppppppppppppppppp");
                 calendarView.updateCalendar(events);
             }
 
@@ -201,10 +205,8 @@ public class CustomCalendarView extends LinearLayout {
     }
 
     public void updateCalendar(HashSet<Date> events) {
-        System.out.println("tow");
         ArrayList<Date> cells = new ArrayList<>();
         Calendar calendar = (Calendar) currentDate.clone();
-
 
         // determine the cell for current month's beginning
         calendar.set(Calendar.DAY_OF_MONTH, 1);
@@ -219,7 +221,6 @@ public class CustomCalendarView extends LinearLayout {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
 
-        System.out.println(events.size());
 
         // update grid
         grid.setAdapter(new CalendarAdapter(getContext(), cells, events));

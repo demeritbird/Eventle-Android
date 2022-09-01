@@ -12,12 +12,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <!-- fix height and width also -->
+        android:layout_height="wrap_content">
 
-
-
-        <!-- fix height width here FIXME: use styles-->
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/userImage"
             style="@style/profileImage"
@@ -26,37 +22,25 @@
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
             app:srcCompat="@drawable/dembirdimage" />
-        <!--            android:layout_width="124sp"-->
-        <!--            android:layout_height="124sp"-->
-        <!--            android:layout_marginTop="42sp"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent"-->
-        <!--            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"-->
-        <!--            app:srcCompat="@drawable/dembirdimage" />-->
 
         <FrameLayout
-            android:id="@+id/framelayout_line"
-            android:layout_width="371dp"
+            android:id="@+id/framelayout_area"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="12dp"
-            android:background="#6C6C6C"
+            android:background="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/username_text" />
 
-
-        <!--FIXME: themes here -->
 
         <TextView
             android:id="@+id/welcomeMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:fontFamily="@font/spartan_black"
+            style="@style/text_highlight"
             android:text="@string/Welcome_Message"
-            android:textColor="#000000"
-            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/userImage" />
@@ -67,7 +51,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/spartan_light"
             android:text="@string/Default_Username"
-            android:textColor="#000000"
+            android:textColor="@color/black"
             android:textSize="26sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,17 +67,11 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/framelayout_line" />
+            app:layout_constraintTop_toBottomOf="@+id/framelayout_area" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28sp"
-            android:layout_marginBottom="20dp"
-
-            android:clipToPadding="false"
-            android:paddingBottom="?attr/actionBarSize"
+            style="@style/recyclerview"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +81,7 @@
             android:id="@+id/tv_errormsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No events!"
+            android:text="@string/error_noEvents"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/recycler1"

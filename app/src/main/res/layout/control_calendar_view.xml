@@ -4,6 +4,6 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:minHeight="35dp"
-    android:text="00"
+    android:text="@string/default_singlecalday"
     android:textAlignment="center"
     android:textAppearance="@android:style/TextAppearance.Medium" />
