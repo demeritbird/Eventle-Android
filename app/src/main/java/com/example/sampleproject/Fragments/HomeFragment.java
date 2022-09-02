@@ -3,7 +3,6 @@ package com.example.sampleproject.Fragments;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,7 +27,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -53,12 +51,12 @@ public class HomeFragment extends Fragment {
         String newUserName = resultIntent.getString("username", "no");
 
         /// Init Image & Username ////
-        ImageView userImage = root.findViewById(R.id.userImage);
+        ImageView userImage = root.findViewById(R.id.iv_userImage);
         FirebaseHelper.changeImageFromFirebase(userImage, id, imageUri);
 
         /// Components ///
         TextView errorMsg = root.findViewById(R.id.tv_errormsg);
-        TextView username = root.findViewById(R.id.username_text);
+        TextView username = root.findViewById(R.id.tv_username);
         username.setText(newUserName);
 
 
@@ -78,19 +76,19 @@ public class HomeFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     DataSnapshot deadlineString = snapshot.child("deadline");
+
                     Date deadlineDate = new Date(deadlineString.getValue().toString());
 
                     Date today = new Date();
-
                     Calendar todayCal = TimeHelper.setDateTimeOneDown(today);
-
                     Date newToday = todayCal.getTime();
 
                     long daysBetween = TimeUnit.DAYS.convert(deadlineDate.getTime() - newToday.getTime(), TimeUnit.MILLISECONDS);
+
                     if (snapshot.child("iscomplete").getValue().toString() == "true") {
                         MiscHelper.increasePriority(snapshot);
 
-                        if (newToday.getDay() == deadlineDate.getDay()) {
+                        if (newToday.getDay() >= deadlineDate.getDay()) {
                             snapshot.child("daysleft").getRef().setValue((int) daysBetween - 1);
                         } else {
                             snapshot.child("daysleft").getRef().setValue((int) daysBetween);
@@ -98,7 +96,7 @@ public class HomeFragment extends Fragment {
 
                     } else {
 
-                        if (newToday.getDay() == deadlineDate.getDay()) {
+                        if (newToday.getDay() >= deadlineDate.getDay()) {
                             snapshot.child("daysleft").getRef().setValue((int) daysBetween - 1);
                             snapshot.child("priority").getRef().setValue((int) daysBetween - 1);
                         } else {

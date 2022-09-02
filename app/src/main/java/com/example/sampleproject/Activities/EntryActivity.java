@@ -17,6 +17,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class EntryActivity extends AppCompatActivity implements View.OnClickListener {
     private Button entryMemberOne;
     private Button entryMemberTwo;
@@ -25,7 +28,6 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entrypage);
-
 
         //// Components ////
         entryMemberOne = findViewById(R.id.btn_member1_entry);

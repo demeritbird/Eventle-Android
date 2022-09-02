@@ -13,14 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.sampleproject.Fragments.CalendarFragment;
 import com.example.sampleproject.Helper.TimeHelper;
 import com.example.sampleproject.Models.Event;
 import com.example.sampleproject.R;
@@ -81,19 +78,10 @@ public class CustomCalendarView extends LinearLayout {
         Date unchanged = new Date();
 
         Calendar nowCal = TimeHelper.setDateTimeToZero(unchanged);
-
-//        Calendar nowCal = Calendar.getInstance();
-//        nowCal.setTime(unchanged);
-//        nowCal.set(Calendar.HOUR, 0);
-//        nowCal.set(Calendar.MINUTE, 0);
-//        nowCal.set(Calendar.SECOND, 0);
-//        nowCal.set(Calendar.HOUR_OF_DAY, 0);
-
         Date changed = nowCal.getTime();
         dateSelected = changed;
 
         cv.invokeFirebaseEvent(cv);
-//        cv.updateCalendar();
     }
 
     private void loadDateFormat(AttributeSet attrs) {
@@ -111,9 +99,9 @@ public class CustomCalendarView extends LinearLayout {
 
     private void assignUiElements() {
         header = (LinearLayout) findViewById(R.id.calendar_header);
-        btnPrev = findViewById(R.id.calendar_prev_button);
-        btnNext = findViewById(R.id.calendar_next_button);
-        txtDate = (TextView) findViewById(R.id.calendar_date_display);
+        btnPrev = findViewById(R.id.btn_calendar_prev);
+        btnNext = findViewById(R.id.btn_calendar_next);
+        txtDate = (TextView) findViewById(R.id.tv_calendar_date_display);
         grid = (GridView) findViewById(R.id.calendar_grid);
     }
 
@@ -142,13 +130,6 @@ public class CustomCalendarView extends LinearLayout {
                 Date unchanged = (Date) view.getItemAtPosition(position);
 
                 Calendar nowCal = TimeHelper.setDateTimeToZero(unchanged);
-//                Calendar nowCal = Calendar.getInstance();
-//                nowCal.setTime(unchanged);
-//                nowCal.set(Calendar.HOUR, 0);
-//                nowCal.set(Calendar.MINUTE, 0);
-//                nowCal.set(Calendar.SECOND, 0);
-//                nowCal.set(Calendar.HOUR_OF_DAY, 0);
-
                 Date changed = nowCal.getTime();
                 dateSelected = changed;
                 eventHandler.onDayLongPress(changed);

@@ -23,7 +23,7 @@
 
             <!-- Date Title & Btn Selectors -->
             <TextView
-                android:id="@+id/calendar_date_display"
+                android:id="@+id/tv_calendar_date_display"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -35,7 +35,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/calendar_prev_button"
+                android:id="@+id/btn_calendar_prev"
                 style="@style/calendarpage_slcbuttons"
                 android:background="@drawable/eventcard_textbg"
                 android:src="@drawable/ic_arrow_left"
@@ -46,7 +46,7 @@
 
 
             <ImageButton
-                android:id="@+id/calendar_next_button"
+                android:id="@+id/btn_calendar_next"
                 style="@style/calendarpage_slcbuttons"
                 android:src="@drawable/ic_arrow_right"
                 app:layout_constraintEnd_toEndOf="parent"

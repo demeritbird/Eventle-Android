@@ -3,12 +3,21 @@ package com.example.sampleproject.Helper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.sampleproject.Models.Event;
 import com.example.sampleproject.R;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.UUID;
 
 public class MiscHelper {
 
@@ -48,5 +57,45 @@ public class MiscHelper {
             }
         });
     }
+
+
+//    public static void submitFromDialog(DatabaseReference firebaseMembers, String[] newTitle, String[] newDescription, String id, String otherId, BottomSheetDialog bottomSheetDialog, View bottomSheetView, Button btnDeadline, Boolean isPrivate, ) {
+//        Date newDate = new Date(btnDeadline.getText().toString());
+//        Date today = new Date();
+//
+//        Calendar todayCal = TimeHelper.setDateTimeOneDown(today);
+//        Date newToday = todayCal.getTime();
+//
+//        long newDaysLeft = TimeHelper.calcDaysBetween(newDate,newToday);
+//
+//        ////  Check Validation ////
+//        if (newTitle[0].equals("")) {
+//            Toast.makeText(bottomSheetView.getContext(),R.string.error_emptyTitle, Toast.LENGTH_SHORT).show();
+//        } else if (newDescription[0].equals("")) {
+//            Toast.makeText(bottomSheetView.getContext(),R.string.error_emptyDescription, Toast.LENGTH_SHORT).show();
+//        } else {
+//
+//
+////            DatabaseReference firebaseMembers = FirebaseDatabase.getInstance(bottomSheetView.getResources().getString(R.string.firebase_link)).getReference()
+////                    .child("members");
+//            String uuid = UUID.randomUUID().toString();
+//            Event event = new Event(newTitle[0], newDescription[0], newDate.toString(), (int) newDaysLeft, uuid, isPrivate, false);
+//
+//            if (event.getIsPrivate()) {
+//                FirebaseHelper.postToFirebase(event, firebaseMembers, id);
+//            } else {
+//                FirebaseHelper.postToFirebase(event, firebaseMembers, id);
+//                FirebaseHelper.postToFirebase(event, firebaseMembers, otherId);
+//            }
+//
+//            Toast.makeText(bottomSheetView.getContext(), R.string.success_eventAdded, Toast.LENGTH_SHORT).show();
+//            bottomSheetDialog.dismiss();
+//
+//            updateRecycler(bottomSheetView,id,errorMsg);
+//            refreshFragment();
+//        }
+//
+//
+//    }
 
 }

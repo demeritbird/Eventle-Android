@@ -56,7 +56,7 @@ public class CalendarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_calendar, container, false);
-        recyclerView = root.findViewById(R.id.recycler2);
+        recyclerView = root.findViewById(R.id.recycler_calendar);
         todayText = root.findViewById(R.id.tv_selDate);
         TextView errorMsg = root.findViewById(R.id.tv_error_msg_calendarr);
         Date today = new Date();
@@ -103,8 +103,8 @@ public class CalendarFragment extends Fragment {
             public void onClick(View view) {
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);
                 View bottomSheetView = inflater.inflate(R.layout.fragment_bottom_dialog, root.findViewById(R.id.bottomDialogContainer));
-                EditText titleDialog = bottomSheetView.findViewById(R.id.title_dialog);
-                EditText descriptionDialog = bottomSheetView.findViewById(R.id.description_dialog);
+                EditText titleDialog = bottomSheetView.findViewById(R.id.et_title_dialog);
+                EditText descriptionDialog = bottomSheetView.findViewById(R.id.et_description_dialog);
                 btnPrivate = bottomSheetView.findViewById(R.id.btn_private_sel);
                 btnPublic = bottomSheetView.findViewById(R.id.btn_public_sel);
                 btnDeadline = bottomSheetView.findViewById(R.id.btn_deadline);
@@ -152,15 +152,14 @@ public class CalendarFragment extends Fragment {
                     }
                 });
 
-
-                bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
+                // FIXME: Refactor here //
+                bottomSheetView.findViewById(R.id.btn_submit_event).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Date newDate = new Date(btnDeadline.getText().toString());
                         Date today = new Date();
 
                         Calendar todayCal = TimeHelper.setDateTimeOneDown(today);
-
                         Date newToday = todayCal.getTime();
 
                         long newDaysLeft = TimeHelper.calcDaysBetween(newDate,newToday);
@@ -176,14 +175,15 @@ public class CalendarFragment extends Fragment {
                             DatabaseReference firebaseMembers = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference()
                                                                                    .child("members");
                             String uuid = UUID.randomUUID().toString();
-                            Event event = new Event(newTitle[0], newDescription[0], newDate.toString(), (int) newDaysLeft, uuid, isPrivate[0], false);
-
-                            if (event.getIsPrivate()) {
-                                FirebaseHelper.postToFirebase(event, firebaseMembers, id);
-                            } else {
-                                FirebaseHelper.postToFirebase(event, firebaseMembers, id);
-                                FirebaseHelper.postToFirebase(event, firebaseMembers, otherId);
-                            }
+//                            Event event = new Event(newTitle[0], newDescription[0], newDate.toString(), (int) newDaysLeft, uuid, isPrivate[0], false);
+//
+//                            if (event.getIsPrivate()) {
+//                                FirebaseHelper.postToFirebase(event, firebaseMembers, id);
+//                            } else {
+//                                FirebaseHelper.postToFirebase(event, firebaseMembers, id);
+//                                FirebaseHelper.postToFirebase(event, firebaseMembers, otherId);
+//                            }
+                            FirebaseHelper.submitEventOnClick(new Event(newTitle[0], newDescription[0], newDate.toString(), (int) newDaysLeft, uuid, isPrivate[0] , false), firebaseMembers, id, otherId, true );
 
                             Toast.makeText(getContext(), R.string.success_eventAdded, Toast.LENGTH_SHORT).show();
                             bottomSheetDialog.dismiss();
@@ -231,7 +231,7 @@ public class CalendarFragment extends Fragment {
                 .setQuery(query, Event.class)
                 .build();
 
-        recyclerView = root.findViewById(R.id.recycler2);
+        recyclerView = root.findViewById(R.id.recycler_calendar);
         recyclerView.setNestedScrollingEnabled(false);
 
         // To display the Recycler view linearly
@@ -276,7 +276,6 @@ public class CalendarFragment extends Fragment {
 
         recyclerAdapter.updateOptions(options);
         MiscHelper.checkEmptyList(query, errorMsg);
-        //checkEmptyList(query, errorMsg);
         recyclerView.setAdapter(recyclerAdapter);
 
         String selDateString = CalendarPickerDialog.makeDateString(selectedDate.getDate(), selectedDate.getMonth() + 1, selectedDate.getYear() + 1900);

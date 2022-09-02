@@ -120,10 +120,10 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
         Boolean isPrivate, isComplete;
         // views//
         View eventcardView = itemView.findViewById(R.id.event_background);
-        View titleView = itemView.findViewById(R.id.title);
-        View descView = itemView.findViewById(R.id.description);
-        View deadlineView = itemView.findViewById(R.id.deadline);
-        View daysleftView = itemView.findViewById(R.id.days_left);
+        View titleView = itemView.findViewById(R.id.tv_title);
+        View descView = itemView.findViewById(R.id.tv_description);
+        View deadlineView = itemView.findViewById(R.id.tv_deadline);
+        View daysleftView = itemView.findViewById(R.id.tv_days_left);
 
         View isCompleteView = itemView.findViewById(R.id.btn_isComplete);
         AppCompatButton completeButton = itemView.findViewById(R.id.btn_isComplete);
@@ -135,10 +135,10 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
             DatabaseReference firebaseMembers = FirebaseDatabase.getInstance(itemView.getContext().getResources().getString(R.string.firebase_link)).getReference().child("members");
 
             //// Init Components ////
-            title = itemView.findViewById(R.id.title);
-            description = itemView.findViewById(R.id.description);
-            deadline = itemView.findViewById(R.id.deadline);
-            daysleft = itemView.findViewById(R.id.days_left);
+            title = itemView.findViewById(R.id.tv_title);
+            description = itemView.findViewById(R.id.tv_description);
+            deadline = itemView.findViewById(R.id.tv_deadline);
+            daysleft = itemView.findViewById(R.id.tv_days_left);
             daysleftText = itemView.findViewById(R.id.tv_daysleft);
 
             //// Init Variables ////
@@ -168,6 +168,24 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
 
         }
 
+        private void changePriority(DatabaseReference firebaseUid, Boolean setComplete) {
+            firebaseUid.child("iscomplete").setValue(setComplete);
+            firebaseUid.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (setComplete){
+                        MiscHelper.increasePriority(snapshot);
+
+                    } else {
+                        MiscHelper.remainPriority(snapshot);
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) { }
+            });
+        }
+
+
         private void onClickComplete(DatabaseReference firebaseMembers, String id) {
             DatabaseReference firebaseUid = firebaseMembers.child("member"+ id).child("events").child(uid);
             if (isComplete) {
@@ -176,23 +194,6 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                 changePriority(firebaseUid, true);
             }
         }
-
-        private void changePriority(DatabaseReference firebaseUid, Boolean isComplete) {
-            firebaseUid.child("iscomplete").setValue(isComplete);
-            firebaseUid.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (isComplete){
-                        MiscHelper.remainPriority(snapshot);
-                    } else {
-                        MiscHelper.increasePriority(snapshot);
-                    }
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) { }
-            });
-        }
-
 
         private void onClickDelete(View view, DatabaseReference firebaseMembers, String id, String otherId) {
             FirebaseHelper.delFromFirebase(uid, firebaseMembers, id);
@@ -211,7 +212,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
             eventTitle.setText(R.string.edit_event);
 
             // Title //
-            EditText titleDialog = bottomSheetView.findViewById(R.id.title_dialog);
+            EditText titleDialog = bottomSheetView.findViewById(R.id.et_title_dialog);
             titleDialog.setText(title.getText());
             titleDialog.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -227,7 +228,7 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
             });
 
             // Description
-            EditText descriptionDialog = bottomSheetView.findViewById(R.id.description_dialog);
+            EditText descriptionDialog = bottomSheetView.findViewById(R.id.et_description_dialog);
             descriptionDialog.setText(description.getText());
             descriptionDialog.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -259,7 +260,8 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
             btnPrivacySelect(btnPrivate, btnPublic);
 
             // Submit Button //
-            bottomSheetView.findViewById(R.id.buttonDialog).setOnClickListener(new View.OnClickListener() {
+            // FIXME: Refactor here //
+            bottomSheetView.findViewById(R.id.btn_submit_event).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Date newDate = new Date(btnDeadline.getText().toString());
@@ -276,17 +278,16 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
                     } else if (newDescription[0].equals("")) {
                         Toast.makeText(bottomSheetDialog.getContext(), R.string.error_emptyDescription, Toast.LENGTH_SHORT).show();
                     } else {
-                        Event event = new Event(newTitle[0], newDescription[0], newDate.toString(), (int) newDaysLeft, uid, isPrivate, isComplete);
-
-                        if (isPrivate) {
-                            FirebaseHelper.postToFirebase(event, firebaseMembers, id);
-                            FirebaseHelper.delFromFirebase(uid, firebaseMembers, otherId);
-                        } else {
-                            FirebaseHelper.postToFirebase(event, firebaseMembers, id);
-                            FirebaseHelper.postToFirebase(event, firebaseMembers, otherId);
-
-                        }
-
+//                        Event event = new Event(newTitle[0], newDescription[0], newDate.toString(), (int) newDaysLeft, uid, isPrivate, isComplete);
+//
+//                        if (isPrivate) {
+//                            FirebaseHelper.postToFirebase(event, firebaseMembers, id);
+//                            FirebaseHelper.delFromFirebase(uid, firebaseMembers, otherId);
+//                        } else {
+//                            FirebaseHelper.postToFirebase(event, firebaseMembers, id);
+//                            FirebaseHelper.postToFirebase(event, firebaseMembers, otherId);
+//                        }
+                        FirebaseHelper.submitEventOnClick(new Event(newTitle[0], newDescription[0], newDate.toString(), (int) newDaysLeft, uid, isPrivate, isComplete), firebaseMembers, id, otherId, false);
                         bottomSheetDialog.dismiss();
                     }
                 }
