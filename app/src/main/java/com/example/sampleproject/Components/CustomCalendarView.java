@@ -75,11 +75,11 @@ public class CustomCalendarView extends LinearLayout {
         assignUiElements();
         assignClickHandlers();
 
-        Date unchanged = new Date();
+        Date today = new Date();
 
-        Calendar nowCal = TimeHelper.setDateTimeToZero(unchanged);
-        Date changed = nowCal.getTime();
-        dateSelected = changed;
+        Calendar nowCal = TimeHelper.setDateTimeToZero(today);
+        Date todayChanged = nowCal.getTime();
+        dateSelected = todayChanged;
 
         cv.invokeFirebaseEvent(cv);
     }
@@ -127,12 +127,12 @@ public class CustomCalendarView extends LinearLayout {
             public void onItemClick(AdapterView<?> view, View cell, int position, long id) {
 
 
-                Date unchanged = (Date) view.getItemAtPosition(position);
+                Date currentDate = (Date) view.getItemAtPosition(position);
 
-                Calendar nowCal = TimeHelper.setDateTimeToZero(unchanged);
-                Date changed = nowCal.getTime();
-                dateSelected = changed;
-                eventHandler.onDayLongPress(changed);
+                Calendar changedCal = TimeHelper.setDateTimeToZero(currentDate);
+                Date changedDate = changedCal.getTime();
+                dateSelected = changedDate;
+                eventHandler.onDayLongPress(changedDate);
 
                 cv.invokeFirebaseEvent(cv);
 
@@ -167,8 +167,8 @@ public class CustomCalendarView extends LinearLayout {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Event user = snapshot.getValue(Event.class);
-                    Date addDate = new Date(user.getDeadline());
+                    Event event = snapshot.getValue(Event.class);
+                    Date addDate = new Date(event.getDeadline());
                     events.add(addDate);
                 }
                 calendarView.updateCalendar(events);
@@ -176,7 +176,7 @@ public class CustomCalendarView extends LinearLayout {
 
             @Override
             public void onCancelled(DatabaseError error) {
-                Log.w(TAG, "Failed to read value.", error.toException());
+                Log.w(TAG, String.valueOf(R.string.error_readFirebase), error.toException());
             }
         });
     }
@@ -234,7 +234,6 @@ public class CustomCalendarView extends LinearLayout {
             int day = date.getDate();
             int month = date.getMonth();
             int year = date.getYear();
-
 
             Date today = new Date();
 

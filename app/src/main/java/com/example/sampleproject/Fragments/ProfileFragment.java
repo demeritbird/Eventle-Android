@@ -90,9 +90,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-
         FirebaseHelper.calcInsights(root ,firebaseMemberId, eventsInWeek, eventsInMonth );
-
 
         return root;
     }

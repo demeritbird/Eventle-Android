@@ -45,6 +45,6 @@ public class CustomButtonView extends AppCompatButton {
     }
 
     private void doSomething() {
-        Toast.makeText(getContext(), "did something", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Entered Application!", Toast.LENGTH_SHORT).show();
     }
 }

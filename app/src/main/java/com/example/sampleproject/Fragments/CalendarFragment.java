@@ -59,25 +59,24 @@ public class CalendarFragment extends Fragment {
         recyclerView = root.findViewById(R.id.recycler_calendar);
         todayText = root.findViewById(R.id.tv_selDate);
         TextView errorMsg = root.findViewById(R.id.tv_error_msg_calendarr);
-        Date today = new Date();
-        String todayString = CalendarPickerDialog.makeDateString(today.getDate(), today.getMonth()+1, today.getYear()+1900);
 
-        todayText.setText(todayString);
 
+        //// Receive Intents ////
         Bundle resultIntent = getActivity().getIntent().getExtras();
         String id = resultIntent.getString("id", "1");
         String otherId = resultIntent.getString("otherId", "2");
 
+        Date today = new Date();
+        String todayString = CalendarPickerDialog.makeDateString(today.getDate(), today.getMonth()+1, today.getYear()+1900);
+        todayText.setText(todayString);
 
         initRecycler(root, id, errorMsg);
-
 
         //// Init Calendar View ////
         CustomCalendarView calendarView = ((CustomCalendarView) root.findViewById(R.id.calendar_view));
         calendarView.setEventHandler(new CustomCalendarView.EventHandler() {
             @Override
             public void onDayLongPress(Date date) {
-
                 selectedDate = date;
 
                 Calendar nowCal = TimeHelper.setDateTimeToZero(selectedDate);
@@ -87,10 +86,8 @@ public class CalendarFragment extends Fragment {
             }
         });
 
-
         //// Init GET firebase ////
         calendarView.invokeFirebaseEvent(calendarView);
-
 
         final String[] newTitle = {""};
         final String[] newDescription = {""};;
@@ -130,10 +127,8 @@ public class CalendarFragment extends Fragment {
                     }
                 });
 
-
                 CalendarPickerDialog.initDatePicker(btnDeadline.getContext(), btnDeadline);
                 btnDeadline.setText(CalendarPickerDialog.getTodayDate());
-
 
                 MiscHelper.selectPrivate(btnPrivate, btnPublic);
                 btnPrivate.setOnClickListener(new View.OnClickListener() {
@@ -170,8 +165,6 @@ public class CalendarFragment extends Fragment {
                         } else if (newDescription[0].equals("")) {
                             Toast.makeText(getContext(),R.string.error_emptyDescription, Toast.LENGTH_SHORT).show();
                         } else {
-
-
                             DatabaseReference firebaseMembers = FirebaseDatabase.getInstance(getResources().getString(R.string.firebase_link)).getReference()
                                                                                    .child("members");
                             String uuid = UUID.randomUUID().toString();
@@ -191,11 +184,8 @@ public class CalendarFragment extends Fragment {
                             updateRecycler(root,id,errorMsg);
                             refreshFragment();
                         }
-
-
                     }
                 });
-
                 bottomSheetDialog.setContentView(bottomSheetView);
                 bottomSheetDialog.show();
             }
@@ -206,12 +196,12 @@ public class CalendarFragment extends Fragment {
     }
 
     private void refreshFragment() {
-        Fragment f;
-        f = new CalendarFragment();
-        FragmentTransaction ft2 =   getFragmentManager().beginTransaction();
-        ft2.replace(R.id.framelayout_area,f);
-        ft2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft2.commit();
+        Fragment fragment;
+        fragment = new CalendarFragment();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.framelayout_area,fragment);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.commit();
     }
 
     private void initRecycler(View root, String selId, TextView errorMsg) {
@@ -245,23 +235,6 @@ public class CalendarFragment extends Fragment {
         MiscHelper.checkEmptyList(query, errorMsg);
         // Connecting Adapter class with the Recycler view*/
         recyclerView.setAdapter(recyclerAdapter);
-    }
-
-    private void checkEmptyList(Query query, TextView errorMsg) {
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() == null) {
-                    errorMsg.setVisibility(View.VISIBLE);
-                } else {
-                    errorMsg.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
     }
 
     private void updateRecycler(View root, String selId, TextView errorMsg) {
