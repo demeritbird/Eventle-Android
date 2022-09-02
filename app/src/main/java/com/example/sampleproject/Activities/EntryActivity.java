@@ -55,7 +55,7 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
             }
             @Override
             public void onCancelled(DatabaseError error) {
-                Log.w(String.valueOf(R.string.TAG_MESSAGE), "Failed to read value.", error.toException());
+                Log.w(String.valueOf(R.string.TAG_MESSAGE), String.valueOf(R.string.error_readFirebase), error.toException());
             }
         });
     }

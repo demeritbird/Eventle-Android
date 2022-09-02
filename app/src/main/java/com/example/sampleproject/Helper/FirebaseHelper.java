@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.example.sampleproject.Models.Event;
-import com.example.sampleproject.Models.Member;
+import com.example.sampleproject.Models.ImageUri;
 import com.example.sampleproject.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -135,8 +135,8 @@ public class FirebaseHelper {
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Member member = new Member(uri.toString());
-                        dbRef.child("member" + id).child("image").setValue(member);
+                        ImageUri imageUri = new ImageUri(uri.toString());
+                        dbRef.child("member" + id).child("image").setValue(imageUri);
                     }
                 });
             }

@@ -21,8 +21,8 @@ public class CalendarPickerDialog {
             @Override
             public void onDateSet(DatePicker datePicker, int day, int month, int year) {
                 month = month + 1;
-                String date = makeDateString(year, month, day);
-                openDialogButton.setText(date);
+                String dateString = makeDateString(year, month, day);
+                openDialogButton.setText(dateString);
             }
         };
 

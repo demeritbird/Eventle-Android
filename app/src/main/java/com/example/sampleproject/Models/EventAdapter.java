@@ -260,7 +260,6 @@ public class EventAdapter extends FirebaseRecyclerAdapter<Event, EventAdapter.ev
             btnPrivacySelect(btnPrivate, btnPublic);
 
             // Submit Button //
-            // FIXME: Refactor here //
             bottomSheetView.findViewById(R.id.btn_submit_event).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

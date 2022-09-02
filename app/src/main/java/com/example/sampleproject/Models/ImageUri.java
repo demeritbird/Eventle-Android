@@ -1,17 +1,16 @@
 package com.example.sampleproject.Models;
 
-public class Member {
+public class ImageUri {
     private String imageUri;
 
-    public Member() {  }
-    public Member(String imageUri) {
+    public ImageUri() {  }
+    public ImageUri(String imageUri) {
         this.imageUri = imageUri;
     }
 
     public String getImageUri() {
         return imageUri;
     }
-
     public void setImageUri(String imageUri) {
         this.imageUri = imageUri;
     }

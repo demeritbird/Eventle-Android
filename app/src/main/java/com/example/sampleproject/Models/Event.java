@@ -12,8 +12,6 @@ public class Event {
 
     public Event() {}
 
-
-    // FIXME: Change to int type for daysleft --> requires a helper function i guess
     public Event(String title, String description, String deadline, Integer daysleft, String uid, Boolean isprivate, Boolean iscomplete) {
         this.title = title;
         this.description = description;
