@@ -15,7 +15,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/userImage"
+            android:id="@+id/iv_userImage"
             style="@style/profileImage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,11 +31,11 @@
             android:background="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/username_text" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_username" />
 
 
         <TextView
-            android:id="@+id/welcomeMessage"
+            android:id="@+id/tv_welcomemsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -43,10 +43,10 @@
             android:text="@string/Welcome_Message"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userImage" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_userImage" />
 
         <TextView
-            android:id="@+id/username_text"
+            android:id="@+id/tv_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/spartan_light"
@@ -55,7 +55,7 @@
             android:textSize="26sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/welcomeMessage" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_welcomemsg" />
 
         <TextView
             android:id="@+id/upcomingEvents"

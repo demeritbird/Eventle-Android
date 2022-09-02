@@ -58,8 +58,8 @@ public class MiscHelper {
         });
     }
 
-//
-//    public static void submitFromDialog(View root, BottomSheetDialog bottomSheetDialog, i Button btnDeadline, String id, String otherId, String title, String description, Boolean isPrivate) {
+
+//    public static void submitFromDialog(DatabaseReference firebaseMembers, String[] newTitle, String[] newDescription, String id, String otherId, BottomSheetDialog bottomSheetDialog, View bottomSheetView, Button btnDeadline, Boolean isPrivate, ) {
 //        Date newDate = new Date(btnDeadline.getText().toString());
 //        Date today = new Date();
 //
@@ -69,17 +69,17 @@ public class MiscHelper {
 //        long newDaysLeft = TimeHelper.calcDaysBetween(newDate,newToday);
 //
 //        ////  Check Validation ////
-//        if (title.equals("")) {
-//            Toast.makeText(root.getContext(),R.string.error_emptyTitle, Toast.LENGTH_SHORT).show();
-//        } else if (description.equals("")) {
-//            Toast.makeText(root.getContext(),R.string.error_emptyDescription, Toast.LENGTH_SHORT).show();
+//        if (newTitle[0].equals("")) {
+//            Toast.makeText(bottomSheetView.getContext(),R.string.error_emptyTitle, Toast.LENGTH_SHORT).show();
+//        } else if (newDescription[0].equals("")) {
+//            Toast.makeText(bottomSheetView.getContext(),R.string.error_emptyDescription, Toast.LENGTH_SHORT).show();
 //        } else {
 //
 //
-//            DatabaseReference firebaseMembers = FirebaseDatabase.getInstance(root.getResources().getString(R.string.firebase_link)).getReference()
-//                    .child("members");
+////            DatabaseReference firebaseMembers = FirebaseDatabase.getInstance(bottomSheetView.getResources().getString(R.string.firebase_link)).getReference()
+////                    .child("members");
 //            String uuid = UUID.randomUUID().toString();
-//            Event event = new Event(title, description, newDate.toString(), (int) newDaysLeft, uuid, isPrivate, false);
+//            Event event = new Event(newTitle[0], newDescription[0], newDate.toString(), (int) newDaysLeft, uuid, isPrivate, false);
 //
 //            if (event.getIsPrivate()) {
 //                FirebaseHelper.postToFirebase(event, firebaseMembers, id);
@@ -88,10 +88,10 @@ public class MiscHelper {
 //                FirebaseHelper.postToFirebase(event, firebaseMembers, otherId);
 //            }
 //
-//            Toast.makeText(root.getContext(), R.string.success_eventAdded, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(bottomSheetView.getContext(), R.string.success_eventAdded, Toast.LENGTH_SHORT).show();
 //            bottomSheetDialog.dismiss();
 //
-//            updateRecycler(root,id,errorMsg);
+//            updateRecycler(bottomSheetView,id,errorMsg);
 //            refreshFragment();
 //        }
 //

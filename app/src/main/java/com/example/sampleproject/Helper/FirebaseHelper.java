@@ -147,4 +147,18 @@ public class FirebaseHelper {
             }
         });
     }
+
+    public static void submitEventOnClick(Event event, DatabaseReference firebaseMembers, String id, String otherId, Boolean isAdding) {
+
+        if (event.getIsPrivate()) {
+            FirebaseHelper.postToFirebase(event, firebaseMembers, id);
+            if(!isAdding) {FirebaseHelper.delFromFirebase(event.getUid(), firebaseMembers, otherId);}
+        } else {
+            FirebaseHelper.postToFirebase(event, firebaseMembers, id);
+            FirebaseHelper.postToFirebase(event, firebaseMembers, otherId);
+        }
+
+
+    }
+
 }

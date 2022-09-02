@@ -51,7 +51,8 @@ public class ProfileFragment extends Fragment {
         //// Firebase Authentication ////
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null) { signInAsAnonymous(); }
+        //if (user == null) { signInAsAnonymous(); }
+
 
         //// Receive Intents ////
         Bundle resultIntent = getActivity().getIntent().getExtras();
@@ -59,7 +60,7 @@ public class ProfileFragment extends Fragment {
         String newUserName = resultIntent.getString("username", "user");
 
         /// Init Image & Username ////
-        ImageView userImage = root.findViewById(R.id.userImage);
+        ImageView userImage = root.findViewById(R.id.iv_userImage);
         FirebaseHelper.changeImageFromFirebase(userImage,id, imageUri );
         userImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,20 +97,20 @@ public class ProfileFragment extends Fragment {
         return root;
     }
 
-    private void signInAsAnonymous() {
-        mAuth.signInAnonymously().addOnSuccessListener((Activity) getContext(), new OnSuccessListener<AuthResult>() {
-        @Override
-        public void onSuccess(AuthResult authResult) {
-                // do your stuff
-            }
-        })
-        .addOnFailureListener((Executor) this, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Log.e(String.valueOf(R.string.error_readFirebase), String.valueOf(R.string.error_signinFail), exception);
-            }
-        });
-    }
+//    private void signInAsAnonymous() {
+//        mAuth.signInAnonymously().addOnSuccessListener((Activity) getContext(), new OnSuccessListener<AuthResult>() {
+//        @Override
+//        public void onSuccess(AuthResult authResult) {
+//                // do your stuff
+//            }
+//        });
+////        .addOnFailureListener((Executor) this, new OnFailureListener() {
+////            @Override
+////            public void onFailure(@NonNull Exception exception) {
+////                Log.e(String.valueOf(R.string.error_readFirebase), String.valueOf(R.string.error_signinFail), exception);
+////            }
+////        });
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

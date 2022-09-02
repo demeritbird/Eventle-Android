@@ -3,7 +3,6 @@ package com.example.sampleproject.Fragments;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,7 +27,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -53,12 +51,12 @@ public class HomeFragment extends Fragment {
         String newUserName = resultIntent.getString("username", "no");
 
         /// Init Image & Username ////
-        ImageView userImage = root.findViewById(R.id.userImage);
+        ImageView userImage = root.findViewById(R.id.iv_userImage);
         FirebaseHelper.changeImageFromFirebase(userImage, id, imageUri);
 
         /// Components ///
         TextView errorMsg = root.findViewById(R.id.tv_errormsg);
-        TextView username = root.findViewById(R.id.username_text);
+        TextView username = root.findViewById(R.id.tv_username);
         username.setText(newUserName);
 
 
