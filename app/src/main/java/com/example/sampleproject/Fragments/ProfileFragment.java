@@ -60,7 +60,7 @@ public class ProfileFragment extends Fragment {
         String newUserName = resultIntent.getString("username", "user");
 
         /// Init Image & Username ////
-        ImageView userImage = root.findViewById(R.id.iv_userImage);
+        userImage = root.findViewById(R.id.iv_userImage);
         FirebaseHelper.changeImageFromFirebase(userImage,id, imageUri );
         userImage.setOnClickListener(new View.OnClickListener() {
             @Override

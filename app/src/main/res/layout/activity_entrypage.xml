@@ -31,20 +31,36 @@
     <com.example.sampleproject.Components.CustomButtonView
         android:id="@+id/btn_member1_entry"
         style="@style/entrypage_mainbutton"
+        android:layout_width="115dp"
+        android:layout_height="61dp"
+        android:layout_marginTop="28dp"
         android:text="@string/Default_MemberOneName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_eventle_image" />
 
     <com.example.sampleproject.Components.CustomButtonView
         android:id="@+id/btn_member2_entry"
         style="@style/entrypage_mainbutton"
+        android:layout_width="116dp"
+        android:layout_height="52dp"
         android:text="@string/Default_MemberTwoName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.02"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_member1_entry"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.14" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/entry_recycler"
+        android:layout_width="239dp"
+        android:layout_height="277dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_eventle_image" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
